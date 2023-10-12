@@ -12,6 +12,7 @@
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^3",
+    "@playwright/test": "^1.39.0",
     "@types/chai": "^4",
     "@types/mocha": "^10",
     "@types/node": "^18",

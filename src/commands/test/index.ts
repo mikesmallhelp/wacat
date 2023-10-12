@@ -1,4 +1,5 @@
 import {Args, Command, Flags} from '@oclif/core'
+import { exec } from 'child_process';
 
 export default class Hello extends Command {
   static args = {
@@ -17,6 +18,16 @@ export default class Hello extends Command {
 
   async run(): Promise<void> {
     const {args, flags} = await this.parse(Hello)
+
+    exec('npx playwright test --project=chromium', (error, stdout, stderr) => {
+      if (error) {
+        this.error(`Virhe komentoa suorittaessa: ${error.message}`);
+        return;
+      }
+      // Tulosta komennon tulostus
+      this.log(`Komento suoritettu: ${stdout}`);
+      // Jatka muun toiminnallisuuden kanssa, esim. this.log(`Testataan sovellusta urlissa ${args.url} `)
+    });
 
     this.log(`Testataan sovellusta urlissa ${args.url} `)
   }

@@ -10,3 +10,6 @@
 /yarn.lock
 node_modules
 oclif.manifest.json
+/test-results/
+/playwright-report/
+/playwright/.cache/
