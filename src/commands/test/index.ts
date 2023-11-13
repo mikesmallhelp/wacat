@@ -29,6 +29,6 @@ export default class Hello extends Command {
       // Jatka muun toiminnallisuuden kanssa, esim. this.log(`Testataan sovellusta urlissa ${args.url} `)
     });
 
-    this.log(`Testataan sovellusta urlissa ${args.url} `)
+    this.log(`Testataan sovellusta urlissa ${args.url} 13.11.2023 17:17`)
   }
 }
