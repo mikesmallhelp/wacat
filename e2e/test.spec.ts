@@ -2,7 +2,11 @@ import { test, expect, Page } from '@playwright/test';
 import { hostIsSame, generateRandomString } from '../utils/test-utils';
 
 let visitedUrls: string[] = [];
-const rootUrl = 'http://localhost:3000/';
+const rootUrl = process.env.ROOT_URL;
+
+if (!rootUrl) {
+    throw new Error('ROOT_URL environment variable is not set');
+}
 
 test('test an application', async ({ page }) => {
     await page.goto(rootUrl);

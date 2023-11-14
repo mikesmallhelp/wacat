@@ -19,7 +19,7 @@ export default class Hello extends Command {
   async run(): Promise<void> {
     const {args, flags} = await this.parse(Hello)
 
-    exec('npx playwright test --project=chromium', (error, stdout, stderr) => {
+    exec(`ROOT_URL='${args.url}' npx playwright test --project=chromium`, (error, stdout, stderr) => {
       if (error) {
         this.error(`Virhe komentoa suorittaessa: ${error.message}`);
         return;
