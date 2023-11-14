@@ -8,7 +8,7 @@
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^3.7.0"
   },
-  "description": "oclif example Hello World CLI (ESM)",
+  "description": "The wacat tests any web application",
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^3",

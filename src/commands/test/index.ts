@@ -3,10 +3,10 @@ import { exec } from 'child_process';
 
 export default class Hello extends Command {
   static args = {
-    url: Args.string({description: 'Application url to test', required: true}),
+    url: Args.string({description: 'Application url to test, for example: http://localhost:3000', required: true}),
   }
 
-  static description = 'Test application'
+  static description = 'Test any web application, for example: wacat test http://localhost:3000'
 
   static examples = [
     `$ wacat test http://localhost:3000
@@ -26,6 +26,6 @@ export default class Hello extends Command {
       this.log(`${stdout}`);
     });
 
-    this.log(`Testing in url ${args.url}`)
+    this.log(`Testing in url: ${args.url}`)
   }
 }
