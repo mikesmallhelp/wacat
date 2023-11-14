@@ -21,14 +21,11 @@ export default class Hello extends Command {
 
     exec(`ROOT_URL='${args.url}' npx playwright test --project=chromium`, (error, stdout, stderr) => {
       if (error) {
-        this.error(`Virhe komentoa suorittaessa: ${error.message}`);
-        return;
+        this.error(`Error occurred: ${error.message}`);
       }
-      // Tulosta komennon tulostus
-      this.log(`Komento suoritettu: ${stdout}`);
-      // Jatka muun toiminnallisuuden kanssa, esim. this.log(`Testataan sovellusta urlissa ${args.url} `)
+      this.log(`${stdout}`);
     });
 
-    this.log(`Testataan sovellusta urlissa ${args.url} 14.11.2023 16:55`)
+    this.log(`Testing in url ${args.url}`)
   }
 }
