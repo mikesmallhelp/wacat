@@ -1,7 +1,7 @@
 {
   "author": "Mike @mikesmallhelp",
   "bin": {
-    "wcat": "./bin/run.js"
+    "wacat": "./bin/run.js"
   },
   "dependencies": {
     "@oclif/core": "^3",
@@ -36,13 +36,13 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/mikesmallhelp/wcat",
+  "homepage": "https://github.com/mikesmallhelp/wacat",
   "license": "MIT",
   "main": "",
-  "name": "wcat",
+  "name": "wacat",
   "oclif": {
-    "bin": "wcat",
-    "dirname": "wcat",
+    "bin": "wacat",
+    "dirname": "wacat",
     "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help",
@@ -55,7 +55,7 @@
       }
     }
   },
-  "repository": "mikesmallhelp/wcat",
+  "repository": "mikesmallhelp/wacat",
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint . --ext .ts",
@@ -66,7 +66,7 @@
     "version": "oclif readme && git add README.md"
   },
   "version": "0.0.0",
-  "bugs": "https://github.com/mikesmallhelp/wcat/issues",
+  "bugs": "https://github.com/mikesmallhelp/wacat/issues",
   "keywords": [
     "oclif"
   ],

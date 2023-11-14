@@ -14,39 +14,39 @@ oclif example Hello World CLI
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g wcat
-$ wcat COMMAND
+$ npm install -g wacat
+$ wacat COMMAND
 running command...
-$ wcat (--version)
-wcat/0.0.0 linux-x64 node-v16.17.1
-$ wcat --help [COMMAND]
+$ wacat (--version)
+wacat/0.0.0 linux-x64 node-v16.17.1
+$ wacat --help [COMMAND]
 USAGE
-  $ wcat COMMAND
+  $ wacat COMMAND
 ...
 ```
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`wcat hello PERSON`](#wcat-hello-person)
-* [`wcat hello world`](#wcat-hello-world)
-* [`wcat help [COMMANDS]`](#wcat-help-commands)
-* [`wcat plugins`](#wcat-plugins)
-* [`wcat plugins:install PLUGIN...`](#wcat-pluginsinstall-plugin)
-* [`wcat plugins:inspect PLUGIN...`](#wcat-pluginsinspect-plugin)
-* [`wcat plugins:install PLUGIN...`](#wcat-pluginsinstall-plugin-1)
-* [`wcat plugins:link PLUGIN`](#wcat-pluginslink-plugin)
-* [`wcat plugins:uninstall PLUGIN...`](#wcat-pluginsuninstall-plugin)
-* [`wcat plugins:uninstall PLUGIN...`](#wcat-pluginsuninstall-plugin-1)
-* [`wcat plugins:uninstall PLUGIN...`](#wcat-pluginsuninstall-plugin-2)
-* [`wcat plugins update`](#wcat-plugins-update)
+* [`wacat hello PERSON`](#wacat-hello-person)
+* [`wacat hello world`](#wacat-hello-world)
+* [`wacat help [COMMANDS]`](#wacat-help-commands)
+* [`wacat plugins`](#wacat-plugins)
+* [`wacat plugins:install PLUGIN...`](#wacat-pluginsinstall-plugin)
+* [`wacat plugins:inspect PLUGIN...`](#wacat-pluginsinspect-plugin)
+* [`wacat plugins:install PLUGIN...`](#wacat-pluginsinstall-plugin-1)
+* [`wacat plugins:link PLUGIN`](#wacat-pluginslink-plugin)
+* [`wacat plugins:uninstall PLUGIN...`](#wacat-pluginsuninstall-plugin)
+* [`wacat plugins:uninstall PLUGIN...`](#wacat-pluginsuninstall-plugin-1)
+* [`wacat plugins:uninstall PLUGIN...`](#wacat-pluginsuninstall-plugin-2)
+* [`wacat plugins update`](#wacat-plugins-update)
 
-## `wcat hello PERSON`
+## `wacat hello PERSON`
 
 Say hello
 
 ```
 USAGE
-  $ wcat hello PERSON -f <value>
+  $ wacat hello PERSON -f <value>
 
 ARGUMENTS
   PERSON  Person to say hello to
@@ -62,33 +62,33 @@ EXAMPLES
   hello friend from oclif! (./src/commands/hello/index.ts)
 ```
 
-_See code: [dist/commands/hello/index.ts](https://github.com/mikesmallhelp/wcat/blob/v0.0.0/dist/commands/hello/index.ts)_
+_See code: [dist/commands/hello/index.ts](https://github.com/mikesmallhelp/wacat/blob/v0.0.0/dist/commands/hello/index.ts)_
 
-## `wcat hello world`
+## `wacat hello world`
 
 Say hello world
 
 ```
 USAGE
-  $ wcat hello world
+  $ wacat hello world
 
 DESCRIPTION
   Say hello world
 
 EXAMPLES
-  $ wcat hello world
+  $ wacat hello world
   hello world! (./src/commands/hello/world.ts)
 ```
 
-_See code: [dist/commands/hello/world.ts](https://github.com/mikesmallhelp/wcat/blob/v0.0.0/dist/commands/hello/world.ts)_
+_See code: [dist/commands/hello/world.ts](https://github.com/mikesmallhelp/wacat/blob/v0.0.0/dist/commands/hello/world.ts)_
 
-## `wcat help [COMMANDS]`
+## `wacat help [COMMANDS]`
 
-Display help for wcat.
+Display help for wacat.
 
 ```
 USAGE
-  $ wcat help [COMMANDS] [-n]
+  $ wacat help [COMMANDS] [-n]
 
 ARGUMENTS
   COMMANDS  Command to show help for.
@@ -97,18 +97,18 @@ FLAGS
   -n, --nested-commands  Include all nested commands in the output.
 
 DESCRIPTION
-  Display help for wcat.
+  Display help for wacat.
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.19/src/commands/help.ts)_
 
-## `wcat plugins`
+## `wacat plugins`
 
 List installed plugins.
 
 ```
 USAGE
-  $ wcat plugins [--json] [--core]
+  $ wacat plugins [--json] [--core]
 
 FLAGS
   --core  Show core plugins.
@@ -120,18 +120,18 @@ DESCRIPTION
   List installed plugins.
 
 EXAMPLES
-  $ wcat plugins
+  $ wacat plugins
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.7.0/src/commands/plugins/index.ts)_
 
-## `wcat plugins:install PLUGIN...`
+## `wacat plugins:install PLUGIN...`
 
 Installs a plugin into the CLI.
 
 ```
 USAGE
-  $ wcat plugins:install PLUGIN...
+  $ wacat plugins:install PLUGIN...
 
 ARGUMENTS
   PLUGIN  Plugin to install.
@@ -153,23 +153,23 @@ DESCRIPTION
 
 
 ALIASES
-  $ wcat plugins add
+  $ wacat plugins add
 
 EXAMPLES
-  $ wcat plugins:install myplugin 
+  $ wacat plugins:install myplugin 
 
-  $ wcat plugins:install https://github.com/someuser/someplugin
+  $ wacat plugins:install https://github.com/someuser/someplugin
 
-  $ wcat plugins:install someuser/someplugin
+  $ wacat plugins:install someuser/someplugin
 ```
 
-## `wcat plugins:inspect PLUGIN...`
+## `wacat plugins:inspect PLUGIN...`
 
 Displays installation properties of a plugin.
 
 ```
 USAGE
-  $ wcat plugins:inspect PLUGIN...
+  $ wacat plugins:inspect PLUGIN...
 
 ARGUMENTS
   PLUGIN  [default: .] Plugin to inspect.
@@ -185,18 +185,18 @@ DESCRIPTION
   Displays installation properties of a plugin.
 
 EXAMPLES
-  $ wcat plugins:inspect myplugin
+  $ wacat plugins:inspect myplugin
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.7.0/src/commands/plugins/inspect.ts)_
 
-## `wcat plugins:install PLUGIN...`
+## `wacat plugins:install PLUGIN...`
 
 Installs a plugin into the CLI.
 
 ```
 USAGE
-  $ wcat plugins:install PLUGIN...
+  $ wacat plugins:install PLUGIN...
 
 ARGUMENTS
   PLUGIN  Plugin to install.
@@ -218,25 +218,25 @@ DESCRIPTION
 
 
 ALIASES
-  $ wcat plugins add
+  $ wacat plugins add
 
 EXAMPLES
-  $ wcat plugins:install myplugin 
+  $ wacat plugins:install myplugin 
 
-  $ wcat plugins:install https://github.com/someuser/someplugin
+  $ wacat plugins:install https://github.com/someuser/someplugin
 
-  $ wcat plugins:install someuser/someplugin
+  $ wacat plugins:install someuser/someplugin
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.7.0/src/commands/plugins/install.ts)_
 
-## `wcat plugins:link PLUGIN`
+## `wacat plugins:link PLUGIN`
 
 Links a plugin into the CLI for development.
 
 ```
 USAGE
-  $ wcat plugins:link PLUGIN
+  $ wacat plugins:link PLUGIN
 
 ARGUMENTS
   PATH  [default: .] path to plugin
@@ -254,18 +254,18 @@ DESCRIPTION
 
 
 EXAMPLES
-  $ wcat plugins:link myplugin
+  $ wacat plugins:link myplugin
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.7.0/src/commands/plugins/link.ts)_
 
-## `wcat plugins:uninstall PLUGIN...`
+## `wacat plugins:uninstall PLUGIN...`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ wcat plugins:uninstall PLUGIN...
+  $ wacat plugins:uninstall PLUGIN...
 
 ARGUMENTS
   PLUGIN  plugin to uninstall
@@ -278,17 +278,17 @@ DESCRIPTION
   Removes a plugin from the CLI.
 
 ALIASES
-  $ wcat plugins unlink
-  $ wcat plugins remove
+  $ wacat plugins unlink
+  $ wacat plugins remove
 ```
 
-## `wcat plugins:uninstall PLUGIN...`
+## `wacat plugins:uninstall PLUGIN...`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ wcat plugins:uninstall PLUGIN...
+  $ wacat plugins:uninstall PLUGIN...
 
 ARGUMENTS
   PLUGIN  plugin to uninstall
@@ -301,19 +301,19 @@ DESCRIPTION
   Removes a plugin from the CLI.
 
 ALIASES
-  $ wcat plugins unlink
-  $ wcat plugins remove
+  $ wacat plugins unlink
+  $ wacat plugins remove
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.7.0/src/commands/plugins/uninstall.ts)_
 
-## `wcat plugins:uninstall PLUGIN...`
+## `wacat plugins:uninstall PLUGIN...`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ wcat plugins:uninstall PLUGIN...
+  $ wacat plugins:uninstall PLUGIN...
 
 ARGUMENTS
   PLUGIN  plugin to uninstall
@@ -326,17 +326,17 @@ DESCRIPTION
   Removes a plugin from the CLI.
 
 ALIASES
-  $ wcat plugins unlink
-  $ wcat plugins remove
+  $ wacat plugins unlink
+  $ wacat plugins remove
 ```
 
-## `wcat plugins update`
+## `wacat plugins update`
 
 Update installed plugins.
 
 ```
 USAGE
-  $ wcat plugins update [-h] [-v]
+  $ wacat plugins update [-h] [-v]
 
 FLAGS
   -h, --help     Show CLI help.
@@ -348,4 +348,4 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.7.0/src/commands/plugins/update.ts)_
 <!-- commandsstop -->
-# wcat
+# wacat

@@ -9,7 +9,7 @@ export default class Hello extends Command {
   static description = 'Test application'
 
   static examples = [
-    `$ wcat test http://localhost:3000
+    `$ wacat test http://localhost:3000
 `,
   ]
 
