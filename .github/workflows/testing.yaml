@@ -1,0 +1,26 @@
+name: Testing
+on:
+  push:
+    branches:
+      - main
+jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+  run-e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Playwright
+        run: npm install && npx playwright install --with-deps
+      - name: Build and install wacat command
+        run: npm run build && npm install -g
+      - name: Install test-app dependencies
+        run: (cd test-app/test-app && npm install)
+      - name: Run tests
+        run: ./run-tests.sh
