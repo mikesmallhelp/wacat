@@ -4,8 +4,11 @@ import { Page, expect, test } from '@playwright/test';
 
 import { generateRandomString, hostIsSame } from '../utils/test-utils';
 
+import PageErrorTexts from './PageErrorTexts';
+
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
+const pageErrorTexts: PageErrorTexts = process.env.PAGE_ERROR_TEXTS ? JSON.parse(process.env.PAGE_ERROR_TEXTS) : null;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -42,8 +45,10 @@ const handlePage = async ({ page }: { page: Page }) => {
 const checkPageForErrors = async ({ page }: { page: Page }) => {
     const content = await page.locator('body').textContent();
 
-    console.log("Check the page not contain the 'Error occurred!' text");
-    expect(content).not.toContain('Error occurred!');
+    for (const pageErrorText of pageErrorTexts?.pageErrorTexts || []) {
+        console.log(`Check the page not contain the ${pageErrorText} text`);
+        expect(content).not.toContain(pageErrorText);
+    }
 }
 
 const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { page: Page }) => {

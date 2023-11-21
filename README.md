@@ -1,6 +1,7 @@
 TODO:
 
-- virhetekstit sivuilta tiedostosta konfigurointi
+- virhetekstit sivuilta parametri jsonina konfigurointi
+  - ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS="{\"pageErrorTexts\": [\"xxx yyy\"]}" npx playwright test --project=chromium
 - virheet "selaimen konsolista" ja jos onnistuu, niin tiedostosta konfigurointi
 - jos konfigurointi tiedosto, niin otetaan sieltä input kenttien syötteet
 - tee sovelluksen generoimista input kenttien syötteistä eri pituisia ja sisällöltään monipuolisempia
