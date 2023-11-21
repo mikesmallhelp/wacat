@@ -1,5 +1,6 @@
-import { getHost, hostIsSame, generateRandomString } from '../utils/test-utils.js';
 import { expect } from 'chai';
+
+import { generateRandomString, getHost, hostIsSame } from '../utils/test-utils.js';
 
 describe('getHost', () => {
     it('http://localhost:3000/', () => {

@@ -1,4 +1,4 @@
-export const fetchData = async (apiHttpCode: string, setLoading: Function) => {
+export const fetchData = async (apiHttpCode: string, setLoading: (loading: boolean) => void) => {
     try {
         setLoading(true);
         const response = await fetch('/api/http-' + apiHttpCode);

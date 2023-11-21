@@ -62,6 +62,7 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "prepack": "npm run build && oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"unit-tests/**/*.test.ts\"",
+    "posttest": "npm run lint",
     "version": "oclif readme && git add README.md"
   },
   "version": "0.0.2",
