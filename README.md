@@ -1,9 +1,10 @@
 TODO:
 
 - virhetekstit sivuilta parametri jsonina konfigurointi
-  ```
+```
 lenovo@lenovo-ThinkPad-T460s:~/projektit/wacat$ ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS="{\"pageErrorTexts\": [\"xxx yyy\"]}" npx playwright test --project=chromium
-
+```
+```
 Running 1 test using 1 worker
 [chromium] › test.spec.ts:17:1 › test an application
 In the page: http://localhost:3000/
@@ -22,7 +23,8 @@ Push the button #0
 Check the page not contain the xxx yyy text
   1 passed (7.8s)
 lenovo@lenovo-ThinkPad-T460s:~/projektit/wacat$
-  ```
+```
+  
 - virheet "selaimen konsolista" ja jos onnistuu, niin tiedostosta konfigurointi
 - jos konfigurointi tiedosto, niin otetaan sieltä input kenttien syötteet
 - tee sovelluksen generoimista input kenttien syötteistä eri pituisia ja sisällöltään monipuolisempia
