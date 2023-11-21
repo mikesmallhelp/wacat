@@ -1,5 +1,5 @@
 import {Args, Command} from '@oclif/core';
-import {exec} from 'child_process';
+import {exec} from 'node:child_process';
 
 export default class TestCommand extends Command {
   static args = {
@@ -18,9 +18,9 @@ export default class TestCommand extends Command {
     const {args} = await this.parse(TestCommand);
 
     try {
-      const { stdout, stderr } = await this.runCommand(`ROOT_URL='${args.url}' npx playwright test --project=chromium`);
+      const { stdout } = await this.runCommand(`ROOT_URL='${args.url}' npx playwright test --project=chromium`);
       this.log(`${stdout}`);
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       this.log(`${error.stdout}`);
       this.error(`${error.message}`);
     }
@@ -28,13 +28,13 @@ export default class TestCommand extends Command {
     this.log(`Testing in url: ${args.url}`);
   }
 
-  private runCommand(command: string): Promise<{ stdout: string, stderr: string }> {
+  private runCommand(command: string): Promise<{ stderr: string, stdout: string }> {
     return new Promise((resolve, reject) => {
       exec(command, (error, stdout, stderr) => {
         if (error) {
-          reject({ stdout, stderr, message: `Error occurred: ${error.message}` });
+          reject(new Error(`Error occurred: ${error.message} + stderr: ${stderr} + stdout: ${stdout}`));
         } else {
-          resolve({ stdout, stderr });
+          resolve({ stderr, stdout });
         }
       });
     });
