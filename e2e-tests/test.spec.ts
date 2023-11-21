@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+
 import { Page, expect, test } from '@playwright/test';
 
 import { generateRandomString, hostIsSame } from '../utils/test-utils';
@@ -16,7 +18,7 @@ test('test an application', async ({ page }) => {
         const status = response.status();
         const url = response.url();
 
-        if (status != 200) {
+        if (status !== 200) {
             console.log(`Request to ${url} resulted in status code ${status}`);
         }
 
