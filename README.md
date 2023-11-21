@@ -24,7 +24,7 @@ Check the page not contain the xxx yyy text
   1 passed (7.8s)
 lenovo@lenovo-ThinkPad-T460s:~/projektit/wacat$
 ```
-  
+- saako jsonin ilman kenomerkkejä, esim: https://reqbin.com/req/c-dwjszac0/curl-post-json-example  
 - virheet "selaimen konsolista" ja jos onnistuu, niin tiedostosta konfigurointi
 - jos konfigurointi tiedosto, niin otetaan sieltä input kenttien syötteet
 - tee sovelluksen generoimista input kenttien syötteistä eri pituisia ja sisällöltään monipuolisempia
