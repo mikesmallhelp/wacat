@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { Page, expect, test } from '@playwright/test';
 import { hostIsSame, generateRandomString } from '../utils/test-utils';
 
 let visitedUrls: string[] = [];
@@ -90,7 +90,7 @@ const visitLinks = async ({ page }: { page: Page }) => {
     );
 
     for (const link of links) {
-        if (!visitedUrls.includes(link) && hostIsSame({rootUrl: rootUrl, url: link})) {
+        if (!visitedUrls.includes(link) && hostIsSame({ rootUrl: rootUrl, url: link })) {
             await page.goto(link);
             await handlePage({ page: page });
         }
