@@ -1,7 +1,8 @@
 import { Page, expect, test } from '@playwright/test';
-import { hostIsSame, generateRandomString } from '../utils/test-utils';
 
-let visitedUrls: string[] = [];
+import { generateRandomString, hostIsSame } from '../utils/test-utils';
+
+const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 
 if (!rootUrl) {
@@ -18,10 +19,11 @@ test('test an application', async ({ page }) => {
         if (status != 200) {
             console.log(`Request to ${url} resulted in status code ${status}`);
         }
+
         expect(status).toBe(200);
     });
 
-    await handlePage({ page: page });
+    await handlePage({ page });
 });
 
 const handlePage = async ({ page }: { page: Page }) => {
@@ -30,9 +32,9 @@ const handlePage = async ({ page }: { page: Page }) => {
     await page.waitForTimeout(1000);
     visitedUrls.push(page.url());
 
-    await checkPageForErrors({ page: page });
-    await fillInputsAndSelectFromDropDownListsAndClickButtons({ page: page });
-    await visitLinks({ page: page });
+    await checkPageForErrors({ page });
+    await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
+    await visitLinks({ page });
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
@@ -47,14 +49,14 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
     const buttonsCount = await buttonsLocator.count();
 
     for (let i = 0; i < buttonsCount; i++) {
-        await fillInputs({ page: page });
-        await selectFromDropDownLists({ page: page });
+        await fillInputs({ page });
+        await selectFromDropDownLists({ page });
 
         const button = buttonsLocator.nth(i);
         console.log('Push the button #' + i);
         await button.click();
         await page.waitForTimeout(1000);
-        await checkPageForErrors({ page: page });
+        await checkPageForErrors({ page });
     }
 }
 
@@ -90,9 +92,9 @@ const visitLinks = async ({ page }: { page: Page }) => {
     );
 
     for (const link of links) {
-        if (!visitedUrls.includes(link) && hostIsSame({ rootUrl: rootUrl, url: link })) {
+        if (!visitedUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             await page.goto(link);
-            await handlePage({ page: page });
+            await handlePage({ page });
         }
     }
 }
