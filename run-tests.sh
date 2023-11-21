@@ -23,7 +23,13 @@ run_playwright_tests() {
 
     echo "$test_output"
 
-    if ([[ $test_output == *"1 failed"* ]] && ([[ $test_output == *"expect(content).not.toContain"* ]] || [[ $test_output == *"Request to http://localhost:3000/api/http-500 resulted in status code 500"* ]])  && [[ $test_type == *"testFails"* ]]) || ([[ $test_output == *"1 passed"* ]] && [[ $test_type == *"testPasses"* ]]); then
+    if ([[ $test_output == *"1 failed"* ]] && \
+        ([[ $test_output == *"expect(content).not.toContain"* ]] || \
+         [[ $test_output == *"Request to http://localhost:3000/api/http-500 resulted in status code 500"* ]] \
+        ) && \
+        [[ $test_type == *"testFails"* ]] \
+       ) \
+       || ([[ $test_output == *"1 passed"* ]] && [[ $test_type == *"testPasses"* ]]); then \
         echo -e "${GREEN}"
         echo "******************************************"
         echo "Testing:"

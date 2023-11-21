@@ -1,14 +1,11 @@
 TODO:
 
-- yksinkertaista testing.yamlia mikäli mahdollista
-- run-tests.sh 
-  - pitkä if muutamalle eri riville
-- lisää taas: "posttest": "npm run lint",
 - virhetekstit sivuilta tiedostosta konfigurointi
 - virheet "selaimen konsolista" ja jos onnistuu, niin tiedostosta konfigurointi
 - jos konfigurointi tiedosto, niin otetaan sieltä input kenttien syötteet
 - tee sovelluksen generoimista input kenttien syötteistä eri pituisia ja sisällöltään monipuolisempia
 - kellonaika lokituksiin
+- onko muita linttereitä
 - paina nappeja yms. niin pitkään, että palautetun sivun sisältö ei enää muutu
     - vai onko järkevää, jos muuttuu koko ajan (esim. aikaleima tms.), pitääkö asettaa jokin raja miten pitkään haetaan samalta sivulta tms.
     - voi olla liian monimutkaista
