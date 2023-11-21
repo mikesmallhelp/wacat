@@ -2,7 +2,7 @@ TODO:
 
 - virhetekstit sivuilta parametri jsonina konfigurointi
 ```
-lenovo@lenovo-ThinkPad-T460s:~/projektit/wacat$ ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS="{\"pageErrorTexts\": [\"xxx yyy\"]}" npx playwright test --project=chromium
+ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS="{\"pageErrorTexts\": [\"xxx yyy\"]}" npx playwright test --project=chromium
 ```
 ```
 Running 1 test using 1 worker
