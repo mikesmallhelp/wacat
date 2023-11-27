@@ -6,7 +6,8 @@
   "dependencies": {
     "@oclif/core": "^3",
     "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^3.7.0"
+    "@oclif/plugin-plugins": "^3.7.0",
+    "axios": "^1.6.2"
   },
   "description": "The wacat tests any web application",
   "devDependencies": {

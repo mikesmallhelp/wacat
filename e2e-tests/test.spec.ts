@@ -2,13 +2,12 @@
 
 import { Page, expect, test } from '@playwright/test';
 
-import { generateRandomString, hostIsSame } from '../utils/test-utils';
-
-import PageErrorTexts from './PageErrorTexts';
+import { generateRandomString, hostIsSame, readFileContent } from '../utils/test-utils';
 
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
-const pageErrorTexts: PageErrorTexts = process.env.PAGE_ERROR_TEXTS ? JSON.parse(process.env.PAGE_ERROR_TEXTS) : null;
+const pageErrorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ? 
+                await readFileContent({path: process.env.PAGE_ERROR_TEXTS_FILE_PATH}) : [];
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
