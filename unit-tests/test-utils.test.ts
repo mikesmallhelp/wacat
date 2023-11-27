@@ -1,12 +1,9 @@
+import axios from 'axios';
 import { expect } from 'chai';
-
+import fs from 'node:fs';
 import sinon from 'sinon';
 
 import { generateRandomString, getHost, hostIsSame, readFileContent } from '../utils/test-utils.js';
-
-import axios from 'axios';
-
-import fs from 'fs';
 
 describe('getHost', () => {
     it('http://localhost:3000/', () => {
