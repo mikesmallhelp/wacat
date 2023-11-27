@@ -45,7 +45,7 @@ describe('readFileContent', () => {
         const result = await readFileContent({ path });
 
         expect(result).to.deep.equal(['Hello, World!', 'This is a test file.']);
-        expect(readFileStub.calledOnceWith(path, 'utf-8')).to.be.true; // eslint-disable-line unicorn/text-encoding-identifier-case
+        expect(readFileStub.calledOnceWith(path, 'utf8')).to.be.true;
 
         readFileStub.restore();
     });
@@ -70,7 +70,7 @@ describe('readFileContent', () => {
         const result = await readFileContent({ path });
 
         expect(result).to.deep.equal([]);
-        expect(readFileStub.calledOnceWith(path, 'utf-8')).to.be.true; // eslint-disable-line unicorn/text-encoding-identifier-case
+        expect(readFileStub.calledOnceWith(path, 'utf8')).to.be.true;
 
         readFileStub.restore();
     });

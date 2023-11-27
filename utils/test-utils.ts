@@ -1,5 +1,5 @@
-import fs from 'fs';
 import axios from 'axios';
+import fs from 'node:fs';
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
 export const getHost = ({ url }: { url: string }): string => {
@@ -15,10 +15,11 @@ export const readFileContent = async ({ path }: { path: string }): Promise<strin
         if (path.startsWith('http://') || path.startsWith('https://')) {
             const response = await axios.get(path);
             return response.data.split('\n');
-        } else {
-            const fileContent = await fs.promises.readFile(path, 'utf-8');
-            return fileContent.split('\n');
         }
+ 
+        const fileContent = await fs.promises.readFile(path, 'utf8');
+        return fileContent.split('\n');
+        
     } catch (error) {
         console.error('Error reading file:', error);
         return [];
