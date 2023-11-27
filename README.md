@@ -2,7 +2,7 @@ TODO:
 
 - virhetekstit sivuilta parametri jsonina konfigurointi
 ```
-ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS="{\"pageErrorTexts\": [\"xxx yyy\"]}" npx playwright test --project=chromium
+ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS_FILE_PATH=example-files/error-texts.txt npx playwright test --project=chromium
 ```
 ```
 Running 1 test using 1 worker

@@ -6,7 +6,7 @@ import { generateRandomString, hostIsSame, readFileContent } from '../utils/test
 
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
-const pageErrorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ? 
+const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ? 
                 await readFileContent({path: process.env.PAGE_ERROR_TEXTS_FILE_PATH}) : [];
 
 if (!rootUrl) {
@@ -44,7 +44,7 @@ const handlePage = async ({ page }: { page: Page }) => {
 const checkPageForErrors = async ({ page }: { page: Page }) => {
     const content = await page.locator('body').textContent();
 
-    for (const pageErrorText of pageErrorTexts?.pageErrorTexts || []) {
+    for (const pageErrorText of errorTexts) {
         console.log(`Check the page not contain the ${pageErrorText} text`);
         expect(content).not.toContain(pageErrorText);
     }
