@@ -2,6 +2,7 @@ TODO:
 
 - virhetekstit sivuilta parametri jsonina konfigurointi
 ```
+npm run build && npm i -g && wacat test --error-texts example-files/error-texts.txt http://localhost:3000
 ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS_FILE_PATH=example-files/error-texts.txt npx playwright test --project=chromium
 ROOT_URL=http://localhost:3000 PAGE_ERROR_TEXTS_FILE_PATH=https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt npx playwright test --project=chromium
 ```
