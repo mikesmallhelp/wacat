@@ -64,7 +64,8 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests "index-error-text-in-page.tsx" "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt" "testFails"
+run_playwright_tests "index-error-text-in-page.tsx" \
+        "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt" "testFails"
 run_playwright_tests "index-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt" "testFails"
 run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt" "testFails"
 run_playwright_tests "index-drop-down-list-selection-and-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt" "testFails"
