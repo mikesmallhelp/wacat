@@ -6,7 +6,8 @@ NC='\033[0m'
 
 run_playwright_tests() {
     local test_filename="$1"
-    local test_type="$2"
+    local test_command_extra_parameters="$2"
+    local test_type="$3"
 
     echo
     echo "******************************************"
@@ -19,7 +20,7 @@ run_playwright_tests() {
 
     sleep 5
 
-    test_output=$(wacat test http://localhost:3000 2>&1)
+    test_output=$(wacat test $test_command_extra_parameters http://localhost:3000 2>&1)
 
     echo "$test_output"
 
@@ -63,12 +64,12 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests "index-error-text-in-page.tsx" "testFails"
-run_playwright_tests "index-button-push-causes-error.tsx" "testFails"
-run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" "testFails"
-run_playwright_tests "index-drop-down-list-selection-and-button-push-causes-error.tsx" "testFails"
-run_playwright_tests "index-api-returns-http-500.tsx" "testFails"
-run_playwright_tests "index-working-page2.tsx" "testPasses"
+run_playwright_tests "index-error-text-in-page.tsx" "--error-texts example-files/error-texts.txt" "testFails"
+run_playwright_tests "index-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt" "testFails"
+run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt" "testFails"
+run_playwright_tests "index-drop-down-list-selection-and-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt" "testFails"
+run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-files/error-texts.txt" "testFails"
+run_playwright_tests "index-working-page2.tsx" "--error-texts example-files/error-texts.txt" "testPasses"
 
 pkill -f "next"
 
