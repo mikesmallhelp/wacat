@@ -77,6 +77,8 @@ run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
         "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-button-push-causes-error.tsx"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-input-field-and-button-push-causes-error.tsx"
+run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
+        "--error-texts example-files/error-texts.txt --word-list example-files/word-list.txt" "1 failed" "expect(content).not.toContain"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-drop-down-list-selection-and-button-push-causes-error.tsx"
 run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-files/error-texts.txt" "1 failed" \
         "Request to http://localhost:3000/api/http-500 resulted in status code 500"

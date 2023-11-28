@@ -15,14 +15,15 @@ export default class TestCommand extends Command {
 
   static flags = {
     'error-texts': Flags.string({char: 'e', description: 'Path to the error texts file'}),
+    'word-list': Flags.string({char: 'e', description: 'Path to the word list file'})
   }
 
   async run(): Promise<void> {
     const {args, flags} = await this.parse(TestCommand);
 
     try {
-      console.log(`ROOT_URL='${args.url}' ${flags['error-texts'] ? `PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : ''} npx playwright test --project=chromium`);
-      const { stdout } = await this.runCommand(`ROOT_URL='${args.url}' ${flags['error-texts'] ? `PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : ''} npx playwright test --project=chromium`);
+      console.log(`ROOT_URL='${args.url}' ${flags['error-texts'] ? `PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : ''} ${flags['word-list'] ? `WORD_LIST_TEXTS_FILE_PATH=${flags['word-list']}` : ''} npx playwright test --project=chromium`);
+      const { stdout } = await this.runCommand(`ROOT_URL='${args.url}' ${flags['error-texts'] ? `PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : ''} ${flags['word-list'] ? `WORD_LIST_TEXTS_FILE_PATH=${flags['word-list']}` : ''} npx playwright test --project=chromium`);
       this.log(`${stdout}`);
     } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       this.log(`${error.stdout}`);
