@@ -8,13 +8,14 @@ run_playwright_tests_failing_error_text_found() {
     local test_filename="$1"
     local test_command_extra_parameters="$2"
 
-    run_playwright_tests "$test_filename" "$test_command_extra_parameters" "testFails"
+    run_playwright_tests "$test_filename" "$test_command_extra_parameters" "1 failed" "expect(content).not.toContain"
 }
 
 run_playwright_tests() {
     local test_filename="$1"
     local test_command_extra_parameters="$2"
-    local test_type="$3"
+    local output_contains_test_result="$3"
+    local output_contains_text="$4"
 
     echo
     echo "******************************************"
@@ -31,13 +32,8 @@ run_playwright_tests() {
 
     echo "$test_output"
 
-    if ([[ $test_output == *"1 failed"* ]] && \
-        ([[ $test_output == *"expect(content).not.toContain"* ]] || \
-         [[ $test_output == *"Request to http://localhost:3000/api/http-500 resulted in status code 500"* ]] \
-        ) && \
-        [[ $test_type == *"testFails"* ]] \
-       ) \
-       || ([[ $test_output == *"1 passed"* ]] && [[ $test_type == *"testPasses"* ]]); then \
+    if ([[ $test_output == *$output_contains_test_result* ]] && \
+        [[ $test_output == *$output_contains_text* ]]); then \
         echo -e "${GREEN}"
         echo "******************************************"
         echo "Testing:"
@@ -77,9 +73,11 @@ run_playwright_tests_failing_error_text_found "index-button-push-causes-error.ts
 run_playwright_tests_failing_error_text_found "index-input-field-and-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt"
 run_playwright_tests_failing_error_text_found "index-drop-down-list-selection-and-button-push-causes-error.tsx" \
         "--error-texts example-files/error-texts.txt"
-run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-files/error-texts.txt" "testFails"
-run_playwright_tests "index-working-page2.tsx" "--error-texts example-files/error-texts.txt" "testPasses"
-run_playwright_tests "index-working-page2.tsx" "" "testPasses"
+run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-files/error-texts.txt" "1 failed" \
+        "Request to http://localhost:3000/api/http-500 resulted in status code 500"
+run_playwright_tests "index-working-page2.tsx" "--error-texts example-files/error-texts.txt" "1 passed" \
+        "Check the page not contain the Error occurred! text"
+run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
 
 pkill -f "next"
 
