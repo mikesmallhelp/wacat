@@ -4,7 +4,13 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-run_playwright_tests_failing_error_text_found() {
+run_playwright_tests_failing_and_error_text_found_and_local_file_used() {
+    local test_filename="$1"
+
+    run_playwright_tests "$test_filename" "--error-texts example-files/error-texts.txt" "1 failed" "expect(content).not.toContain"
+}
+
+run_playwright_tests_failing_and_error_text_found() {
     local test_filename="$1"
     local test_command_extra_parameters="$2"
 
@@ -67,12 +73,11 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests_failing_error_text_found "index-error-text-in-page.tsx" \
+run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx" \
         "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt"
-run_playwright_tests_failing_error_text_found "index-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt"
-run_playwright_tests_failing_error_text_found "index-input-field-and-button-push-causes-error.tsx" "--error-texts example-files/error-texts.txt"
-run_playwright_tests_failing_error_text_found "index-drop-down-list-selection-and-button-push-causes-error.tsx" \
-        "--error-texts example-files/error-texts.txt"
+run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-button-push-causes-error.tsx"
+run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-input-field-and-button-push-causes-error.tsx"
+run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-drop-down-list-selection-and-button-push-causes-error.tsx"
 run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-files/error-texts.txt" "1 failed" \
         "Request to http://localhost:3000/api/http-500 resulted in status code 500"
 run_playwright_tests "index-working-page2.tsx" "--error-texts example-files/error-texts.txt" "1 passed" \
