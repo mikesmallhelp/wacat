@@ -22,8 +22,13 @@ export default class TestCommand extends Command {
     const {args, flags} = await this.parse(TestCommand);
 
     try {
-      console.log(`ROOT_URL='${args.url}' ${flags['error-texts'] ? `PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : ''} ${flags['word-list'] ? `WORD_LIST_TEXTS_FILE_PATH=${flags['word-list']}` : ''} npx playwright test --project=chromium`);
-      const { stdout } = await this.runCommand(`ROOT_URL='${args.url}' ${flags['error-texts'] ? `PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : ''} ${flags['word-list'] ? `WORD_LIST_TEXTS_FILE_PATH=${flags['word-list']}` : ''} npx playwright test --project=chromium`);
+      let command = `ROOT_URL='${args.url}'`;
+      command += flags['error-texts'] ? ` PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : '';
+      command += flags['word-list'] ? ` WORD_LIST_TEXTS_FILE_PATH=${flags['word-list']}` : '';
+      command += ' npx playwright test --project=chromium';
+      
+      console.log(command);
+      const { stdout } = await this.runCommand(command);
       this.log(`${stdout}`);
     } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       this.log(`${error.stdout}`);
