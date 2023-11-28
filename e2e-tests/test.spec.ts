@@ -8,6 +8,8 @@ const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ? 
                 await readFileContent({path: process.env.PAGE_ERROR_TEXTS_FILE_PATH}) : [];
+const wordListTexts: string[] = process.env.WORD_LIST_TEXTS_FILE_PATH ? 
+                await readFileContent({path: process.env.WORD_LIST_TEXTS_FILE_PATH}) : [];
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -44,9 +46,9 @@ const handlePage = async ({ page }: { page: Page }) => {
 const checkPageForErrors = async ({ page }: { page: Page }) => {
     const content = await page.locator('body').textContent();
 
-    for (const pageErrorText of errorTexts) {
-        console.log(`Check the page not contain the ${pageErrorText} text`);
-        expect(content).not.toContain(pageErrorText);
+    for (const errorText of errorTexts) {
+        console.log(`Check the page not contain the ${errorText} text`);
+        expect(content).not.toContain(errorText);
     }
 }
 
@@ -70,11 +72,12 @@ const fillInputs = async ({ page }: { page: Page }) => {
     const inputsLocator = page.locator('input');
     const inputsCount = await inputsLocator.count();
 
-    for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
-        const input = inputsLocator.nth(inputIndex);
-        const randomString = generateRandomString();
-        console.log('Fill the #' + inputIndex + " input field a value: " + randomString);
-        input.fill(randomString);
+    for (const inputText of wordListTexts.length > 0 ? wordListTexts : [generateRandomString()]) {
+        for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
+            const input = inputsLocator.nth(inputIndex);
+            console.log('Fill the #' + inputIndex + " input field a value: " + inputText);
+            input.fill(inputText);
+        }
     }
 }
 
