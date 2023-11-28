@@ -15,7 +15,7 @@ export default class TestCommand extends Command {
 
   static flags = {
     'error-texts': Flags.string({char: 'e', description: 'Path to the error texts file'}),
-    'word-list': Flags.string({char: 'e', description: 'Path to the word list file'})
+    'input-texts': Flags.string({char: 'e', description: 'Path to the word list file'})
   }
 
   async run(): Promise<void> {
@@ -24,7 +24,7 @@ export default class TestCommand extends Command {
     try {
       let command = `ROOT_URL='${args.url}'`;
       command += flags['error-texts'] ? ` PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : '';
-      command += flags['word-list'] ? ` WORD_LIST_TEXTS_FILE_PATH=${flags['word-list']}` : '';
+      command += flags['input-texts'] ? ` INPUT_TEXTS_FILE_PATH=${flags['input-texts']}` : '';
       command += ' npx playwright test --project=chromium';
       
       console.log(command);
