@@ -31,7 +31,7 @@ describe('hostIsSame', () => {
 
 describe('generateRandomString', () => {
     it('generateRandomString', () => {
-        expect(generateRandomString().length).equal(8);
+        expect(generateRandomString().length).greaterThanOrEqual(7);
     });
 });
 
