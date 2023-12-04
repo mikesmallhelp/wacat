@@ -4,12 +4,18 @@ import { Page, expect, test } from '@playwright/test';
 
 import { generateRandomString, hostIsSame, readFileContent } from '../utils/test-utils';
 
+import AuthenticationConfiguration from '../types/AuthenticationConfiguration';
+
+import { readAuthencticationConfiguration } from '../utils/test-utils';
+
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ? 
                 await readFileContent({path: process.env.PAGE_ERROR_TEXTS_FILE_PATH}) : [];
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ? 
                 await readFileContent({path: process.env.INPUT_TEXTS_FILE_PATH}) : [];
+const authenticationConfiguration: AuthenticationConfiguration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ? 
+                await readAuthencticationConfiguration({path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH}) : null;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -29,8 +35,28 @@ test('test an application', async ({ page }) => {
         expect(status).toBe(200);
     });
 
+    if (authenticationConfiguration) {
+        await authenticate({ page, authenticationConfiguration });
+    }
+
     await handlePage({ page });
 });
+
+export const authenticate = async ({ page, authenticationConfiguration }: 
+        { page: Page, authenticationConfiguration: AuthenticationConfiguration}) => {
+    if (!authenticationConfiguration || 
+        !authenticationConfiguration.usernameLabel ||
+        !authenticationConfiguration.usernameValue || 
+        !authenticationConfiguration.passwordLabel ||
+        !authenticationConfiguration.passwordValue ||
+        !authenticationConfiguration.buttonValue) {
+        throw new Error('Authentication configuration is not set, value: ' + authenticationConfiguration);
+    }
+
+    await page.getByLabel(authenticationConfiguration.usernameLabel).fill(authenticationConfiguration.usernameValue);
+    await page.getByLabel(authenticationConfiguration.passwordLabel).fill(authenticationConfiguration.passwordValue);
+    await page.locator(`button:has-text("${authenticationConfiguration.buttonValue}")`).click();
+}
 
 const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());

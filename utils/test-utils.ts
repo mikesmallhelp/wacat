@@ -1,5 +1,7 @@
 import axios from 'axios';
 import fs from 'node:fs';
+import AuthenticationConfiguration from '../types/AuthenticationConfiguration';
+
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
 export const getHost = ({ url }: { url: string }): string => {
@@ -11,17 +13,30 @@ export const generateRandomString = (): string => Math.floor(Math.random() * Dat
 
 export const readFileContent = async ({ path }: { path: string }): Promise<string[]> => {
     try {
-        // Check if the path is a URL
         if (path.startsWith('http://') || path.startsWith('https://')) {
             const response = await axios.get(path);
             return response.data.split('\n');
         }
- 
+
         const fileContent = await fs.promises.readFile(path, 'utf8');
         return fileContent.split('\n');
-        
+
     } catch (error) {
         console.error('Error reading file:', error);
         return [];
     }
 }
+
+export const readAuthencticationConfiguration = async ({ path }: { path: string }): Promise<AuthenticationConfiguration> => {
+    let content: string;
+
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+        const response = await axios.get(path);
+        content = response.data;
+    } else {
+        const fs = require('fs');
+        content = fs.readFileSync(path, 'utf8');
+    }
+
+    return JSON.parse(content);
+};
