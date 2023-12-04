@@ -22,11 +22,13 @@ run_playwright_tests() {
     local test_command_extra_parameters="$2"
     local output_contains_test_result="$3"
     local output_contains_text="$4"
+    local output_contains_text2="$5"
 
     echo
     echo "******************************************"
     echo "Testing:"
     echo "$test_filename"
+    echo "$test_command_extra_parameters"
     echo "******************************************"
     echo
 
@@ -39,17 +41,27 @@ run_playwright_tests() {
     echo "$test_output"
 
     if ([[ $test_output == *$output_contains_test_result* ]] && \
-        [[ $test_output == *$output_contains_text* ]]); then \
+        [[ $test_output == *$output_contains_text* ]] && \
+        ([[ -z "$output_contains_text2" ]] || [[ $test_output == *$output_contains_text2* ]] 
+        )
+       ); then \
         echo -e "${GREEN}"
         echo "******************************************"
         echo "Testing:"
         echo "$test_filename"
+        echo "$test_command_extra_parameters"
         echo "successful" 
         echo "******************************************"
         echo
         echo -e "${NC}"
     else
         echo -e "${RED}"
+        echo "******************************************"
+        echo "Testing:"
+        echo "$test_filename"
+        echo "$test_command_extra_parameters"
+        echo "failed!" 
+        echo "******************************************"
         echo "******************************************"
         echo "******************************************"
         echo "Testing failed!"
@@ -78,7 +90,8 @@ run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-button-push-causes-error.tsx"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-input-field-and-button-push-causes-error.tsx"
 run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
-        "--error-texts example-files/error-texts.txt --input-texts example-files/input-texts.txt" "1 failed" "expect(content).not.toContain"
+        "--error-texts example-files/error-texts.txt --input-texts example-files/input-texts.txt" "1 failed" \ 
+        "expect(content).not.toContain" "ybyb"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-drop-down-list-selection-and-button-push-causes-error.tsx"
 run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-files/error-texts.txt" "1 failed" \
         "Request to http://localhost:3000/api/http-500 resulted in status code 500"
