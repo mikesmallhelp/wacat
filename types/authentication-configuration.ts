@@ -1,9 +1,9 @@
 type AuthenticationConfiguration = {
-    usernameLabel: string;
-    usernameValue: string;
+    buttonValue: string;
     passwordLabel: string;
     passwordValue: string;
-    buttonValue: string;
+    usernameLabel: string;
+    usernameValue: string;
 } | null;
 
 export default AuthenticationConfiguration;

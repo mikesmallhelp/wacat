@@ -2,11 +2,8 @@
 
 import { Page, expect, test } from '@playwright/test';
 
-import { generateRandomString, hostIsSame, readFileContent } from '../utils/test-utils';
-
-import AuthenticationConfiguration from '../types/AuthenticationConfiguration';
-
-import { readAuthencticationConfiguration } from '../utils/test-utils';
+import AuthenticationConfiguration from '../types/authentication-configuration';
+import { generateRandomString, hostIsSame, readAuthencticationConfiguration, readFileContent } from '../utils/test-utils';
 
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
@@ -36,14 +33,14 @@ test('test an application', async ({ page }) => {
     });
 
     if (authenticationConfiguration) {
-        await authenticate({ page, authenticationConfiguration });
+        await authenticate({ authenticationConfiguration, page });
     }
 
     await handlePage({ page });
 });
 
-export const authenticate = async ({ page, authenticationConfiguration }: 
-        { page: Page, authenticationConfiguration: AuthenticationConfiguration}) => {
+export const authenticate = async ({ authenticationConfiguration, page }: 
+        { authenticationConfiguration: AuthenticationConfiguration, page: Page}) => {
     if (!authenticationConfiguration || 
         !authenticationConfiguration.usernameLabel ||
         !authenticationConfiguration.usernameValue || 

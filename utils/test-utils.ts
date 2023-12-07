@@ -1,6 +1,7 @@
 import axios from 'axios';
 import fs from 'node:fs';
-import AuthenticationConfiguration from '../types/AuthenticationConfiguration';
+
+import AuthenticationConfiguration from '../types/authentication-configuration';
 
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
@@ -34,7 +35,6 @@ export const readAuthencticationConfiguration = async ({ path }: { path: string 
         const response = await axios.get(path);
         content = response.data;
     } else {
-        const fs = require('fs');
         content = fs.readFileSync(path, 'utf8');
     }
 
