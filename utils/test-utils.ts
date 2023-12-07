@@ -35,14 +35,19 @@ export type AuthenticationConfiguration = {
 } | null;
 
 export const readAuthencticationConfiguration = async ({ path }: { path: string }): Promise<AuthenticationConfiguration> => {
-    let content: string;
+    try {
+        let content: string;
 
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-        const response = await axios.get(path);
-        content = response.data;
-    } else {
-        content = fs.readFileSync(path, 'utf8');
+        if (path.startsWith('http://') || path.startsWith('https://')) {
+            const response = await axios.get(path);
+            content = response.data;
+        } else {
+            content = fs.readFileSync(path, 'utf8');
+        }
+
+        return JSON.parse(content);
+    } catch (error) {
+        console.error('Error reading authentication configuration:', error);
+        return null;
     }
-
-    return JSON.parse(content);
 };

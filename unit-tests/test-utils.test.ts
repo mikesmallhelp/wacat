@@ -3,7 +3,8 @@ import { expect } from 'chai';
 import fs from 'node:fs';
 import sinon from 'sinon';
 
-import { generateRandomString, getHost, hostIsSame, readFileContent } from '../utils/test-utils.js';
+import { AuthenticationConfiguration, generateRandomString, getHost, hostIsSame, 
+         readAuthencticationConfiguration, readFileContent } from '../utils/test-utils.js';
 
 describe('getHost', () => {
     it('http://localhost:3000/', () => {
@@ -88,6 +89,70 @@ describe('readFileContent', () => {
     });
 });
 
+describe('readAuthencticationConfiguration', () => {
+    it('should read authentication configuration from local file', async () => {
+        const path = '/path/to/authentication-config.json';
+        const configContent = '{"buttonValue": "Login", "passwordLabel": "Password", "passwordValue": "123456", "usernameLabel": "Username", "usernameValue": "testuser"}';
+        const readFileStub = sinon.stub(fs, 'readFileSync').returns(configContent);
 
+        const result = await readAuthencticationConfiguration({ path });
 
+        const expectedConfig: AuthenticationConfiguration = {
+            buttonValue: 'Login',
+            passwordLabel: 'Password',
+            passwordValue: '123456',
+            usernameLabel: 'Username',
+            usernameValue: 'testuser'
+        };
 
+        expect(result).to.deep.equal(expectedConfig);
+        expect(readFileStub.calledOnceWith(path, 'utf8')).to.be.true;
+
+        readFileStub.restore();
+    });
+
+    it('should read authentication configuration from URL', async () => {
+        const path = 'https://example.com/authentication-config.json';
+        const configContent = '{"buttonValue": "Login", "passwordLabel": "Password", "passwordValue": "123456", "usernameLabel": "Username", "usernameValue": "testuser"}';
+        const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: configContent });
+
+        const result = await readAuthencticationConfiguration({ path });
+
+        const expectedConfig: AuthenticationConfiguration = {
+            buttonValue: 'Login',
+            passwordLabel: 'Password',
+            passwordValue: '123456',
+            usernameLabel: 'Username',
+            usernameValue: 'testuser'
+        };
+
+        expect(result).to.deep.equal(expectedConfig);
+        expect(axiosGetStub.calledOnceWith(path)).to.be.true;
+
+        axiosGetStub.restore();
+    });
+
+    it('should handle error when reading authentication configuration', async () => {
+        const path = '/path/to/nonexistent/authentication-config.json';
+        const readFileStub = sinon.stub(fs, 'readFileSync').throws(new Error('File not found'));
+
+        const result = await readAuthencticationConfiguration({ path });
+
+        expect(result).to.be.null;
+        expect(readFileStub.calledOnceWith(path, 'utf8')).to.be.true;
+
+        readFileStub.restore();
+    });
+
+    it('should handle error when fetching authentication configuration', async () => {
+        const path = 'https://example.com/nonexistent-authentication-config.json';
+        const axiosGetStub = sinon.stub(axios, 'get').rejects(new Error('URL not found'));
+
+        const result = await readAuthencticationConfiguration({ path });
+
+        expect(result).to.be.null;
+        expect(axiosGetStub.calledOnceWith(path)).to.be.true;
+
+        axiosGetStub.restore();
+    });
+});
