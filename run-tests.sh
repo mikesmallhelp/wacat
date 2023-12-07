@@ -17,6 +17,27 @@ run_playwright_tests_failing_and_error_text_found() {
     run_playwright_tests "$test_filename" "$test_command_extra_parameters" "1 failed" "expect(content).not.toContain"
 }
 
+print_test_parameters() {
+    local test_filename="$1"
+    local test_command_extra_parameters="$2"
+    local output_contains_test_result="$3"
+    local output_contains_text="$4"
+    local output_contains_text2="$5"
+    
+    echo
+    echo "******************************************"
+    echo "Testing:"
+    echo
+    echo "$test_filename"
+    echo "$test_command_extra_parameters"
+    echo "output should contain: $output_contains_test_result"
+    echo "output should contain: $output_contains_text"
+
+    if [[ -n "$output_contains_text2" ]]; then
+        echo "output should contain: $output_contains_text2"
+    fi
+}
+
 run_playwright_tests() {
     local test_filename="$1"
     local test_command_extra_parameters="$2"
@@ -24,11 +45,9 @@ run_playwright_tests() {
     local output_contains_text="$4"
     local output_contains_text2="$5"
 
-    echo
-    echo "******************************************"
-    echo "Testing:"
-    echo "$test_filename"
-    echo "$test_command_extra_parameters"
+    print_test_parameters "$test_filename" "$test_command_extra_parameters" "$output_contains_test_result" \
+                          "$output_contains_text" "$output_contains_text2"
+
     echo "******************************************"
     echo
 
@@ -46,20 +65,21 @@ run_playwright_tests() {
         )
        ); then \
         echo -e "${GREEN}"
-        echo "******************************************"
-        echo "Testing:"
-        echo "$test_filename"
-        echo "$test_command_extra_parameters"
+
+        print_test_parameters "$test_filename" "$test_command_extra_parameters" "$output_contains_test_result" \
+                          "$output_contains_text" "$output_contains_text2"
+        echo
         echo "successful" 
         echo "******************************************"
         echo
         echo -e "${NC}"
     else
         echo -e "${RED}"
-        echo "******************************************"
-        echo "Testing:"
-        echo "$test_filename"
-        echo "$test_command_extra_parameters"
+
+        print_test_parameters "$test_filename" "$test_command_extra_parameters" "$output_contains_test_result" \
+                          "$output_contains_text" "$output_contains_text2"
+
+        echo
         echo "failed!" 
         echo "******************************************"
         echo "******************************************"
@@ -85,6 +105,7 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
+run_playwright_tests "index-auth.tsx" "--auth-file example-files/authentication.json" "1 passed" "In the page: http://localhost:3000/working-page2"
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx" \
         "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-button-push-causes-error.tsx"

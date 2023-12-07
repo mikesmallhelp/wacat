@@ -53,6 +53,8 @@ export const authenticate = async ({ authenticationConfiguration, page }:
     await page.getByLabel(authenticationConfiguration.usernameLabel).fill(authenticationConfiguration.usernameValue);
     await page.getByLabel(authenticationConfiguration.passwordLabel).fill(authenticationConfiguration.passwordValue);
     await page.locator(`button:has-text("${authenticationConfiguration.buttonValue}")`).click();
+
+    console.log('Filled the username and the password. Pushed the authentication button');
 }
 
 const handlePage = async ({ page }: { page: Page }) => {

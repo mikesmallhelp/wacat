@@ -8,7 +8,7 @@ const IndexComponent = () => {
   const [errorText, setErrorText] = React.useState("");
 
   const handleLogin = async (e: React.SyntheticEvent) => {
-    if (username == "aku" && password == "ankka") {
+    if (username == "Donald" && password == "Duck") {
       setAuthenticated(true);
     } else {
       setErrorText("Wrong username or password!");
