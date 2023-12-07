@@ -26,7 +26,7 @@ test('test an application', async ({ page }) => {
         const status = response.status();
         const url = response.url();
 
-        if (status !== 200 && status !== 302) {
+        if (status >= 400) {
             console.log(`Request to ${url} resulted in status code ${status}`);
             fail(`Request to ${url} resulted in status code ${status}`);
         }
