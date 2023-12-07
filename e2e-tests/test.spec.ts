@@ -1,10 +1,10 @@
 /* eslint-disable no-await-in-loop */
 
 import { Page, expect, test } from '@playwright/test';
+import { fail } from 'node:assert';
 
 import { AuthenticationConfiguration, generateRandomString, hostIsSame, 
                 readAuthencticationConfiguration, readFileContent } from '../utils/test-utils';
-import { fail } from 'node:assert';
 
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
@@ -52,7 +52,7 @@ export const authenticate = async ({ authenticationConfiguration, page }:
 
     await page.getByLabel(authenticationConfiguration.usernameLabel).fill(authenticationConfiguration.usernameValue);
     await page.getByLabel(authenticationConfiguration.passwordLabel).fill(authenticationConfiguration.passwordValue);
-    await page.getByRole('button', { name: `${authenticationConfiguration.buttonValue}`, exact: true }).click();
+    await page.getByRole('button', { exact: true, name: `${authenticationConfiguration.buttonValue}` }).click();
 
     console.log('Filled the username and the password. Pushed the authentication button');
 }
