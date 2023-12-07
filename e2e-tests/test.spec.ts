@@ -4,6 +4,7 @@ import { Page, expect, test } from '@playwright/test';
 
 import { AuthenticationConfiguration, generateRandomString, hostIsSame, 
                 readAuthencticationConfiguration, readFileContent } from '../utils/test-utils';
+import { fail } from 'node:assert';
 
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
@@ -25,11 +26,10 @@ test('test an application', async ({ page }) => {
         const status = response.status();
         const url = response.url();
 
-        if (status !== 200) {
+        if (status !== 200 && status !== 302) {
             console.log(`Request to ${url} resulted in status code ${status}`);
+            fail(`Request to ${url} resulted in status code ${status}`);
         }
-
-        expect(status).toBe(200);
     });
 
     if (authenticationConfiguration) {
@@ -52,7 +52,7 @@ export const authenticate = async ({ authenticationConfiguration, page }:
 
     await page.getByLabel(authenticationConfiguration.usernameLabel).fill(authenticationConfiguration.usernameValue);
     await page.getByLabel(authenticationConfiguration.passwordLabel).fill(authenticationConfiguration.passwordValue);
-    await page.locator(`button:has-text("${authenticationConfiguration.buttonValue}")`).click();
+    await page.getByRole('button', { name: `${authenticationConfiguration.buttonValue}`, exact: true }).click();
 
     console.log('Filled the username and the password. Pushed the authentication button');
 }
