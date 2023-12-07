@@ -1,8 +1,6 @@
 import axios from 'axios';
 import fs from 'node:fs';
 
-import AuthenticationConfiguration from '../types/authentication-configuration';
-
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
 export const getHost = ({ url }: { url: string }): string => {
@@ -27,6 +25,14 @@ export const readFileContent = async ({ path }: { path: string }): Promise<strin
         return [];
     }
 }
+
+export type AuthenticationConfiguration = {
+    buttonValue: string;
+    passwordLabel: string;
+    passwordValue: string;
+    usernameLabel: string;
+    usernameValue: string;
+} | null;
 
 export const readAuthencticationConfiguration = async ({ path }: { path: string }): Promise<AuthenticationConfiguration> => {
     let content: string;

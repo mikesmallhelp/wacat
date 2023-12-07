@@ -2,17 +2,17 @@
 
 import { Page, expect, test } from '@playwright/test';
 
-import AuthenticationConfiguration from '../types/authentication-configuration';
-import { generateRandomString, hostIsSame, readAuthencticationConfiguration, readFileContent } from '../utils/test-utils';
+import { AuthenticationConfiguration, generateRandomString, hostIsSame, 
+                readAuthencticationConfiguration, readFileContent } from '../utils/test-utils';
 
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
-const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ? 
-                await readFileContent({path: process.env.PAGE_ERROR_TEXTS_FILE_PATH}) : [];
-const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ? 
-                await readFileContent({path: process.env.INPUT_TEXTS_FILE_PATH}) : [];
-const authenticationConfiguration: AuthenticationConfiguration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ? 
-                await readAuthencticationConfiguration({path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH}) : null;
+const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ?
+    await readFileContent({ path: process.env.PAGE_ERROR_TEXTS_FILE_PATH }) : [];
+const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
+    await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
+const authenticationConfiguration: AuthenticationConfiguration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
+    await readAuthencticationConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -39,11 +39,11 @@ test('test an application', async ({ page }) => {
     await handlePage({ page });
 });
 
-export const authenticate = async ({ authenticationConfiguration, page }: 
-        { authenticationConfiguration: AuthenticationConfiguration, page: Page}) => {
-    if (!authenticationConfiguration || 
+export const authenticate = async ({ authenticationConfiguration, page }:
+    { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
+    if (!authenticationConfiguration ||
         !authenticationConfiguration.usernameLabel ||
-        !authenticationConfiguration.usernameValue || 
+        !authenticationConfiguration.usernameValue ||
         !authenticationConfiguration.passwordLabel ||
         !authenticationConfiguration.passwordValue ||
         !authenticationConfiguration.buttonValue) {
