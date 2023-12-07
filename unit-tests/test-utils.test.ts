@@ -1,32 +1,36 @@
+/* eslint-disable perfectionist/sort-objects */
+
 import axios from 'axios';
 import { expect } from 'chai';
 import fs from 'node:fs';
 import sinon from 'sinon';
 
-import { AuthenticationConfiguration, generateRandomString, getHost, hostIsSame, 
-         readAuthencticationConfiguration, readFileContent } from '../utils/test-utils.js';
+import {
+    AuthenticationConfiguration, generateRandomString, getHost, hostIsSame,
+    readAuthencticationConfiguration, readFileContent
+} from '../utils/test-utils.js';
 
 describe('getHost', () => {
     it('http://localhost:3000/', () => {
-        expect(getHost({url: 'http://localhost:3000/'})).equal('http://localhost:3000');
+        expect(getHost({ url: 'http://localhost:3000/' })).equal('http://localhost:3000');
     });
 
     it('http://localhost:3000/x', () => {
-        expect(getHost({url: 'http://localhost:3000/x'})).equal('http://localhost:3000');
+        expect(getHost({ url: 'http://localhost:3000/x' })).equal('http://localhost:3000');
     });
 
     it('https://github.com/mikesmallhelp', () => {
-        expect(getHost({url: 'https://github.com/mikesmallhelp'})).equal('https://github.com');
+        expect(getHost({ url: 'https://github.com/mikesmallhelp' })).equal('https://github.com');
     });
 });
 
 describe('hostIsSame', () => {
     it('true: rootUrl: http://localhost:3000/ url: http://localhost:3000/x', () => {
-        expect(hostIsSame({rootUrl: 'http://localhost:3000/', url: 'http://localhost:3000/x'})).equal(true);
+        expect(hostIsSame({ rootUrl: 'http://localhost:3000/', url: 'http://localhost:3000/x' })).equal(true);
     });
 
     it('false: rootUrl: http://localhost:3000/ url: https://github.com/mikesmallhelp', () => {
-        expect(hostIsSame({rootUrl: 'http://localhost:3000/', url: 'https://github.com/mikesmallhelp'})).equal(false);
+        expect(hostIsSame({ rootUrl: 'http://localhost:3000/', url: 'https://github.com/mikesmallhelp' })).equal(false);
     });
 });
 
@@ -90,20 +94,26 @@ describe('readFileContent', () => {
 });
 
 describe('readAuthencticationConfiguration', () => {
+    const configContent = `{
+        "usernameLabel": "Username",
+        "usernameValue": "testuser",
+        "passwordLabel": "Password",
+        "passwordValue": "123456",
+        "buttonValue": "Login"
+      }`;
+
+    const expectedConfig: AuthenticationConfiguration = {
+        usernameLabel: 'Username',
+        usernameValue: 'testuser',
+        passwordLabel: 'Password',
+        passwordValue: '123456',
+        buttonValue: 'Login',
+    };
+
     it('should read authentication configuration from local file', async () => {
         const path = '/path/to/authentication-config.json';
-        const configContent = '{"buttonValue": "Login", "passwordLabel": "Password", "passwordValue": "123456", "usernameLabel": "Username", "usernameValue": "testuser"}';
         const readFileStub = sinon.stub(fs, 'readFileSync').returns(configContent);
-
         const result = await readAuthencticationConfiguration({ path });
-
-        const expectedConfig: AuthenticationConfiguration = {
-            buttonValue: 'Login',
-            passwordLabel: 'Password',
-            passwordValue: '123456',
-            usernameLabel: 'Username',
-            usernameValue: 'testuser'
-        };
 
         expect(result).to.deep.equal(expectedConfig);
         expect(readFileStub.calledOnceWith(path, 'utf8')).to.be.true;
@@ -113,18 +123,8 @@ describe('readAuthencticationConfiguration', () => {
 
     it('should read authentication configuration from URL', async () => {
         const path = 'https://example.com/authentication-config.json';
-        const configContent = '{"buttonValue": "Login", "passwordLabel": "Password", "passwordValue": "123456", "usernameLabel": "Username", "usernameValue": "testuser"}';
         const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: configContent });
-
         const result = await readAuthencticationConfiguration({ path });
-
-        const expectedConfig: AuthenticationConfiguration = {
-            buttonValue: 'Login',
-            passwordLabel: 'Password',
-            passwordValue: '123456',
-            usernameLabel: 'Username',
-            usernameValue: 'testuser'
-        };
 
         expect(result).to.deep.equal(expectedConfig);
         expect(axiosGetStub.calledOnceWith(path)).to.be.true;
@@ -132,7 +132,7 @@ describe('readAuthencticationConfiguration', () => {
         axiosGetStub.restore();
     });
 
-    it('should handle error when reading authentication configuration', async () => {
+    it('should handle error when reading authentication configuration from local file', async () => {
         const path = '/path/to/nonexistent/authentication-config.json';
         const readFileStub = sinon.stub(fs, 'readFileSync').throws(new Error('File not found'));
 
@@ -144,7 +144,7 @@ describe('readAuthencticationConfiguration', () => {
         readFileStub.restore();
     });
 
-    it('should handle error when fetching authentication configuration', async () => {
+    it('should handle error when fetching authentication configuration from URL', async () => {
         const path = 'https://example.com/nonexistent-authentication-config.json';
         const axiosGetStub = sinon.stub(axios, 'get').rejects(new Error('URL not found'));
 

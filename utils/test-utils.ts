@@ -1,3 +1,5 @@
+/* eslint-disable perfectionist/sort-object-types */
+
 import axios from 'axios';
 import fs from 'node:fs';
 
@@ -27,11 +29,11 @@ export const readFileContent = async ({ path }: { path: string }): Promise<strin
 }
 
 export type AuthenticationConfiguration = {
-    buttonValue: string;
-    passwordLabel: string;
-    passwordValue: string;
     usernameLabel: string;
     usernameValue: string;
+    passwordLabel: string;
+    passwordValue: string;
+    buttonValue: string;
 } | null;
 
 export const readAuthencticationConfiguration = async ({ path }: { path: string }): Promise<AuthenticationConfiguration> => {
