@@ -14,14 +14,16 @@ export const generateRandomString = (): string => Math.floor(Math.random() * Dat
 
 export const readFileContent = async ({ path }: { path: string }): Promise<string[]> => {
     try {
+        let response: string;
+
         if (path.startsWith('http://') || path.startsWith('https://')) {
-            const response = await axios.get(path);
-            return response.data.split('\n');
+            const axiosResponse = await axios.get(path);
+            response = axiosResponse.data;
+        } else {
+            response = await fs.promises.readFile(path, 'utf8');
         }
 
-        const fileContent = await fs.promises.readFile(path, 'utf8');
-        return fileContent.split('\n');
-
+        return response.split('\n');
     } catch (error) {
         console.error('Error reading file:', error);
         return [];
