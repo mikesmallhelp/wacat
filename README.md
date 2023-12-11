@@ -1,6 +1,7 @@
 TODO:
 
-- input-texts vivun testissä tarkasta, että outputissa tiedoston jälkimmäinen rivi ybyb 
+- lisää auth tiedostoon se, että logoutia ei tehdä
+- tee esimerkkisovellukset Verceliin, joita voi ajaa esimerkki komennoilla
 - virheet "selaimen konsolista" ja jos onnistuu, niin tiedostosta konfigurointi
 - tee sovelluksen generoimista input kenttien syötteistä eri pituisia ja sisällöltään monipuolisempia
 - kellonaika lokituksiin
@@ -8,12 +9,6 @@ TODO:
   - ei anneta syötteitä
   - ei valita drop down boxeista
   - ei seurata linkkejä
-- salasanat tiedostosta
-  - pitää ehkä olla json formaatti tai sitten ihan tiedosto
-    - käyttäjätunnus label
-    - käyttäjätunnus
-    - salasana label
-    - salasana
 - onko muita linttereitä
 - paina nappeja yms. niin pitkään, että palautetun sivun sisältö ei enää muutu
     - vai onko järkevää, jos muuttuu koko ajan (esim. aikaleima tms.), pitääkö asettaa jokin raja miten pitkään haetaan samalta sivulta tms.
