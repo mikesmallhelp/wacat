@@ -30,11 +30,11 @@ print_test_parameters() {
     echo
     echo "$test_filename"
     echo "$test_command_extra_parameters"
-    echo "output should contain: $output_contains_test_result"
-    echo "output should contain: $output_contains_text"
+    echo "$output_contains_test_result"
+    echo "$output_contains_text"
 
     if [[ -n "$output_contains_text2" ]]; then
-        echo "output should contain: $output_contains_text2"
+        echo "$output_contains_text2"
     fi
 }
 
@@ -105,7 +105,6 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests "index-auth.tsx" "--auth-file example-files/authentication.json" "1 passed" "In the page: http://localhost:3000/working-page2"
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx" \
         "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-button-push-causes-error.tsx"
@@ -118,6 +117,9 @@ run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-fil
 run_playwright_tests "index-working-page2.tsx" "--error-texts example-files/error-texts.txt" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
+run_playwright_tests "index-auth.tsx" "--auth-file example-files/authentication.json" "1 passed" "In the page: http://localhost:3000/working-page2"
+run_playwright_tests "index-auth-complicated.tsx" "--auth-file example-files/complicated-authentication.json" \
+        "1 passed" "In the page: http://localhost:3000/working-page2"
 
 pkill -f "next"
 

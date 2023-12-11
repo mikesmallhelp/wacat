@@ -1,0 +1,9 @@
+{
+    "beforeAuthenticationLinkNames": ["Please go to an application","Please login"], 
+    "usernameLabel": "Username",
+    "usernameValue": "Donald",
+    "usernameButtonLabel": "Next",
+    "passwordLabel": "Password",
+    "passwordValue": "Duck",
+    "finishButtonLabel": "Login"
+}
