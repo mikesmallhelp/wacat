@@ -3,8 +3,10 @@
 import { Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
-import { AuthenticationConfiguration, generateRandomString, hostIsSame, 
-                readAuthencticationConfiguration, readFileContent } from '../utils/test-utils';
+import {
+    AuthenticationConfiguration, generateRandomString, hostIsSame,
+    readAuthencticationConfiguration, readFileContent
+} from '../utils/test-utils';
 
 const visitedUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
@@ -41,16 +43,27 @@ test('test an application', async ({ page }) => {
 
 export const authenticate = async ({ authenticationConfiguration, page }:
     { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
-    if (!authenticationConfiguration ||
-        !authenticationConfiguration.usernameLabel ||
-        !authenticationConfiguration.usernameValue ||
-        !authenticationConfiguration.passwordLabel ||
-        !authenticationConfiguration.passwordValue ||
-        !authenticationConfiguration.finishButtonLabel) {
-        throw new Error('Authentication configuration is not set, value: ' + authenticationConfiguration);
+        if (!authenticationConfiguration ||
+            !authenticationConfiguration.usernameLabel ||
+            !authenticationConfiguration.usernameValue ||
+            !authenticationConfiguration.passwordLabel ||
+            !authenticationConfiguration.passwordValue ||
+            !authenticationConfiguration.finishButtonLabel) {
+            throw new Error('Authentication configuration is not set, value: ' + authenticationConfiguration);
+        }
+
+    if (authenticationConfiguration.beforeAuthenticationLinkNames) {
+        for (const linkName of authenticationConfiguration.beforeAuthenticationLinkNames) {
+            page.getByText(linkName).click();
+        }
     }
 
     await page.getByLabel(authenticationConfiguration.usernameLabel).fill(authenticationConfiguration.usernameValue);
+
+    if (authenticationConfiguration.usernameButtonLabel) {
+        await page.getByRole('button', { exact: true, name: `${authenticationConfiguration.usernameButtonLabel}` }).click();
+    }
+
     await page.getByLabel(authenticationConfiguration.passwordLabel).fill(authenticationConfiguration.passwordValue);
     await page.getByRole('button', { exact: true, name: `${authenticationConfiguration.finishButtonLabel}` }).click();
 

@@ -40,7 +40,6 @@ describe('generateRandomString', () => {
     });
 });
 
-
 describe('readFileContent', () => {
     it('should read file content from local file', async () => {
         const path = '/path/to/local/file.txt';
@@ -55,17 +54,12 @@ describe('readFileContent', () => {
         readFileStub.restore();
     });
 
-    it('should read file content from URL', async () => {
-        const path = 'https://example.com/file.txt';
-        const fileContent = 'Hello, World!\nThis is a test file.';
-        const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: fileContent });
+    it('should read file content from http URL', async () => {
+        doReadFileContentTest({ path: 'http://example.com/file.txt' });
+    });
 
-        const result = await readFileContent({ path });
-
-        expect(result).to.deep.equal(['Hello, World!', 'This is a test file.']);
-        expect(axiosGetStub.calledOnceWith(path)).to.be.true;
-
-        axiosGetStub.restore();
+    it('should read file content from https URL', async () => {
+        doReadFileContentTest({ path: 'https://example.com/file.txt' });
     });
 
     it('should handle error when reading file', async () => {
@@ -93,25 +87,36 @@ describe('readFileContent', () => {
     });
 });
 
+const doReadFileContentTest = async ({ path }: { path: string }) => {
+    const fileContent = 'Hello, World!\nThis is a test file.';
+    const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: fileContent });
+
+    const result = await readFileContent({ path });
+
+    expect(result).to.deep.equal(['Hello, World!', 'This is a test file.']);
+    expect(axiosGetStub.calledOnceWith(path)).to.be.true;
+
+    axiosGetStub.restore();
+}
+
 describe('readAuthencticationConfiguration', () => {
-    const configContent = `{
-        "usernameLabel": "Username",
-        "usernameValue": "testuser",
-        "passwordLabel": "Password",
-        "passwordValue": "123456",
-        "finishButtonLabel": "Login"
-      }`;
-
-    const expectedConfig: AuthenticationConfiguration = {
-        usernameLabel: 'Username',
-        usernameValue: 'testuser',
-        passwordLabel: 'Password',
-        passwordValue: '123456',
-        finishButtonLabel: 'Login',
-    };
-
     it('should read authentication configuration from local file', async () => {
         const path = '/path/to/authentication-config.json';
+        const configContent = `{
+            "usernameLabel": "Username",
+            "usernameValue": "testuser",
+            "passwordLabel": "Password",
+            "passwordValue": "123456",
+            "finishButtonLabel": "Login"
+          }`;   
+        const expectedConfig: AuthenticationConfiguration = {
+            usernameLabel: 'Username',
+            usernameValue: 'testuser',
+            passwordLabel: 'Password',
+            passwordValue: '123456',
+            finishButtonLabel: 'Login',
+        };
+
         const readFileStub = sinon.stub(fs, 'readFileSync').returns(configContent);
         const result = await readAuthencticationConfiguration({ path });
 
@@ -121,15 +126,12 @@ describe('readAuthencticationConfiguration', () => {
         readFileStub.restore();
     });
 
-    it('should read authentication configuration from URL', async () => {
-        const path = 'https://example.com/authentication-config.json';
-        const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: configContent });
-        const result = await readAuthencticationConfiguration({ path });
+    it('should read authentication configuration from http URL', async () => {
+        doreadAuthencticationConfigurationTest({ path: 'http://example.com/authentication-config.json' });
+    });
 
-        expect(result).to.deep.equal(expectedConfig);
-        expect(axiosGetStub.calledOnceWith(path)).to.be.true;
-
-        axiosGetStub.restore();
+    it('should read authentication configuration from https URL', async () => {
+        doreadAuthencticationConfigurationTest({ path: 'https://example.com/authentication-config.json' });
     });
 
     it('should handle error when reading authentication configuration from local file', async () => {
@@ -156,3 +158,32 @@ describe('readAuthencticationConfiguration', () => {
         axiosGetStub.restore();
     });
 });
+
+const doreadAuthencticationConfigurationTest = async ({ path }: { path: string }) => {
+    const configContent = `{
+        "beforeAuthenticationLinkNames": ["Login"],
+        "usernameLabel": "Username",
+        "usernameValue": "testuser",
+        "usernameButtonLabel": "Next",
+        "passwordLabel": "Password",
+        "passwordValue": "123456",
+        "finishButtonLabel": "Login"
+      }`;   
+    const expectedConfig: AuthenticationConfiguration = {
+        beforeAuthenticationLinkNames: ['Login'],
+        usernameLabel: 'Username',
+        usernameValue: 'testuser',
+        usernameButtonLabel: 'Next',
+        passwordLabel: 'Password',
+        passwordValue: '123456',
+        finishButtonLabel: 'Login',
+    };
+
+    const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: configContent });
+    const result = await readAuthencticationConfiguration({ path });
+
+    expect(result).to.deep.equal(expectedConfig);
+    expect(axiosGetStub.calledOnceWith(path)).to.be.true;
+
+    axiosGetStub.restore();
+}
