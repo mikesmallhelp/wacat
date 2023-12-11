@@ -33,7 +33,7 @@ export type AuthenticationConfiguration = {
     usernameValue: string;
     passwordLabel: string;
     passwordValue: string;
-    buttonValue: string;
+    finishButtonLabel: string;
 } | null;
 
 export const readAuthencticationConfiguration = async ({ path }: { path: string }): Promise<AuthenticationConfiguration> => {

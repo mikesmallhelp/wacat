@@ -99,7 +99,7 @@ describe('readAuthencticationConfiguration', () => {
         "usernameValue": "testuser",
         "passwordLabel": "Password",
         "passwordValue": "123456",
-        "buttonValue": "Login"
+        "finishButtonLabel": "Login"
       }`;
 
     const expectedConfig: AuthenticationConfiguration = {
@@ -107,7 +107,7 @@ describe('readAuthencticationConfiguration', () => {
         usernameValue: 'testuser',
         passwordLabel: 'Password',
         passwordValue: '123456',
-        buttonValue: 'Login',
+        finishButtonLabel: 'Login',
     };
 
     it('should read authentication configuration from local file', async () => {

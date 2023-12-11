@@ -46,13 +46,13 @@ export const authenticate = async ({ authenticationConfiguration, page }:
         !authenticationConfiguration.usernameValue ||
         !authenticationConfiguration.passwordLabel ||
         !authenticationConfiguration.passwordValue ||
-        !authenticationConfiguration.buttonValue) {
+        !authenticationConfiguration.finishButtonLabel) {
         throw new Error('Authentication configuration is not set, value: ' + authenticationConfiguration);
     }
 
     await page.getByLabel(authenticationConfiguration.usernameLabel).fill(authenticationConfiguration.usernameValue);
     await page.getByLabel(authenticationConfiguration.passwordLabel).fill(authenticationConfiguration.passwordValue);
-    await page.getByRole('button', { exact: true, name: `${authenticationConfiguration.buttonValue}` }).click();
+    await page.getByRole('button', { exact: true, name: `${authenticationConfiguration.finishButtonLabel}` }).click();
 
     console.log('Filled the username and the password. Pushed the authentication button');
 }

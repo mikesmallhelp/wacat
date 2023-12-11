@@ -3,5 +3,5 @@
     "usernameValue": "Donald",
     "passwordLabel": "Password",
     "passwordValue": "Duck",
-    "buttonValue": "Login"
+    "finishButtonLabel": "Login"
 }
