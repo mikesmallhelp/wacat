@@ -94,24 +94,23 @@ describe('readFileContent', () => {
 });
 
 describe('readAuthencticationConfiguration', () => {
-    const configContent = `{
-        "usernameLabel": "Username",
-        "usernameValue": "testuser",
-        "passwordLabel": "Password",
-        "passwordValue": "123456",
-        "finishButtonLabel": "Login"
-      }`;
-
-    const expectedConfig: AuthenticationConfiguration = {
-        usernameLabel: 'Username',
-        usernameValue: 'testuser',
-        passwordLabel: 'Password',
-        passwordValue: '123456',
-        finishButtonLabel: 'Login',
-    };
-
     it('should read authentication configuration from local file', async () => {
         const path = '/path/to/authentication-config.json';
+        const configContent = `{
+            "usernameLabel": "Username",
+            "usernameValue": "testuser",
+            "passwordLabel": "Password",
+            "passwordValue": "123456",
+            "finishButtonLabel": "Login"
+          }`;   
+        const expectedConfig: AuthenticationConfiguration = {
+            usernameLabel: 'Username',
+            usernameValue: 'testuser',
+            passwordLabel: 'Password',
+            passwordValue: '123456',
+            finishButtonLabel: 'Login',
+        };
+
         const readFileStub = sinon.stub(fs, 'readFileSync').returns(configContent);
         const result = await readAuthencticationConfiguration({ path });
 
@@ -123,6 +122,25 @@ describe('readAuthencticationConfiguration', () => {
 
     it('should read authentication configuration from URL', async () => {
         const path = 'https://example.com/authentication-config.json';
+        const configContent = `{
+            "beforeAuthenticationLinkNames": ["Login"],
+            "usernameLabel": "Username",
+            "usernameValue": "testuser",
+            "usernameButtonLabel": "Next",
+            "passwordLabel": "Password",
+            "passwordValue": "123456",
+            "finishButtonLabel": "Login"
+          }`;   
+        const expectedConfig: AuthenticationConfiguration = {
+            beforeAuthenticationLinkNames: ['Login'],
+            usernameLabel: 'Username',
+            usernameValue: 'testuser',
+            usernameButtonLabel: 'Next',
+            passwordLabel: 'Password',
+            passwordValue: '123456',
+            finishButtonLabel: 'Login',
+        };
+
         const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: configContent });
         const result = await readAuthencticationConfiguration({ path });
 
