@@ -38,6 +38,7 @@ export type AuthenticationConfiguration = {
     passwordLabel: string;
     passwordValue: string;
     finishButtonLabel: string;
+    noLogoutLinkOrButtonName?: string;
 } | null;
 
 export const readAuthencticationConfiguration = async ({ path }: { path: string }): Promise<AuthenticationConfiguration> => {

@@ -127,11 +127,11 @@ describe('readAuthencticationConfiguration', () => {
     });
 
     it('should read authentication configuration from http URL', async () => {
-        doreadAuthencticationConfigurationTest({ path: 'http://example.com/authentication-config.json' });
+        doReadAuthencticationConfigurationTest({ path: 'http://example.com/authentication-config.json' });
     });
 
     it('should read authentication configuration from https URL', async () => {
-        doreadAuthencticationConfigurationTest({ path: 'https://example.com/authentication-config.json' });
+        doReadAuthencticationConfigurationTest({ path: 'https://example.com/authentication-config.json' });
     });
 
     it('should handle error when reading authentication configuration from local file', async () => {
@@ -159,7 +159,7 @@ describe('readAuthencticationConfiguration', () => {
     });
 });
 
-const doreadAuthencticationConfigurationTest = async ({ path }: { path: string }) => {
+const doReadAuthencticationConfigurationTest = async ({ path }: { path: string }) => {
     const configContent = `{
         "beforeAuthenticationLinkNames": ["Login"],
         "usernameLabel": "Username",
@@ -167,7 +167,8 @@ const doreadAuthencticationConfigurationTest = async ({ path }: { path: string }
         "usernameButtonLabel": "Next",
         "passwordLabel": "Password",
         "passwordValue": "123456",
-        "finishButtonLabel": "Login"
+        "finishButtonLabel": "Login",
+        "noLogoutLinkOrButtonName": "Logout"
       }`;   
     const expectedConfig: AuthenticationConfiguration = {
         beforeAuthenticationLinkNames: ['Login'],
@@ -177,6 +178,7 @@ const doreadAuthencticationConfigurationTest = async ({ path }: { path: string }
         passwordLabel: 'Password',
         passwordValue: '123456',
         finishButtonLabel: 'Login',
+        noLogoutLinkOrButtonName: 'Logout'
     };
 
     const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: configContent });
