@@ -134,17 +134,16 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
     }
 }
 
-const visitLinks = async ({ authenticationConfiguration, page }:
-    { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
-    const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[]) => {
-        if (authenticationConfiguration && authenticationConfiguration.noLogoutLinkOrButtonName) {
+const visitLinks = async ({ authenticationConfiguration, page }: { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
+    const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[], authConfig: AuthenticationConfiguration) => {
+        if (authConfig && authConfig.noLogoutLinkOrButtonName) {
             return links
                 .filter((link) => link.textContent && link.textContent.trim() !== 'Logout')
                 .map((link) => link.href);
         } else {
             return links.map((link) => link.href);
         }
-    });
+    }, authenticationConfiguration);
 
     for (const link of links) {
         if (!visitedUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
