@@ -38,19 +38,19 @@ test('test an application', async ({ page }) => {
         await authenticate({ authenticationConfiguration, page });
     }
 
-    await handlePage({ page });
+    await handlePage({ authenticationConfiguration, page });
 });
 
 export const authenticate = async ({ authenticationConfiguration, page }:
     { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
-        if (!authenticationConfiguration ||
-            !authenticationConfiguration.usernameLabel ||
-            !authenticationConfiguration.usernameValue ||
-            !authenticationConfiguration.passwordLabel ||
-            !authenticationConfiguration.passwordValue ||
-            !authenticationConfiguration.finishButtonLabel) {
-            throw new Error('Authentication configuration is not set, value: ' + authenticationConfiguration);
-        }
+    if (!authenticationConfiguration ||
+        !authenticationConfiguration.usernameLabel ||
+        !authenticationConfiguration.usernameValue ||
+        !authenticationConfiguration.passwordLabel ||
+        !authenticationConfiguration.passwordValue ||
+        !authenticationConfiguration.finishButtonLabel) {
+        throw new Error('Authentication configuration is not set, value: ' + authenticationConfiguration);
+    }
 
     if (authenticationConfiguration.beforeAuthenticationLinkNames) {
         for (const linkName of authenticationConfiguration.beforeAuthenticationLinkNames) {
@@ -70,7 +70,8 @@ export const authenticate = async ({ authenticationConfiguration, page }:
     console.log('Filled the username and the password. Pushed the authentication button');
 }
 
-const handlePage = async ({ page }: { page: Page }) => {
+const handlePage = async ({ authenticationConfiguration, page }:
+    { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
     console.log('In the page: ' + page.url());
 
     await page.waitForTimeout(1000);
@@ -78,7 +79,7 @@ const handlePage = async ({ page }: { page: Page }) => {
 
     await checkPageForErrors({ page });
     await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
-    await visitLinks({ page });
+    await visitLinks({ authenticationConfiguration, page });
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
@@ -133,15 +134,22 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
     }
 }
 
-const visitLinks = async ({ page }: { page: Page }) => {
-    const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[]) =>
-        links.map((link) => link.href)
-    );
+const visitLinks = async ({ authenticationConfiguration, page }:
+    { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
+    const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[]) => {
+        if (authenticationConfiguration && authenticationConfiguration.noLogoutLinkOrButtonName) {
+            return links
+                .filter((link) => link.textContent && link.textContent.trim() !== 'Logout')
+                .map((link) => link.href);
+        } else {
+            return links.map((link) => link.href);
+        }
+    });
 
     for (const link of links) {
         if (!visitedUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             await page.goto(link);
-            await handlePage({ page });
+            await handlePage({ authenticationConfiguration, page });
         }
     }
 }
