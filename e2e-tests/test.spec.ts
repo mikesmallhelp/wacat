@@ -38,7 +38,7 @@ test('test an application', async ({ page }) => {
         await authenticate({ authenticationConfiguration, page });
     }
 
-    await handlePage({ page, authenticationConfiguration });
+    await handlePage({ authenticationConfiguration, page });
 });
 
 export const authenticate = async ({ authenticationConfiguration, page }:
@@ -70,8 +70,8 @@ export const authenticate = async ({ authenticationConfiguration, page }:
     console.log('Filled the username and the password. Pushed the authentication button');
 }
 
-const handlePage = async ({ page, authenticationConfiguration }:
-    { page: Page, authenticationConfiguration?: AuthenticationConfiguration }) => {
+const handlePage = async ({ authenticationConfiguration, page }:
+    { authenticationConfiguration?: AuthenticationConfiguration, page: Page }) => {
     console.log('In the page: ' + page.url());
 
     await page.waitForTimeout(1000);
@@ -79,7 +79,7 @@ const handlePage = async ({ page, authenticationConfiguration }:
 
     await checkPageForErrors({ page });
     await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
-    await visitLinks({ page, authenticationConfiguration });
+    await visitLinks({ authenticationConfiguration, page });
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
@@ -134,22 +134,24 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
     }
 }
 
-const visitLinks = async ({ page, authenticationConfiguration }:
-                          { page: Page, authenticationConfiguration?: AuthenticationConfiguration }) => {
+const visitLinks = async ({ authenticationConfiguration, page }:
+    { authenticationConfiguration?: AuthenticationConfiguration, page: Page }) => {
+        
     const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[], authConfig?: AuthenticationConfiguration) => {
         if (authConfig && authConfig.noLogoutLinkOrButtonName) {
             return links
                 .filter((link) => link.textContent && link.textContent.trim() !== 'Logout')
                 .map((link) => link.href);
-        } else {
-            return links.map((link) => link.href);
         }
+
+        return links.map((link) => link.href);
+
     }, authenticationConfiguration);
 
     for (const link of links) {
         if (!visitedUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             await page.goto(link);
-            await handlePage({ page, authenticationConfiguration });
+            await handlePage({ authenticationConfiguration, page });
         }
     }
 }
