@@ -3,3 +3,16 @@ a, button, input, select {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+a {
+    color: #1976d2;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.logout-link {
+    color: #1976d2;
+    cursor: pointer;
+    text-decoration: underline;
+    float: right;
+}
