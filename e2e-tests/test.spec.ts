@@ -136,20 +136,49 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
 
 const visitLinks = async ({ authenticationConfiguration, page }:
     { authenticationConfiguration?: AuthenticationConfiguration, page: Page }) => {
-        
+
+    console.log('Visit links 1');
+
+    let tulostus: string = '';   
+
     const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[], authConfig?: AuthenticationConfiguration) => {
+        console.log('Visit links 2');
+
         if (authConfig && authConfig.noLogoutLinkOrButtonName) {
+            console.log('Visit links 3');
+
+            for (const link of links) {
+                console.log('link.textContent:' + link.textContent);
+                tulostus = tulostus + link.textContent;
+                console.log('link.hfef:' + link.href);
+                tulostus = tulostus + link.href;
+            }
+
             return links
                 .filter((link) => link.textContent && link.textContent.trim() !== 'Logout')
                 .map((link) => link.href);
+        }
+
+        for (const link of links) {
+            console.log('link.textContent:' + link.textContent);
+            console.log('link.hfef:' + link.href);
         }
 
         return links.map((link) => link.href);
 
     }, authenticationConfiguration);
 
+    console.log('Visit links 4');
+    console.log('tulostus:' + tulostus);
+
     for (const link of links) {
+        console.log('link:' + link);
+    }
+
+    for (const link of links) {
+        console.log('Visit links 5');
         if (!visitedUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
+            console.log('Visit links 6');
             await page.goto(link);
             await handlePage({ authenticationConfiguration, page });
         }
