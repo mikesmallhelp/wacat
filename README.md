@@ -1,7 +1,8 @@
 TODO:
 
 - lisää selaimen näkemismahdollisuus 
-- lisää auth tiedostoon se, että logoutia ei tehdä
+- lisää auth tiedostoon se optio, että logoutia ei tehdä
+  - vaihtoehtona linkit, joihin ei mennä
 - tee esimerkkisovellukset Verceliin, joita voi ajaa esimerkki komennoilla
 - virheet "selaimen konsolista" ja jos onnistuu, niin tiedostosta konfigurointi
 - tee sovelluksen generoimista input kenttien syötteistä eri pituisia ja sisällöltään monipuolisempia
