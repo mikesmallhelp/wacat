@@ -37,11 +37,15 @@ export type AuthenticationConfiguration = {
     usernameButtonLabel?: string;
     passwordLabel: string;
     passwordValue: string;
-    finishButtonLabel: string;
-    noLogoutLinkOrButtonName?: string;
+    finishButtonLabel: string
 } | null;
 
-export const readAuthencticationConfiguration = async ({ path }: { path: string }): Promise<AuthenticationConfiguration> => {
+export type Configuration = {
+    authentication: AuthenticationConfiguration;
+    notVisitLinkUrls?: string[];
+} | null;
+
+export const readConfiguration = async ({ path }: { path: string }): Promise<Configuration> => {
     try {
         let content: string;
 

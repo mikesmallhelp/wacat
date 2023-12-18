@@ -5,7 +5,7 @@ import { fail } from 'node:assert';
 
 import {
     AuthenticationConfiguration, generateRandomString, hostIsSame,
-    readAuthencticationConfiguration, readFileContent
+    readConfiguration, readFileContent
 } from '../utils/test-utils';
 
 const visitedUrls: string[] = [];
@@ -15,7 +15,7 @@ const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ?
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
 const authenticationConfiguration: AuthenticationConfiguration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
-    await readAuthencticationConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
+    await readConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -70,7 +70,7 @@ export const authenticate = async ({ authenticationConfiguration, page }:
     console.log('Filled the username and the password. Pushed the authentication button');
 }
 
-const handlePage = async ({ authenticationConfiguration, page }:
+const handlePage = async ({ page }:
     { authenticationConfiguration?: AuthenticationConfiguration, page: Page }) => {
     console.log('In the page: ' + page.url());
 
@@ -79,7 +79,7 @@ const handlePage = async ({ authenticationConfiguration, page }:
 
     await checkPageForErrors({ page });
     await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
-    await visitLinks({ authenticationConfiguration, page });
+    await visitLinks({ page });
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
@@ -134,53 +134,15 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
     }
 }
 
-const visitLinks = async ({ authenticationConfiguration, page }:
-    { authenticationConfiguration?: AuthenticationConfiguration, page: Page }) => {
-
-    console.log('Visit links 1');
-
-    let tulostus: string = '';   
-
-    const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[], authConfig?: AuthenticationConfiguration) => {
-        console.log('Visit links 2');
-
-        if (authConfig && authConfig.noLogoutLinkOrButtonName) {
-            console.log('Visit links 3');
-
-            for (const link of links) {
-                console.log('link.textContent:' + link.textContent);
-                tulostus = tulostus + link.textContent;
-                console.log('link.hfef:' + link.href);
-                tulostus = tulostus + link.href;
-            }
-
-            return links
-                .filter((link) => link.textContent && link.textContent.trim() !== 'Logout')
-                .map((link) => link.href);
-        }
-
-        for (const link of links) {
-            console.log('link.textContent:' + link.textContent);
-            console.log('link.hfef:' + link.href);
-        }
-
-        return links.map((link) => link.href);
-
-    }, authenticationConfiguration);
-
-    console.log('Visit links 4');
-    console.log('tulostus:' + tulostus);
+const visitLinks = async ({ page }: { page: Page }) => {
+    const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[]) =>
+        links.map((link) => link.href)
+    );
 
     for (const link of links) {
-        console.log('link:' + link);
-    }
-
-    for (const link of links) {
-        console.log('Visit links 5');
         if (!visitedUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
-            console.log('Visit links 6');
             await page.goto(link);
-            await handlePage({ authenticationConfiguration, page });
+            await handlePage({ page });
         }
     }
 }
