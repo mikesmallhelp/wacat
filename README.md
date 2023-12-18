@@ -1,8 +1,9 @@
 TODO:
 
 - lisää selaimen näkemismahdollisuus 
-- lisää auth tiedostoon se optio, että logoutia ei tehdä
+- lisää auth tai conf tiedostoon optio, että logoutia ei tehdä
   - vaihtoehtona linkit, joihin ei mennä
+  - lisää myös optio, että tietyllä sivulla tai sivuilla toiminta lopetetaan (/logout sivun jälkeen ei jatketa enää toimintaa)
 - tee esimerkkisovellukset Verceliin, joita voi ajaa esimerkki komennoilla
 - virheet "selaimen konsolista" ja jos onnistuu, niin tiedostosta konfigurointi
 - tee sovelluksen generoimista input kenttien syötteistä eri pituisia ja sisällöltään monipuolisempia
