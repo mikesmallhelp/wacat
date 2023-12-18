@@ -1,7 +1,9 @@
 {
-    "usernameLabel": "Username",
-    "usernameValue": "Donald",
-    "passwordLabel": "Password",
-    "passwordValue": "Duck",
-    "finishButtonLabel": "Login"
+    "authentication": {
+        "usernameLabel": "Username",
+        "usernameValue": "Donald",
+        "passwordLabel": "Password",
+        "passwordValue": "Duck",
+        "finishButtonLabel": "Login"
+    }
 }

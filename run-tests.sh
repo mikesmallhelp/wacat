@@ -105,6 +105,10 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
+run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json" "1 passed" \
+       "In the page: http://localhost:3000/working-page2"
+run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json" \
+        "1 passed" "In the page: http://localhost:3000/working-page2"
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx" \
         "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-button-push-causes-error.tsx"
@@ -117,9 +121,6 @@ run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-fil
 run_playwright_tests "index-working-page2.tsx" "--error-texts example-files/error-texts.txt" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
-run_playwright_tests "index-auth.tsx" "--conf example-files/authentication.json" "1 passed" "In the page: http://localhost:3000/working-page2"
-run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/complicated-authentication.json" \
-        "1 passed" "In the page: http://localhost:3000/working-page2"
 
 pkill -f "next"
 

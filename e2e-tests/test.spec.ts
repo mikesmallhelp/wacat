@@ -54,7 +54,7 @@ export const authenticate = async ({ page }: { page: Page }) => {
         !configuration?.authentication?.passwordLabel ||
         !configuration?.authentication?.passwordValue ||
         !configuration?.authentication?.finishButtonLabel) {
-        throw new Error('Authentication configuration is not set, value: ' + configuration);
+        throw new Error('Authentication configuration is not set, value: ' + JSON.stringify(configuration));
     }
 
     if (configuration.authentication.beforeAuthenticationLinkNames) {
