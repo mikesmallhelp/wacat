@@ -108,7 +108,7 @@ sleep 10
 run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json" "1 passed" \
        "In the page: http://localhost:3000/working-page2"
 run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json" \
-        "1 passed" "In the page: http://localhost:3000/working-page2"
+        "1 passed" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx" \
         "--error-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/error-texts.txt"
 run_playwright_tests_failing_and_error_text_found_and_local_file_used "index-button-push-causes-error.tsx"
