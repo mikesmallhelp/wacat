@@ -14,9 +14,9 @@ export default class TestCommand extends Command {
   ]
 
   static flags = {
-    'conf': Flags.string({char: 'a', description: 'Path to the authentication configuration file'}),
+    'conf': Flags.string({char: 'a', description: 'Path to the configuration file'}),
     'error-texts': Flags.string({char: 'e', description: 'Path to the error texts file'}),
-    'input-texts': Flags.string({char: 'e', description: 'Path to the word list file'})
+    'input-texts': Flags.string({char: 'e', description: 'Path to the input texts file'})
   }
 
   async run(): Promise<void> {
