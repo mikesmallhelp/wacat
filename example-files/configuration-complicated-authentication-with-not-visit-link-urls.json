@@ -9,8 +9,9 @@
         "usernameButtonLabel": "Next",
         "passwordLabel": "Password",
         "passwordValue": "Duck",
-        "finishButtonLabel": "Login",
-        "noLogoutLinkOrButtonNames": "Logout"
+        "finishButtonLabel": "Login"
     },
-    "notVisitLinkUrls": ["http://localhost:3000/logout"]
+    "notVisitLinkUrls": [
+        "http://localhost:3000/logout"
+    ]
 }
