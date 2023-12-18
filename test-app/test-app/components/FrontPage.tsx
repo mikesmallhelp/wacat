@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PageTemplate from './PageTemplate';
 
-const FrontPage = ({ pageDirectory }: { pageDirectory: string }) => {
+const FrontPage = ({ pageDirectory, showLogoutLink = false }: { pageDirectory: string, showLogoutLink?: boolean }) => {
     const [loading, setLoading] = useState(true);
 
     const content = (
@@ -13,7 +13,8 @@ const FrontPage = ({ pageDirectory }: { pageDirectory: string }) => {
 
     return (
         <>
-            <PageTemplate title={`Test application - ${pageDirectory}`} content={content} loading={loading} setLoading={setLoading} />
+            <PageTemplate title={`Test application - ${pageDirectory}`} content={content} 
+                   loading={loading} setLoading={setLoading} showLogoutLink={showLogoutLink}/>
         </>
     );
 };

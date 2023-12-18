@@ -17,3 +17,4 @@ oclif.manifest.json
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+test-app/test-app/pages/index.tsx

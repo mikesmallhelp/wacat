@@ -23,18 +23,23 @@ print_test_parameters() {
     local output_contains_test_result="$3"
     local output_contains_text="$4"
     local output_contains_text2="$5"
+    local output_not_contains_text="$6"
     
     echo
     echo "******************************************"
     echo "Testing:"
     echo
-    echo "$test_filename"
-    echo "$test_command_extra_parameters"
-    echo "$output_contains_test_result"
-    echo "$output_contains_text"
+    echo "filename: $test_filename"
+    echo "wacat parameters: $test_command_extra_parameters"
+    echo "contains result: $output_contains_test_result"
+    echo "contains: $output_contains_text"
 
     if [[ -n "$output_contains_text2" ]]; then
-        echo "$output_contains_text2"
+        echo "contains: $output_contains_text2"
+    fi
+
+    if [[ -n "$output_not_contains_text" ]]; then
+        echo "not contains: $output_not_contains_text"
     fi
 }
 
@@ -44,9 +49,10 @@ run_playwright_tests() {
     local output_contains_test_result="$3"
     local output_contains_text="$4"
     local output_contains_text2="$5"
+    local output_not_contains_text="$6"
 
     print_test_parameters "$test_filename" "$test_command_extra_parameters" "$output_contains_test_result" \
-                          "$output_contains_text" "$output_contains_text2"
+                          "$output_contains_text" "$output_contains_text2" "$output_not_contains_text"
 
     echo "******************************************"
     echo
@@ -59,15 +65,16 @@ run_playwright_tests() {
 
     echo "$test_output"
 
-    if ([[ $test_output == *$output_contains_test_result* ]] && \
+    if (
+        [[ $test_output == *$output_contains_test_result* ]] && \
         [[ $test_output == *$output_contains_text* ]] && \
-        ([[ -z "$output_contains_text2" ]] || [[ $test_output == *$output_contains_text2* ]] 
-        )
-       ); then \
+        ([[ -z "$output_contains_text2" ]] || [[ $test_output == *$output_contains_text2* ]]) && \
+        ([[ -z "$output_not_contains_text" ]] || [[ ! $test_output == *$output_not_contains_text* ]]) \
+    ); then \
         echo -e "${GREEN}"
 
         print_test_parameters "$test_filename" "$test_command_extra_parameters" "$output_contains_test_result" \
-                          "$output_contains_text" "$output_contains_text2"
+                          "$output_contains_text" "$output_contains_text2" "$output_not_contains_text"
         echo
         echo "successful" 
         echo "******************************************"
@@ -77,7 +84,7 @@ run_playwright_tests() {
         echo -e "${RED}"
 
         print_test_parameters "$test_filename" "$test_command_extra_parameters" "$output_contains_test_result" \
-                          "$output_contains_text" "$output_contains_text2"
+                          "$output_contains_text" "$output_contains_text2" "$output_not_contains_text"
 
         echo
         echo "failed!" 
@@ -117,9 +124,12 @@ run_playwright_tests "index-api-returns-http-500.tsx" "--error-texts example-fil
 run_playwright_tests "index-working-page2.tsx" "--error-texts example-files/error-texts.txt" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
-run_playwright_tests "index-auth.tsx" "--auth-file example-files/authentication.json" "1 passed" "In the page: http://localhost:3000/working-page2"
-run_playwright_tests "index-auth-complicated.tsx" "--auth-file example-files/complicated-authentication.json" \
-        "1 passed" "In the page: http://localhost:3000/working-page2"
+run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json" "1 passed" \
+       "In the page: http://localhost:3000/working-page2"
+run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json" \
+        "1 passed" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
+run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication-with-not-visit-link-urls.json" \
+        "1 passed" "In the page: http://localhost:3000/working-page" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
 
 pkill -f "next"
 

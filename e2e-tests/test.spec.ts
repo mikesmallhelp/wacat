@@ -4,21 +4,27 @@ import { Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    AuthenticationConfiguration, generateRandomString, hostIsSame,
-    readAuthencticationConfiguration, readFileContent
+    Configuration, generateRandomString, hostIsSame,
+    readConfiguration, readFileContent
 } from '../utils/test-utils';
 
-const visitedUrls: string[] = [];
+const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.PAGE_ERROR_TEXTS_FILE_PATH }) : [];
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
-const authenticationConfiguration: AuthenticationConfiguration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
-    await readAuthencticationConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
+    const configuration: Configuration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
+    await readConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
+}
+
+if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLinkUrls.length > 0) {
+    for (const url of configuration.notVisitLinkUrls) {
+        visitedUrlsOrNotVisitLinkUrls.push(url);
+    }
 }
 
 test('test an application', async ({ page }) => {
@@ -34,38 +40,37 @@ test('test an application', async ({ page }) => {
         }
     });
 
-    if (authenticationConfiguration) {
-        await authenticate({ authenticationConfiguration, page });
+    if (configuration) {
+        await authenticate({ page });
     }
 
     await handlePage({ page });
 });
 
-export const authenticate = async ({ authenticationConfiguration, page }:
-    { authenticationConfiguration: AuthenticationConfiguration, page: Page }) => {
-        if (!authenticationConfiguration ||
-            !authenticationConfiguration.usernameLabel ||
-            !authenticationConfiguration.usernameValue ||
-            !authenticationConfiguration.passwordLabel ||
-            !authenticationConfiguration.passwordValue ||
-            !authenticationConfiguration.finishButtonLabel) {
-            throw new Error('Authentication configuration is not set, value: ' + authenticationConfiguration);
-        }
+export const authenticate = async ({ page }: { page: Page }) => {
+    if (!configuration || !configuration.authentication ||
+        !configuration?.authentication?.usernameLabel ||
+        !configuration?.authentication?.usernameValue ||
+        !configuration?.authentication?.passwordLabel ||
+        !configuration?.authentication?.passwordValue ||
+        !configuration?.authentication?.finishButtonLabel) {
+        throw new Error('Authentication configuration is not set, value: ' + JSON.stringify(configuration));
+    }
 
-    if (authenticationConfiguration.beforeAuthenticationLinkNames) {
-        for (const linkName of authenticationConfiguration.beforeAuthenticationLinkNames) {
+    if (configuration.authentication.beforeAuthenticationLinkNames) {
+        for (const linkName of configuration.authentication.beforeAuthenticationLinkNames) {
             page.getByText(linkName).click();
         }
     }
 
-    await page.getByLabel(authenticationConfiguration.usernameLabel).fill(authenticationConfiguration.usernameValue);
+    await page.getByLabel(configuration.authentication.usernameLabel).fill(configuration.authentication.usernameValue);
 
-    if (authenticationConfiguration.usernameButtonLabel) {
-        await page.getByRole('button', { exact: true, name: `${authenticationConfiguration.usernameButtonLabel}` }).click();
+    if (configuration.authentication.usernameButtonLabel) {
+        await page.getByRole('button', { exact: true, name: `${configuration.authentication.usernameButtonLabel}` }).click();
     }
 
-    await page.getByLabel(authenticationConfiguration.passwordLabel).fill(authenticationConfiguration.passwordValue);
-    await page.getByRole('button', { exact: true, name: `${authenticationConfiguration.finishButtonLabel}` }).click();
+    await page.getByLabel(configuration.authentication.passwordLabel).fill(configuration.authentication.passwordValue);
+    await page.getByRole('button', { exact: true, name: `${configuration.authentication.finishButtonLabel}` }).click();
 
     console.log('Filled the username and the password. Pushed the authentication button');
 }
@@ -74,7 +79,7 @@ const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());
 
     await page.waitForTimeout(1000);
-    visitedUrls.push(page.url());
+    visitedUrlsOrNotVisitLinkUrls.push(page.url());
 
     await checkPageForErrors({ page });
     await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
@@ -139,7 +144,7 @@ const visitLinks = async ({ page }: { page: Page }) => {
     );
 
     for (const link of links) {
-        if (!visitedUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
+        if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             await page.goto(link);
             await handlePage({ page });
         }
