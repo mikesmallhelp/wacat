@@ -4,7 +4,7 @@ import FrontPage from '../components/FrontPage';
 const IndexComponent = () => {
   return (
     <>
-      <FrontPage pageDirectory='error-text-in-page' />
+      <FrontPage pageDirectory='working-page2' />
     </>
   );
 };
