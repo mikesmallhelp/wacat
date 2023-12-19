@@ -8,6 +8,7 @@ import {
     readConfiguration, readFileContent
 } from '../utils/test-utils';
 
+const timeout = 2000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ?
@@ -29,6 +30,7 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 
 test('test an application', async ({ page }) => {
     await page.goto(rootUrl);
+    await page.waitForTimeout(timeout);
 
     page.on('response', response => {
         const status = response.status();
@@ -146,6 +148,7 @@ const visitLinks = async ({ page }: { page: Page }) => {
     for (const link of links) {
         if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             await page.goto(link);
+            await page.waitForTimeout(timeout);
             await handlePage({ page });
         }
     }
