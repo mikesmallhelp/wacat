@@ -25,11 +25,16 @@ describe('getHost', () => {
 });
 
 describe('hostIsSame', () => {
-    it('true: rootUrl: http://localhost:3000/ url: http://localhost:3000/x', () => {
+    it('true: in the localhost', () => {
         expect(hostIsSame({ rootUrl: 'http://localhost:3000/', url: 'http://localhost:3000/x' })).equal(true);
     });
 
-    it('false: rootUrl: http://localhost:3000/ url: https://github.com/mikesmallhelp', () => {
+    it('true: in the remote host', () => {
+        expect(hostIsSame({ rootUrl: 'https://mikesmallhelp-test-application.vercel.app/', 
+                            url: 'https://mikesmallhelp-test-application.vercel.app/working-page' })).equal(true);
+    });
+
+    it('false: different hosts', () => {
         expect(hostIsSame({ rootUrl: 'http://localhost:3000/', url: 'https://github.com/mikesmallhelp' })).equal(false);
     });
 });
