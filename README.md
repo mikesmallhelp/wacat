@@ -47,7 +47,7 @@ tests a simple application in the url https://wacat-test-application-mikesmallhe
 
 ![the second sub page](doc/test-application-picture-3.png)
 
-The command visits the two sub pages. In the pages it fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons. Here is the command output:
+First the command finds two sub pages and goes to them. Then it fills the form inputs and selects from the dropdown menus of the each page. Finally it pushes the buttons in the each page. Here is the command output:
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
