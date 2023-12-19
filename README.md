@@ -34,7 +34,7 @@ Run the command in the wacat folder:
 wacat test <your url>
 ```
 
-For example the command:
+For example a command:
 
 ```
 wacat test https://wacat-test-application-mikesmallhelp.vercel.app/
@@ -46,4 +46,25 @@ tests a simple application in the url https://wacat-test-application-mikesmallhe
 ![the first sub page](doc/test-application-picture-2.png)
 
 ![the second sub page](doc/test-application-picture-3.png)
+
+The command visits the two sub pages. In the pages it fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons. Here is the command output:
+
+```
+wacat test https://mikesmallhelp-test-application.vercel.app/
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:30:1 › test an application
+In the page: https://mikesmallhelp-test-application.vercel.app/
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page
+Fill the #0 input field a value: elq4npt0
+#0 drop-down list. Select the option #1
+Push the button #0
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
+Fill the #0 input field a value: b8wzde2s
+#0 drop-down list. Select the option #1
+Push the button #0
+  1 passed (7.4s)
+
+Testing in url: https://mikesmallhelp-test-application.vercel.app/
+```
 
