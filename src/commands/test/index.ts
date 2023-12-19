@@ -29,7 +29,6 @@ export default class TestCommand extends Command {
       command += flags['conf'] ? ` AUTHENTICATION_CONFIGURATION_FILE_PATH=${flags['conf']}` : ''; // eslint-disable-line dot-notation
       command += ' npx playwright test --project=chromium';
       
-      console.log(command);
       const { stdout } = await this.runCommand(command);
       this.log(`${stdout}`);
     } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
