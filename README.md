@@ -57,11 +57,11 @@ tests a simple application in the url https://wacat-test-application-mikesmallhe
 
 ![](doc/test-application-picture-3.png)
 
-First the command opens Chromium browser and goes to the root URL, which was given for the command: 
+First the wacat application opens Chromium browser and goes to the root URL, which was given for the command: 
 
 ![](doc/chromium-opened.png)
 
-Then the wacat application finds two sub pages and goes to them. In the sub pages it fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command output:
+The root page doesn't contain any input fields, dropdown menus or buttons. wacat simple collects links of the two sub pages and goes to them. In the sub pages wacat fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command output:
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
