@@ -80,7 +80,7 @@ export const authenticate = async ({ page }: { page: Page }) => {
 const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());
 
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(waitForTimeout);
     visitedUrlsOrNotVisitLinkUrls.push(page.url());
 
     await checkPageForErrors({ page });
@@ -108,7 +108,7 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
         const button = buttonsLocator.nth(i);
         console.log('Push the button #' + i);
         await button.click();
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(waitForTimeout);
         await checkPageForErrors({ page });
     }
 }
