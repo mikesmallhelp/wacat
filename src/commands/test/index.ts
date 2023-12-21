@@ -29,14 +29,13 @@ export default class TestCommand extends Command {
       command += flags['conf'] ? ` AUTHENTICATION_CONFIGURATION_FILE_PATH=${flags['conf']}` : ''; // eslint-disable-line dot-notation
       command += ' npx playwright test --project=chromium';
       
+      this.log(`Testing in url: ${args.url}. Please wait...`);
       const { stdout } = await this.runCommand(command);
       this.log(`${stdout}`);
     } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       this.log(`${error.stdout}`);
       this.error(`${error.message}`);
     }
-
-    this.log(`Testing in url: ${args.url}`);
   }
 
   private runCommand(command: string): Promise<{ stderr: string, stdout: string }> {
