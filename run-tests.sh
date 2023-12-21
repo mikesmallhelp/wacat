@@ -109,6 +109,8 @@ echo "******************************************"
 echo "******************************************"
 echo
 
+cp playwright.config.ts-headless-true playwright.config.ts
+
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
@@ -132,6 +134,8 @@ run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configur
         "1 passed" "In the page: http://localhost:3000/working-page" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
 
 pkill -f "next"
+
+cp playwright.config.ts-headless-false playwright.config.ts
 
 echo -e "${GREEN}"
 echo "******************************************"

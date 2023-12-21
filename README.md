@@ -24,6 +24,8 @@ Clone the wacat repository, go to the wacat folder and run:
 npm install && npx playwright install --with-deps && npm run build && npm i -g
 ```
 
+Note: probably your password is asked, when you run previous command
+
 ## Running
 
 ### Basic running
