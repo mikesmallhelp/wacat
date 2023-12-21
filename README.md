@@ -8,7 +8,15 @@ Imagine, you leave your computer for a while and go to pick up cup of coffee. Me
 - selects random values from dropdown menus
 - pushes every buttons
 
+wacat uses the [Playwright](https://playwright.dev/) tool internally.
+
 wacat = walking cat
+
+## Warnings
+
+Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be criminal. 
+
+Application is designed so that it should not go outside of the host you are testing. But because this is my hobby project everything is possible and it's good to follow what the wacat application is doing and use ctrl + c if it goes to wrong page. Please also note that if your application uses authentication and your wacat authentication configuration is not correct or wacat is not working for your case, then your account could be locked or something like that. Also wacat could mess your applications's database etc. So it's good to test only in the test environment.
 
 ## Installation
 
@@ -24,7 +32,7 @@ Clone the wacat repository, go to the wacat folder and run:
 npm install && npx playwright install --with-deps && npm run build && npm i -g
 ```
 
-Note: probably your password is asked, when you run previous command
+Note: probably your password is asked, when you run previous command, because the Playwright tool is installed globally
 
 ## Running
 
@@ -49,10 +57,12 @@ tests a simple application in the url https://wacat-test-application-mikesmallhe
 
 ![the second sub page](doc/test-application-picture-3.png)
 
-First the command finds two sub pages and goes to them. Then it fills the form inputs and selects from the dropdown menus of the each page. Finally it pushes the buttons in the each page. Here is the command output:
+First the command opens Chromium browser and goes to the root URL, which was given for the command. Then it finds two sub pages and goes to them. In the pages it fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each page. Here is the command output:
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
+
+Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
 [chromium] › test.spec.ts:30:1 › test an application
@@ -67,7 +77,6 @@ Fill the #0 input field a value: b8wzde2s
 Push the button #0
   1 passed (7.4s)
 
-Testing in url: https://mikesmallhelp-test-application.vercel.app/
 ```
 ### Read input field texts from the file
 
@@ -108,6 +117,6 @@ Fill the #0 input field a value: ybyb
 Push the button #0
   1 passed (13.7s)
 ```
-In the output you can see that values from the input-texts.txt file are used.
+In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file.
 
 
