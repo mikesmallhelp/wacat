@@ -51,13 +51,17 @@ wacat test https://wacat-test-application-mikesmallhelp.vercel.app/
 ```
 tests a simple application in the url https://wacat-test-application-mikesmallhelp.vercel.app/. The application have pages:
 
-![the main page](doc/test-application-picture-1.png)
+![](doc/test-application-picture-1.png)
 
-![the first sub page](doc/test-application-picture-2.png)
+![](doc/test-application-picture-2.png)
 
-![the second sub page](doc/test-application-picture-3.png)
+![](doc/test-application-picture-3.png)
 
-First the command opens Chromium browser and goes to the root URL, which was given for the command. Then it finds two sub pages and goes to them. In the pages it fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each page. Here is the command output:
+First the command opens Chromium browser and goes to the root URL, which was given for the command: 
+
+![](doc/chromium-opened.png)
+
+Then the wacat application finds two sub pages and goes to them. In the sub pages it fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command output:
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
