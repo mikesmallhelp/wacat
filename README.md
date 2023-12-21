@@ -21,7 +21,7 @@ wacat = walking cat
 Clone the wacat repository, go to the wacat folder and run:
 
 ```
-npm run build && npm i -g
+npm install && npx playwright install --with-deps && npm run build && npm i -g
 ```
 
 ## Running
