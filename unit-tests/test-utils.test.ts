@@ -60,11 +60,11 @@ describe('readFileContent', () => {
     });
 
     it('should read file content from http URL', async () => {
-        doReadFileContentTest({ path: 'http://example.com/file.txt' });
+        doReadFileContentFromUrlTest({ path: 'http://example.com/file.txt' });
     });
 
     it('should read file content from https URL', async () => {
-        doReadFileContentTest({ path: 'https://example.com/file.txt' });
+        doReadFileContentFromUrlTest({ path: 'https://example.com/file.txt' });
     });
 
     it('should handle error when reading file', async () => {
@@ -92,7 +92,7 @@ describe('readFileContent', () => {
     });
 });
 
-const doReadFileContentTest = async ({ path }: { path: string }) => {
+const doReadFileContentFromUrlTest = async ({ path }: { path: string }) => {
     const fileContent = 'Hello, World!\nThis is a test file.';
     const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: fileContent });
 
@@ -104,28 +104,35 @@ const doReadFileContentTest = async ({ path }: { path: string }) => {
     axiosGetStub.restore();
 }
 
-describe('readAuthencticationConfiguration', () => {
-    it('should read authentication configuration from local file', async () => {
+describe('readConfiguration', () => {
+    it('should read configuration from file', async () => {
         const path = '/path/to/configuration.json';
         const configContent = `
         {
+            "errorTexts": ["Error occurred!"],
             "authentication": {
+                "beforeAuthenticationLinkNames": ["Login"],
                 "usernameLabel": "Username",
                 "usernameValue": "testuser",
+                "usernameButtonLabel": "Next",
                 "passwordLabel": "Password",
                 "passwordValue": "123456",
                 "finishButtonLabel": "Login"
-            }
-        }`;
-        const expectedConfig: Configuration =
-        {
+            },
+            "notVisitLinkUrls": ["http://localhost:3000/logout"]
+          }`;
+        const expectedConfig: Configuration = {
+            errorTexts: ['Error occurred!'],
             authentication: {
+                beforeAuthenticationLinkNames: ['Login'],
                 usernameLabel: 'Username',
                 usernameValue: 'testuser',
+                usernameButtonLabel: 'Next',
                 passwordLabel: 'Password',
                 passwordValue: '123456',
-                finishButtonLabel: 'Login',
-            }
+                finishButtonLabel: 'Login'
+            },
+            notVisitLinkUrls: ['http://localhost:3000/logout']
         };
 
         const readFileStub = sinon.stub(fs, 'readFileSync').returns(configContent);
@@ -137,15 +144,7 @@ describe('readAuthencticationConfiguration', () => {
         readFileStub.restore();
     });
 
-    it('should read authentication configuration from http URL', async () => {
-        doReadAuthencticationConfigurationTest({ path: 'http://example.com/configuration.json' });
-    });
-
-    it('should read authentication configuration from https URL', async () => {
-        doReadAuthencticationConfigurationTest({ path: 'https://example.com/configuration.json' });
-    });
-
-    it('should handle error when reading authentication configuration from local file', async () => {
+    it('should handle error when reading configuration', async () => {
         const path = '/path/to/nonexistent/configuration.json';
         const readFileStub = sinon.stub(fs, 'readFileSync').throws(new Error('File not found'));
 
@@ -156,54 +155,4 @@ describe('readAuthencticationConfiguration', () => {
 
         readFileStub.restore();
     });
-
-    it('should handle error when fetching authentication configuration from URL', async () => {
-        const path = 'https://example.com/nonexistent-configuration.json';
-        const axiosGetStub = sinon.stub(axios, 'get').rejects(new Error('URL not found'));
-
-        const result = await readConfiguration({ path });
-
-        expect(result).to.be.null;
-        expect(axiosGetStub.calledOnceWith(path)).to.be.true;
-
-        axiosGetStub.restore();
-    });
 });
-
-const doReadAuthencticationConfigurationTest = async ({ path }: { path: string }) => {
-    const configContent = `
-    {
-        "errorTexts": ["Error occurred!"],
-        "authentication": {
-            "beforeAuthenticationLinkNames": ["Login"],
-            "usernameLabel": "Username",
-            "usernameValue": "testuser",
-            "usernameButtonLabel": "Next",
-            "passwordLabel": "Password",
-            "passwordValue": "123456",
-            "finishButtonLabel": "Login"
-        },
-        "notVisitLinkUrls": ["http://localhost:3000/logout"]
-      }`;
-    const expectedConfig: Configuration = {
-        errorTexts: ['Error occurred!'],
-        authentication: {
-            beforeAuthenticationLinkNames: ['Login'],
-            usernameLabel: 'Username',
-            usernameValue: 'testuser',
-            usernameButtonLabel: 'Next',
-            passwordLabel: 'Password',
-            passwordValue: '123456',
-            finishButtonLabel: 'Login'
-        },
-        notVisitLinkUrls: ['http://localhost:3000/logout']
-    };
-
-    const axiosGetStub = sinon.stub(axios, 'get').resolves({ data: configContent });
-    const result = await readConfiguration({ path });
-
-    expect(result).to.deep.equal(expectedConfig);
-    expect(axiosGetStub.calledOnceWith(path)).to.be.true;
-
-    axiosGetStub.restore();
-}
