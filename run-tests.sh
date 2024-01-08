@@ -107,11 +107,19 @@ cp playwright.config.ts-headless-true playwright.config.ts
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
+run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
+        "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt" "1 failed" "expect(content).not.toContain" "ybyb"
+run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
+        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt" "1 failed" "expect(content).not.toContain" "ybyb"
+
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
 run_playwright_tests_failing_and_error_text_found "index-button-push-causes-error.tsx"
 run_playwright_tests_failing_and_error_text_found "index-input-field-and-button-push-causes-error.tsx"
 run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
         "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt" "1 failed" "expect(content).not.toContain" "ybyb"
+run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
+        "--conf example-files/configuration-error-texts.json \ 
+        --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt" "1 failed" "expect(content).not.toContain" "ybyb"        
 run_playwright_tests_failing_and_error_text_found "index-drop-down-list-selection-and-button-push-causes-error.tsx"
 run_playwright_tests "index-api-returns-http-500.tsx" "--conf example-files/configuration-error-texts.json" "1 failed" \
         "Request to http://localhost:3000/api/http-500 resulted in status code 500"
