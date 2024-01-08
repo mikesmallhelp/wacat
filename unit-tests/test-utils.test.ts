@@ -106,7 +106,7 @@ const doReadFileContentTest = async ({ path }: { path: string }) => {
 
 describe('readAuthencticationConfiguration', () => {
     it('should read authentication configuration from local file', async () => {
-        const path = '/path/to/authentication-config.json';
+        const path = '/path/to/configuration.json';
         const configContent = `
         {
             "authentication": {
@@ -138,15 +138,15 @@ describe('readAuthencticationConfiguration', () => {
     });
 
     it('should read authentication configuration from http URL', async () => {
-        doReadAuthencticationConfigurationTest({ path: 'http://example.com/authentication-config.json' });
+        doReadAuthencticationConfigurationTest({ path: 'http://example.com/configuration.json' });
     });
 
     it('should read authentication configuration from https URL', async () => {
-        doReadAuthencticationConfigurationTest({ path: 'https://example.com/authentication-config.json' });
+        doReadAuthencticationConfigurationTest({ path: 'https://example.com/configuration.json' });
     });
 
     it('should handle error when reading authentication configuration from local file', async () => {
-        const path = '/path/to/nonexistent/authentication-config.json';
+        const path = '/path/to/nonexistent/configuration.json';
         const readFileStub = sinon.stub(fs, 'readFileSync').throws(new Error('File not found'));
 
         const result = await readConfiguration({ path });
@@ -158,7 +158,7 @@ describe('readAuthencticationConfiguration', () => {
     });
 
     it('should handle error when fetching authentication configuration from URL', async () => {
-        const path = 'https://example.com/nonexistent-authentication-config.json';
+        const path = 'https://example.com/nonexistent-configuration.json';
         const axiosGetStub = sinon.stub(axios, 'get').rejects(new Error('URL not found'));
 
         const result = await readConfiguration({ path });
@@ -173,6 +173,7 @@ describe('readAuthencticationConfiguration', () => {
 const doReadAuthencticationConfigurationTest = async ({ path }: { path: string }) => {
     const configContent = `
     {
+        "errorTexts": ["Error occurred!"],
         "authentication": {
             "beforeAuthenticationLinkNames": ["Login"],
             "usernameLabel": "Username",
@@ -185,6 +186,7 @@ const doReadAuthencticationConfigurationTest = async ({ path }: { path: string }
         "notVisitLinkUrls": ["http://localhost:3000/logout"]
       }`;
     const expectedConfig: Configuration = {
+        errorTexts: ['Error occurred!'],
         authentication: {
             beforeAuthenticationLinkNames: ['Login'],
             usernameLabel: 'Username',

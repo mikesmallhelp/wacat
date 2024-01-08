@@ -11,11 +11,9 @@ import {
 const waitForTimeout = 2000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
-const errorTexts: string[] = process.env.PAGE_ERROR_TEXTS_FILE_PATH ?
-    await readFileContent({ path: process.env.PAGE_ERROR_TEXTS_FILE_PATH }) : [];
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
-    const configuration: Configuration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
+const configuration: Configuration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
     await readConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
 
 if (!rootUrl) {
@@ -42,7 +40,7 @@ test('test an application', async ({ page }) => {
         }
     });
 
-    if (configuration) {
+    if (configuration && configuration.authentication) {
         await authenticate({ page });
     }
 
@@ -89,9 +87,13 @@ const handlePage = async ({ page }: { page: Page }) => {
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
+    if (!configuration || !configuration.errorTexts || configuration.errorTexts.length === 0) {
+        return;
+    }
+
     const content = await page.locator('body').textContent();
 
-    for (const errorText of errorTexts) {
+    for (const errorText of configuration.errorTexts) {
         console.log(`Check the page not contain the ${errorText} text`);
         expect(content).not.toContain(errorText);
     }
