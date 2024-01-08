@@ -92,13 +92,15 @@ Push the button #0
 
 ### wacat can detect HTTP errors
 
-wacat can detect HTTP errors between browser and server. For example if the button in the example application below is pushed the HTTP 500 error occurs:
+wacat can detect HTTP errors between browser and server. For example if the button in the example application below is pushed the HTTP 500 error occurs.
 
 ![](doc/http-500-picture-1.png)
 
 ![](doc/http-500-picture-2.png)
 
 ```
+
+An example about this is:
 
 wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
 
