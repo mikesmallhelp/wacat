@@ -1,12 +1,12 @@
 # wacat - Tests your web application against cat chaos!
 
-Imagine, you leave your computer for a while and go to pick up cup of coffee. Meanwhile your cat walks over your keyboard and causes some chaos. 
+Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile your cat walks over your keyboard and causes some chaos. 
 
-wacat application for example:
+wacat (walking cat) application for example:
 
-- goes to your application root url
-- visit every link in your web application
-- adds random inputs to your HTML form inputs
+- goes to your web application root url
+- visit every link in your application
+- adds random inputs to your page's form inputs
 - selects random values from dropdown menus
 - pushes every buttons
 
@@ -18,8 +18,6 @@ Additionally wacat
 - can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally.
-
-wacat = walking cat
 
 ## Warnings
 
@@ -96,11 +94,11 @@ Push the button #0
 
 wacat can detect HTTP errors between browser and server. For example if the button in the example application below is pushed the HTTP 500 error occurs:
 
-```
-
 ![](doc/http-500-picture-1.png)
 
 ![](doc/http-500-picture-2.png)
+
+```
 
 wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
 
