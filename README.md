@@ -1,12 +1,21 @@
 # wacat - Tests your web application against cat chaos!
 
-Imagine, you leave your computer for a while and go to pick up cup of coffee. Meanwhile your cat walks over your keyboard and causes some chaos. wacat application
+Imagine, you leave your computer for a while and go to pick up cup of coffee. Meanwhile your cat walks over your keyboard and causes some chaos. 
+
+wacat application for example:
 
 - goes to your application root url
 - visit every link in your web application
 - adds random inputs to your HTML form inputs
 - selects random values from dropdown menus
 - pushes every buttons
+
+Additionally wacat
+
+- detects HTTP errors (for example HTTP 500 errors) between browser and server
+- detects error strings from the web pages
+  - you give error strings in a parameter file
+- can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally.
 
@@ -82,6 +91,54 @@ Push the button #0
   1 passed (7.4s)
 
 ```
+
+### wacat can detect HTTP errors
+
+wacat can detect HTTP errors between browser and server. For example if the button in the example application below is pushed the HTTP 500 error occurs:
+
+```
+
+![](doc/http-500-picture-1.png)
+
+![](doc/http-500-picture-2.png)
+
+wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
+
+Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app/. Please wait...
+undefined
+ ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-http-500-error.vercel.app/' npx playwright test --project=chromium
+ ›    + stderr:  + stdout: 
+ ›   Running 1 test using 1 worker
+     [chromium] › test.spec.ts:29:1 › test an application
+ ›   In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/working-page
+     Fill the #0 input field a value: 33g4z1kv
+     #0 drop-down list. Select the option #1
+     Push the button #0
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500
+     Fill the #0 input field a value: 78nyp02h
+     #0 drop-down list. Select the option #1
+     Push the button #0
+     Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
+       1) [chromium] › test.spec.ts:29:1 › test an application ──────────────────────────────────────────
+ ›   
+ ›       AssertionError: Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
+ ›
+ ›         37 |         if (status >= 400) {
+ ›         38 |             console.log(`Request to ${url} resulted in status code ${status}`);
+ ›       > 39 |             fail(`Request to ${url} resulted in status code ${status}`);
+ ›            |             ^
+ ›         40 |         }
+ ›         41 |     });
+ ›         42 |
+ ›
+ ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:39:13)
+ ›
+       1 failed
+ ›       [chromium] › test.spec.ts:29:1 › test an application
+
+```
+
 ### Read input field texts from the file
 
 Normally wacat fills the input fields with the random strings. It is possible to read input fields from the file, for example from the file example-files/input.texts, which contents are:
