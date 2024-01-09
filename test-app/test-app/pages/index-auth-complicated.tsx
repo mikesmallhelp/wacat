@@ -58,7 +58,7 @@ const UsernameButtonClickedComponent = ({ username }: { username: string }) => {
   const [errorText, setErrorText] = React.useState("");
 
   const handleLoginButtonClick = async (e: React.SyntheticEvent) => {
-    if (username == "Donald" && password == "Duck") {
+    if (username == "Mike" && password == "Smallhelp") {
       setAuthenticated(true);
     } else {
       setErrorText("Wrong username or password!");

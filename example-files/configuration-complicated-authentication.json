@@ -5,10 +5,10 @@
             "Please login"
         ],
         "usernameLabel": "Username",
-        "usernameValue": "Donald",
+        "usernameValue": "Mike",
         "usernameButtonLabel": "Next",
         "passwordLabel": "Password",
-        "passwordValue": "Duck",
+        "passwordValue": "Smallhelp",
         "finishButtonLabel": "Login"
     }
 }

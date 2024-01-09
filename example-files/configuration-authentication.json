@@ -1,9 +1,9 @@
 {
     "authentication": {
         "usernameLabel": "Username",
-        "usernameValue": "Donald",
+        "usernameValue": "Mike",
         "passwordLabel": "Password",
-        "passwordValue": "Duck",
+        "passwordValue": "Smallhelp",
         "finishButtonLabel": "Login"
     }
 }
