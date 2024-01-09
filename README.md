@@ -70,11 +70,12 @@ First the wacat application opens Chromium browser and goes to the root URL, whi
 
 ![](doc/chromium-opened.png)
 
-The root page doesn't contain any input fields, dropdown menus or buttons. wacat simple collects links of the two sub pages and goes to them. In the sub pages wacat fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command output:
+The root page doesn't contain any input fields, dropdown menus or buttons. wacat simple collects links of the two sub pages and goes to them. In the sub pages wacat fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command output, which you can copy, paste and run:
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
-
+```
+```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
@@ -104,9 +105,9 @@ wacat can detect HTTP errors between browser and server. For example if the butt
 An example about this is:
 
 ```
-
 wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
-
+```
+```
 Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app/. Please wait...
 undefined
  ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-http-500-error.vercel.app/' npx playwright test --project=chromium
@@ -161,7 +162,8 @@ Run command (--conf flag is used to pass the JSON file) and output is:
 
 ```
 wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
-
+```
+```
 Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app. Please wait...
 undefined
  ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' AUTHENTICATION_CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json
@@ -286,6 +288,10 @@ An example run command and output is:
 
 wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 
+```
+
+```
+
 Testing in url: https://mikesmallhelp-test-application-simple-authentication.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
@@ -303,6 +309,8 @@ Push the button #0
   1 passed (19.4s)
 
 ```
+
+Note in the output the text "Filled the username and the password. Pushed the authentication button", this means that wacat did the authentication.
 
 ### Do more complicated authentication
 
@@ -339,13 +347,18 @@ wacat can do authentication to this application with the following JSON file:
 
 ```
 
-The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given for the JSON attribute "usernameButtonLabel".
+The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given into the "usernameButtonLabel" JSON attribute's value.
 
 An example run command and output is:
 
 ```
 
 wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+
+
+```
+
+```
 
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
 
@@ -366,8 +379,6 @@ Push the button #0
 
 
 ```
-
-Note in the output the text "Filled the username and the password. Pushed the authentication button", this means that wacat did the authentication.
 
 ### Configure pages, which are not visited
 
@@ -399,7 +410,7 @@ If you don't want to go into the logout page, add the "notVisitLinkUrls" attribu
         "loginButtonLabel": "Login"
     },
     "notVisitLinkUrls": [
-        "http://localhost:3000/logout"
+        "https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout"
     ]
 }
 
@@ -410,6 +421,10 @@ An example run command and output is:
 ```
 
 wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+
+```
+
+```
 
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
 
@@ -436,5 +451,7 @@ Note now there are not the line:
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
 
 ```
+
+in the output.
 
 
