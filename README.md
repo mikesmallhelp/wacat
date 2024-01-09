@@ -144,7 +144,7 @@ undefined
 
 So wacat detects HTTP 500 error, prints the error log with the text "1 failed" and stops the execution.
 
-### Detect error strings from the target application's pages
+### Detect error strings from a target application's pages
 
 Here is an example application, which contains in one sub page an error text "Error occurred!":
 
@@ -209,7 +209,7 @@ undefined
  ›       [chromium] › test.spec.ts:29:1 › test an application
 ```
 
-So wacat detects "Error occurred!" text in one sub page, reports error with "1 failed" text and execution stops.
+So wacat detects "Error occurred!" text in one sub page, reports error with a "1 failed" text and execution stops.
 
 ### Read input field texts from the file
 
