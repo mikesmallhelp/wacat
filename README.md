@@ -150,14 +150,14 @@ Here is an example application, which contains in one sub page an error text "Er
 
 ![](doc/error-in-page.png)
 
-We configure in our example that "Error occurred!" is detected by wacat. We want also that "abc" is also detected. Our configuration-error-texts.json is:
+We configure in our example that "Error occurred!" is detected by wacat. We want also that the error text "abc" is detected. We configure this in JSON file like this:
 
 ```
 {
     "errorTexts": ["abc", "Error occurred!"]
 }
 ```
-Run command (--conf flag is used) and output is:
+Run command (--conf flag is used to pass the JSON file) and output is:
 
 ```
 wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
