@@ -53,7 +53,7 @@ export const authenticate = async ({ page }: { page: Page }) => {
         !configuration?.authentication?.usernameValue ||
         !configuration?.authentication?.passwordLabel ||
         !configuration?.authentication?.passwordValue ||
-        !configuration?.authentication?.finishButtonLabel) {
+        !configuration?.authentication?.loginButtonLabel) {
         throw new Error('Authentication configuration is not set, value: ' + JSON.stringify(configuration));
     }
 
@@ -70,7 +70,7 @@ export const authenticate = async ({ page }: { page: Page }) => {
     }
 
     await page.getByLabel(configuration.authentication.passwordLabel).fill(configuration.authentication.passwordValue);
-    await page.getByRole('button', { exact: true, name: `${configuration.authentication.finishButtonLabel}` }).click();
+    await page.getByRole('button', { exact: true, name: `${configuration.authentication.loginButtonLabel}` }).click();
 
     console.log('Filled the username and the password. Pushed the authentication button');
 }

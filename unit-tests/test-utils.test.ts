@@ -117,7 +117,7 @@ describe('readConfiguration', () => {
                 "usernameButtonLabel": "Next",
                 "passwordLabel": "Password",
                 "passwordValue": "123456",
-                "finishButtonLabel": "Login"
+                "loginButtonLabel": "Login"
             },
             "notVisitLinkUrls": ["http://localhost:3000/logout"]
           }`;
@@ -130,7 +130,7 @@ describe('readConfiguration', () => {
                 usernameButtonLabel: 'Next',
                 passwordLabel: 'Password',
                 passwordValue: '123456',
-                finishButtonLabel: 'Login'
+                loginButtonLabel: 'Login'
             },
             notVisitLinkUrls: ['http://localhost:3000/logout']
         };

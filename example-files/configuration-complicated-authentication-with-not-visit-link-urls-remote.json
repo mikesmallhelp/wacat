@@ -9,7 +9,7 @@
         "usernameButtonLabel": "Next",
         "passwordLabel": "Password",
         "passwordValue": "Smallhelp",
-        "finishButtonLabel": "Login"
+        "loginButtonLabel": "Login"
     },
     "notVisitLinkUrls": [
         "https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout"

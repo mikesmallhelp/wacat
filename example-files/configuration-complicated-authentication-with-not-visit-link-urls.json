@@ -9,7 +9,7 @@
         "usernameButtonLabel": "Next",
         "passwordLabel": "Password",
         "passwordValue": "Smallhelp",
-        "finishButtonLabel": "Login"
+        "loginButtonLabel": "Login"
     },
     "notVisitLinkUrls": [
         "http://localhost:3000/logout"

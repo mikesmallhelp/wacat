@@ -37,7 +37,7 @@ export type AuthenticationConfiguration = {
     usernameButtonLabel?: string;
     passwordLabel: string;
     passwordValue: string;
-    finishButtonLabel: string
+    loginButtonLabel: string
 } | null;
 
 export type Configuration = {

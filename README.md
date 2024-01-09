@@ -272,13 +272,13 @@ wacat can do authentication to this application with the following JSON file:
         "usernameValue": "Mike",
         "passwordLabel": "Password",
         "passwordValue": "Smallhelp",
-        "finishButtonLabel": "Login"
+        "loginButtonLabel": "Login"
     }
 }
 
 ```
 
-Note for example that the application contains "Username" label and this is put into the "usernameLabel" attribute's value in the JSON. The username value is "Mike", which is put into the "usernameValue" attribute's value in the JSON. And same logic applies for the password input field. The application has a button named "Login", which is put in the "finishButtonLabel" attribute's value in the JSON.
+Note for example that the application contains "Username" label and this is put into the "usernameLabel" attribute's value in the JSON. The username value is "Mike", which is put into the "usernameValue" attribute's value in the JSON. And same logic applies for the password input field. The application has a button named "Login", which is put in the "loginButtonLabel" attribute's value in the JSON.
 
 An example run command and output is:
 
@@ -333,10 +333,108 @@ wacat can do authentication to this application with the following JSON file:
         "usernameButtonLabel": "Next",
         "passwordLabel": "Password",
         "passwordValue": "Smallhelp",
-        "finishButtonLabel": "Login"
+        "loginButtonLabel": "Login"
     }
 }
 
 ```
 
-The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given for the JSON attribute "usernameButtonLabel".  
+The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given for the JSON attribute "usernameButtonLabel".
+
+An example run command and output is:
+
+```
+
+wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+
+Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:29:1 › test an application
+Filled the username and the password. Pushed the authentication button
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page
+Fill the #0 input field a value: if324rll
+#0 drop-down list. Select the option #1
+Push the button #0
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page2
+Fill the #0 input field a value: k1fqcdhg
+#0 drop-down list. Select the option #1
+Push the button #0
+  1 passed (24.5s)
+
+
+```
+
+Note in the output the text "Filled the username and the password. Pushed the authentication button", this means that wacat did the authentication.
+
+### Configure pages, which are not visited
+
+wacat is designed so that it should not go outside of the host you are testing. You can also configure more page urls, which are not visited.
+
+Look in the previous example
+
+```
+
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
+
+```
+
+If you don't want to go into the logout page, add the "notVisitLinkUrls" attribute into the JSON. It contains the urls, which are not visited. An example JSON is:
+
+```
+
+{
+    "authentication": {
+        "beforeAuthenticationLinkTexts": [
+            "Please go to an application",
+            "Please login"
+        ],
+        "usernameLabel": "Username",
+        "usernameValue": "Mike",
+        "usernameButtonLabel": "Next",
+        "passwordLabel": "Password",
+        "passwordValue": "Smallhelp",
+        "loginButtonLabel": "Login"
+    },
+    "notVisitLinkUrls": [
+        "http://localhost:3000/logout"
+    ]
+}
+
+```
+
+An example run command and output is:
+
+```
+
+wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+
+Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:29:1 › test an application
+Filled the username and the password. Pushed the authentication button
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page
+Fill the #0 input field a value: k825ikgw
+#0 drop-down list. Select the option #1
+Push the button #0
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page2
+Fill the #0 input field a value: 5okrd0c6
+#0 drop-down list. Select the option #1
+Push the button #0
+  1 passed (21.4s)
+
+```
+
+Note now there are not the line:
+
+```
+
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
+
+```
+
+

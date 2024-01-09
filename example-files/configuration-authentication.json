@@ -4,6 +4,6 @@
         "usernameValue": "Mike",
         "passwordLabel": "Password",
         "passwordValue": "Smallhelp",
-        "finishButtonLabel": "Login"
+        "loginButtonLabel": "Login"
     }
 }
