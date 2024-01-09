@@ -16,6 +16,8 @@ Additionally wacat
 - detects error strings from the web pages
   - you give error strings in a parameter file
 - can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
+- supports basic authentication
+  - you give authentication configuration in a JSON file
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally.
 
@@ -89,8 +91,9 @@ Push the button #0
   1 passed (7.4s)
 
 ```
+Note that output contains "1 passed" so wacat didn't find any errors in the application.
 
-### wacat can detect HTTP errors
+### Detect HTTP errors
 
 wacat can detect HTTP errors between browser and server. For example if the button in the example application below is pushed the HTTP 500 error occurs.
 
@@ -98,9 +101,9 @@ wacat can detect HTTP errors between browser and server. For example if the butt
 
 ![](doc/http-500-picture-2.png)
 
-```
-
 An example about this is:
+
+```
 
 wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
 
@@ -138,6 +141,75 @@ undefined
  ›       [chromium] › test.spec.ts:29:1 › test an application
 
 ```
+
+So wacat detects HTTP 500 error, prints the error log with the text "1 failed" and stops the execution.
+
+### Detect error strings from the target application's pages
+
+Here is an example application, which contains in one sub page an error text "Error occurred!":
+
+![](doc/error-in-page.png)
+
+We configure in our example that "Error occurred!" is detected by wacat. We want also that "abc" is also detected. Our configuration-error-texts.json is:
+
+```
+{
+    "errorTexts": ["abc", "Error occurred!"]
+}
+```
+Run command (--conf flag is used) and output is:
+
+```
+wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
+
+Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app. Please wait...
+undefined
+ ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' AUTHENTICATION_CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json
+ ›    npx playwright test --project=chromium
+ ›    + stderr:  + stdout: 
+ ›   Running 1 test using 1 worker
+     [chromium] › test.spec.ts:29:1 › test an application
+ ›   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
+     Check the page not contain the abc text
+     Check the page not contain the Error occurred! text
+     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/working-page
+     Check the page not contain the abc text
+     Check the page not contain the Error occurred! text
+     Fill the #0 input field a value: 4eqhz14r
+     #0 drop-down list. Select the option #1
+     Push the button #0
+     Check the page not contain the abc text
+     Check the page not contain the Error occurred! text
+     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/error-text-in-page
+     Check the page not contain the abc text
+     Check the page not contain the Error occurred! text
+       1) [chromium] › test.spec.ts:29:1 › test an application ──────────────────────────────────────────
+ ›   
+ ›       Error: expect(received).not.toContain(expected) // indexOf
+ ›
+ ›       Expected substring: not "Error occurred!"
+ ›       Received string:        "Test page - error-text-in-pageError occurred!{\"props\":{\"pageProps\":{}},\"page\":\"/error-text-in-page\",\"query\":{},\"buildId\":\"qQ0wdj-2mwRrndTkG4FBO\",\"nextExp
+ ›   ort\":true,\"autoExport\":true,\"isFallback\":false,\"scriptLoader\":[]}"
+ ›
+ ›          96 |     for (const errorText of configuration.errorTexts) {
+ ›          97 |         console.log(`Check the page not contain the ${errorText} text`);
+ ›       >  98 |         expect(content).not.toContain(errorText);
+ ›             |                             ^
+ ›          99 |     }
+ ›         100 | }
+ ›         101 |
+ ›
+ ›           at checkPageForErrors (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:98:29)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:84:5)
+ ›           at visitLinks (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:154:13)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:86:5)
+ ›           at /home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:47:5
+ ›
+       1 failed
+ ›       [chromium] › test.spec.ts:29:1 › test an application
+```
+
+So wacat detects "Error occurred!" text in one sub page, reports error with "1 failed" text and execution stops.
 
 ### Read input field texts from the file
 
