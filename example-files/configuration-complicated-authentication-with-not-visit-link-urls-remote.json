@@ -1,0 +1,17 @@
+{
+    "authentication": {
+        "beforeAuthenticationLinkNames": [
+            "Please go to an application",
+            "Please login"
+        ],
+        "usernameLabel": "Username",
+        "usernameValue": "Mike",
+        "usernameButtonLabel": "Next",
+        "passwordLabel": "Password",
+        "passwordValue": "Smallhelp",
+        "finishButtonLabel": "Login"
+    },
+    "notVisitLinkUrls": [
+        "https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout"
+    ]
+}
