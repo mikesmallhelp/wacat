@@ -31,7 +31,7 @@ export const readFileContent = async ({ path }: { path: string }): Promise<strin
 }
 
 export type AuthenticationConfiguration = {
-    beforeAuthenticationLinkNames?: string[];
+    beforeAuthenticationLinkTexts?: string[];
     usernameLabel: string;
     usernameValue: string;
     usernameButtonLabel?: string;

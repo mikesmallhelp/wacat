@@ -1,6 +1,6 @@
 {
     "authentication": {
-        "beforeAuthenticationLinkNames": [
+        "beforeAuthenticationLinkTexts": [
             "Please go to an application",
             "Please login"
         ],

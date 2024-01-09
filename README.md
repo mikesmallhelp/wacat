@@ -233,6 +233,7 @@ wacat test --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/m
 Both commands should output following:
 
 ```
+
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
@@ -249,7 +250,93 @@ Fill the #0 input field a value: ybyb
 #0 drop-down list. Select the option #1
 Push the button #0
   1 passed (13.7s)
+
 ```
 In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. But please note that currently wacat doesn't support very long files, maybe there is some memory problem. But you can currently split too long files and test like that.
 
+## Do authencation
 
+Here is an application with a simple authentication
+
+![](doc/simple-auth-picture-1.png)
+
+![](doc/simple-auth-picture-2.png)
+
+wacat can do authentication to this application with the following JSON file:
+
+```
+
+{
+    "authentication": {
+        "usernameLabel": "Username",
+        "usernameValue": "Mike",
+        "passwordLabel": "Password",
+        "passwordValue": "Smallhelp",
+        "finishButtonLabel": "Login"
+    }
+}
+
+```
+
+Note for example that the application contains "Username" label and this is put into the "usernameLabel" attribute's value in the JSON. The username value is "Mike", which is put into the "usernameValue" attribute's value in the JSON. And same logic applies for the password input field. The application has a button named "Login", which is put in the "finishButtonLabel" attribute's value in the JSON.
+
+An example run command and output is:
+
+```
+
+wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
+
+Testing in url: https://mikesmallhelp-test-application-simple-authentication.vercel.app/. Please wait...
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:29:1 › test an application
+Filled the username and the password. Pushed the authentication button
+In the page: https://mikesmallhelp-test-application-simple-authentication.vercel.app/
+In the page: https://mikesmallhelp-test-application-simple-authentication.vercel.app/working-page
+Fill the #0 input field a value: 5yzn4z93
+#0 drop-down list. Select the option #1
+Push the button #0
+In the page: https://mikesmallhelp-test-application-simple-authentication.vercel.app/working-page2
+Fill the #0 input field a value: 5zl4fvk4
+#0 drop-down list. Select the option #1
+Push the button #0
+  1 passed (19.4s)
+
+```
+
+### Do more complicated authentication
+
+Here is an application with a more complicated authentication
+
+![](doc/more-complicated-auth-picture-1.png)
+
+![](doc/more-complicated-auth-picture-2.png)
+
+![](doc/more-complicated-auth-picture-3.png)
+
+![](doc/more-complicated-auth-picture-4.png)
+
+![](doc/more-complicated-auth-picture-5.png)
+
+wacat can do authentication to this application with the following JSON file:
+
+```
+
+{
+    "authentication": {
+        "beforeAuthenticationLinkTexts": [
+            "Please go to an application",
+            "Please login"
+        ],
+        "usernameLabel": "Username",
+        "usernameValue": "Mike",
+        "usernameButtonLabel": "Next",
+        "passwordLabel": "Password",
+        "passwordValue": "Smallhelp",
+        "finishButtonLabel": "Login"
+    }
+}
+
+```
+
+The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given for the JSON attribute "usernameButtonLabel".  

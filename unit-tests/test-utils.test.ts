@@ -111,7 +111,7 @@ describe('readConfiguration', () => {
         {
             "errorTexts": ["Error occurred!"],
             "authentication": {
-                "beforeAuthenticationLinkNames": ["Login"],
+                "beforeAuthenticationLinkTexts": ["Login"],
                 "usernameLabel": "Username",
                 "usernameValue": "testuser",
                 "usernameButtonLabel": "Next",
@@ -124,7 +124,7 @@ describe('readConfiguration', () => {
         const expectedConfig: Configuration = {
             errorTexts: ['Error occurred!'],
             authentication: {
-                beforeAuthenticationLinkNames: ['Login'],
+                beforeAuthenticationLinkTexts: ['Login'],
                 usernameLabel: 'Username',
                 usernameValue: 'testuser',
                 usernameButtonLabel: 'Next',

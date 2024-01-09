@@ -57,8 +57,8 @@ export const authenticate = async ({ page }: { page: Page }) => {
         throw new Error('Authentication configuration is not set, value: ' + JSON.stringify(configuration));
     }
 
-    if (configuration.authentication.beforeAuthenticationLinkNames) {
-        for (const linkName of configuration.authentication.beforeAuthenticationLinkNames) {
+    if (configuration.authentication.beforeAuthenticationLinkTexts) {
+        for (const linkName of configuration.authentication.beforeAuthenticationLinkTexts) {
             page.getByText(linkName).click();
         }
     }
