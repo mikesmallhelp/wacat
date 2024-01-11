@@ -82,7 +82,11 @@ const handlePage = async ({ page }: { page: Page }) => {
     visitedUrlsOrNotVisitLinkUrls.push(page.url());
 
     await checkPageForErrors({ page });
-    await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
+
+    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
+        await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
+    }
+
     await visitLinks({ page });
 }
 
@@ -99,12 +103,12 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 }
 
-const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { page: Page }) => {
+const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, page }: { inputText: string, page: Page }) => {
     const buttonsLocator = page.locator('button');
     const buttonsCount = await buttonsLocator.count();
 
     for (let i = 0; i < buttonsCount; i++) {
-        await fillInputs({ page });
+        await fillInputs({ inputText, page });
         await selectFromDropDownLists({ page });
 
         const button = buttonsLocator.nth(i);
@@ -115,16 +119,14 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
     }
 }
 
-const fillInputs = async ({ page }: { page: Page }) => {
+const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
     const inputsLocator = page.locator('input');
     const inputsCount = await inputsLocator.count();
 
-    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
-        for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
-            const input = inputsLocator.nth(inputIndex);
-            console.log('Fill the #' + inputIndex + " input field a value: " + inputText);
-            input.fill(inputText);
-        }
+    for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
+        const input = inputsLocator.nth(inputIndex);
+        console.log('Fill the #' + inputIndex + " input field a value: " + inputText);
+        input.fill(inputText);
     }
 }
 

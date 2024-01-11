@@ -235,25 +235,28 @@ wacat test --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/m
 Both commands should output following:
 
 ```
-
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:31:1 › test an application
+[chromium] › test.spec.ts:29:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
 Fill the #0 input field a value: xaxa
+#0 drop-down list. Select the option #1
+Push the button #0
 Fill the #0 input field a value: ybyb
 #0 drop-down list. Select the option #1
 Push the button #0
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
 Fill the #0 input field a value: xaxa
+#0 drop-down list. Select the option #1
+Push the button #0
 Fill the #0 input field a value: ybyb
 #0 drop-down list. Select the option #1
 Push the button #0
-  1 passed (13.7s)
-
+  1 passed (22.9s)
 ```
+
 In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. But please note that currently wacat doesn't support very long files, maybe there is some memory problem. But you can currently split too long files and test like that.
 
 ## Do authencation
