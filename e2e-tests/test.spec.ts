@@ -112,8 +112,12 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
         await selectFromDropDownLists({ page });
 
         const button = buttonsLocator.nth(i);
-        console.log('Push the button #' + i);
-        await button.click();
+
+        if (await button.isVisible()) {
+            console.log('Push the button #' + i);
+            await button.click();
+        }
+        
         await page.waitForTimeout(waitForTimeout);
         await checkPageForErrors({ page });
     }
