@@ -16,7 +16,7 @@ Additionally wacat
 - detects error strings from the web pages
   - you give error strings in a parameter file
 - can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
-- supports basic authentication
+- supports some authentication scenarios
   - you give authentication configuration in a JSON file
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally.
@@ -41,7 +41,7 @@ Clone the wacat repository, go to the wacat folder and run:
 npm install && npx playwright install --with-deps && npm run build && npm i -g
 ```
 
-Note: probably your password is asked, when you run previous command, because the Playwright tool is installed globally
+Note: probably your password is asked, when you run previous command, because the Playwright tool is installed globally.
 
 ## Running
 
@@ -66,11 +66,11 @@ tests a simple application in the url https://wacat-test-application-mikesmallhe
 
 ![](doc/test-application-picture-3.png)
 
-First the wacat application opens Chromium browser and goes to the root URL, which was given for the command: 
+First the wacat application opens the Chromium browser and goes to the root URL, which was given for the command: 
 
 ![](doc/chromium-opened.png)
 
-The root page doesn't contain any input fields, dropdown menus or buttons. wacat simple collects links of the two sub pages and goes to them. In the sub pages wacat fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command output, which you can copy, paste and run:
+The root page doesn't contain any input fields, dropdown menus or buttons. wacat simple collects links of the two sub pages and goes to them. In the sub pages wacat fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command, which you can copy, paste and run. Same way you can run all other examples and use my test applications.
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
@@ -158,7 +158,7 @@ We configure in our example that "Error occurred!" is detected by wacat. We want
     "errorTexts": ["abc", "Error occurred!"]
 }
 ```
-Run command (--conf flag is used to pass the JSON file) and output is:
+Run command (--conf flag is used to pass the JSON file) and output are:
 
 ```
 wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
@@ -215,13 +215,13 @@ So wacat detects "Error occurred!" text in one sub page, reports error with a "1
 
 ### Read input field texts from the file
 
-Normally wacat fills the input fields with the random strings. It is possible to read input fields from the file, for example from the file example-files/input.texts, which contents are:
+Normally wacat fills the form input fields with the random strings. It is possible to read input fields from the file, for example from the file example-files/input.texts, which contents are:
 
 ```
 xaxa
 ybyb
 ```
-Wacat uses each input text from the file for the each input field in the target application. The run command is for a local file:
+wacat uses each input text from the file for the each input field in the target application. The run command is for a local file:
 
 ```
 wacat test --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
@@ -280,9 +280,9 @@ wacat can do authentication to this application with the following JSON file:
 
 ```
 
-Note for example that the application contains "Username" label and this is put into the "usernameLabel" attribute's value in the JSON. The username value is "Mike", which is put into the "usernameValue" attribute's value in the JSON. And same logic applies for the password input field. The application has a button named "Login", which is put in the "loginButtonLabel" attribute's value in the JSON.
+Note for example that the application contains "Username" label and this is put into the "usernameLabel" attribute's value in the JSON. The username value is "Mike", which is put into the "usernameValue" attribute's value in the JSON. And same logic applies for the password input field. The application has a button named "Login", which is put into the "loginButtonLabel" attribute's value in the JSON.
 
-An example run command and output is:
+An example run command and output are:
 
 ```
 
@@ -349,7 +349,7 @@ wacat can do authentication to this application with the following JSON file:
 
 The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given into the "usernameButtonLabel" JSON attribute's value.
 
-An example run command and output is:
+An example run command and output are:
 
 ```
 
@@ -416,7 +416,7 @@ If you don't want to go into the logout page, add the "notVisitLinkUrls" attribu
 
 ```
 
-An example run command and output is:
+An example run command and output are:
 
 ```
 
@@ -453,5 +453,34 @@ In the page: https://mikesmallhelp-test-application-more-complicated-authenticat
 ```
 
 in the output.
+
+## Developing wacat
+
+### Technologies
+
+wacat technology stack is simple:
+
+- Typescript
+- Bash script
+- oclif, The Open CLI Framework
+- Playwright
+
+### Developing
+
+Do your changes and run
+
+```
+npm run test && npm run build && npm install -g && ./run-tests.sh
+```
+
+## Contributions
+
+Contributions are warmly welcome. For example there are these issues now:
+
+- wacat doesn't work for every web application
+- input field texts can't be read from big files
+- installation and running wacat should be only with the npx command
+- developing should be possible also with Windows and Mac
+- etc
 
 
