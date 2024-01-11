@@ -1,3 +1,5 @@
+![](doc/wacat-logo.png)
+
 # wacat - Tests your web application against cat chaos!
 
 Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile your cat walks over your keyboard and causes some chaos. 
