@@ -130,7 +130,10 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
         const input = inputsLocator.nth(inputIndex);
         console.log('Fill the #' + inputIndex + " input field a value: " + inputText);
-        input.fill(inputText);
+        
+        if (await input.isVisible()) {
+            input.fill(inputText);
+        }
     }
 }
 
@@ -144,7 +147,10 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
         const optionsCount = await optionsLocator.count();
         const optionNumberToSelect = optionsCount > 1 ? 1 : 0;
         console.log('#' + selectIndex + " drop-down list. Select the option #" + optionNumberToSelect);
-        await select.selectOption({ index: optionNumberToSelect })
+
+        if (await select.isVisible()) {
+            await select.selectOption({ index: optionNumberToSelect })
+        }
     }
 }
 
