@@ -23,6 +23,8 @@ Additionally, wacat
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally.
 
+Please create a new issue, if you find a bug or some particular feature is needed.
+
 ## Warnings
 
 Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be illegal. 
@@ -469,6 +471,7 @@ wacat technology stack is simple:
 - Bash script
 - oclif, The Open CLI Framework
 - Playwright
+- Next.js for the test applications
 
 ### Developing
 
@@ -480,12 +483,8 @@ npm run test && npm run build && npm install -g && ./run-tests.sh
 
 ## Contributions
 
-Contributions are warmly welcome. For example there are these issues now:
+Contributions are warmly welcome. Look for the issues page. Please create a new issue, if you find a bug or some particular feature is needed.
 
-- wacat doesn't work for every web application
-- input field texts can't be read from big files
-- installation and running wacat should be only with the npx command
-- developing should be possible also with Windows and Mac
-- etc
+Please note: If you add a new feature, add a test case for that. Please look `run-tests.sh` file.
 
 
