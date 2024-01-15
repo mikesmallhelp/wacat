@@ -485,6 +485,6 @@ npm run test && npm run build && npm install -g && ./run-tests.sh
 
 Contributions are warmly welcome. Look for the issues page. Please create a new issue, if you find a bug or some particular feature is needed.
 
-Please note: If you add a new feature, add a test case for that. Please look `run-tests.sh` file.
+Please note: If you add a new feature, add a test case for that. Please look `run-tests.sh` file. Please consider also adding unit tests.
 
 
