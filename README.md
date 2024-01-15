@@ -2,17 +2,17 @@
 
 # wacat - Tests your web application against cat chaos!
 
-Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile your cat walks over your keyboard and causes some chaos. 
+Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile, your cat walks over your keyboard and causes some chaos. 
 
 wacat (walking cat) application for example:
 
 - goes to your web application root url
-- visit every link in your application
+- visits every link in your application
 - adds random inputs to your page's form inputs
 - selects random values from dropdown menus
-- pushes every buttons
+- pushes every button
 
-Additionally wacat
+Additionally, wacat
 
 - detects HTTP errors (for example HTTP 500 errors) between browser and server
 - detects error strings from the web pages
@@ -25,9 +25,9 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally.
 
 ## Warnings
 
-Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be criminal. 
+Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be illegal. 
 
-Application is designed so that it should not go outside of the host you are testing. But because this is my hobby project everything is possible and it's good to follow what the wacat application is doing and use ctrl + c if it goes to wrong page. Please also note that if your application uses authentication and your wacat authentication configuration is not correct or wacat is not working for your case, then your account could be locked or something like that. Also wacat could mess your applications's database etc. So it's good to test only in the test environment.
+Application is designed not go outside of the host you are testing. But as this is my hobby project everything is possible and it's good to follow what the wacat application is doing and use ctrl + c if it goes to wrong page. Please also note that if your application uses authentication and your wacat authentication configuration is not correct or wacat is not working for your case, then your account could be locked or something like that. Also wacat could mess your applications's database etc. So it's good to test only in the test environment.
 
 ## Installation
 
