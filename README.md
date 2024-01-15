@@ -8,8 +8,8 @@ wacat (walking cat) application for example:
 
 - goes to your web application root url
 - visits every link in your application
-- adds random inputs to your page's form inputs
-- selects random values from dropdown menus
+- adds random inputs to form inputs
+- selects values from dropdown menus
 - clicks on every button
 
 Additionally, wacat
