@@ -10,7 +10,7 @@ wacat (walking cat) application for example:
 - visits every link in your application
 - adds random inputs to your page's form inputs
 - selects random values from dropdown menus
-- pushes every button
+- clicks on every button
 
 Additionally, wacat
 
