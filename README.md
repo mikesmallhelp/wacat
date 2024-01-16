@@ -60,9 +60,9 @@ wacat test <your url>
 For example a command:
 
 ```
-wacat test https://wacat-test-application-mikesmallhelp.vercel.app/
+wacat test https://mikesmallhelp-test-application.vercel.app/
 ```
-tests a simple application in the url https://wacat-test-application-mikesmallhelp.vercel.app/. The application have pages:
+tests a simple application in the url https://mikesmallhelp-test-application.vercel.app/. The application have pages:
 
 ![](doc/test-application-picture-1.png)
 
