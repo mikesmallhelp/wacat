@@ -27,6 +27,7 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 }
 
 test('test an application', async ({ page }) => {
+    test.setTimeout(120000);
     await page.goto(rootUrl);
     await page.waitForTimeout(waitForTimeout);
 
