@@ -27,7 +27,7 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 }
 
 test('test an application', async ({ page }) => {
-    test.setTimeout(120000);
+    test.setTimeout(120000); // eslint-disable-line unicorn/numeric-separators-style
     await page.goto(rootUrl);
     await page.waitForTimeout(waitForTimeout);
 
