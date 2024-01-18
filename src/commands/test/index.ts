@@ -1,7 +1,6 @@
 import {Args, Command, Flags} from '@oclif/core';
 import {exec} from 'node:child_process';
 
-
 export default class TestCommand extends Command {
   static args = {
     url: Args.string({description: 'Application url to test, for example: http://localhost:3000', required: true}),
@@ -23,19 +22,29 @@ export default class TestCommand extends Command {
     const {args, flags} = await this.parse(TestCommand);
 
     try {
-      let command = `ROOT_URL='${args.url}'`;
-      command += flags['error-texts'] ? ` PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}` : '';
-      command += flags['input-texts'] ? ` INPUT_TEXTS_FILE_PATH=${flags['input-texts']}` : '';
-      command += flags['conf'] ? ` AUTHENTICATION_CONFIGURATION_FILE_PATH=${flags['conf']}` : ''; // eslint-disable-line dot-notation
-      command += ' npx playwright test --project=chromium';
+      const command = this.buildCommand(args, flags);
       
       this.log(`\nTesting in url: ${args.url}. Please wait...`);
       const { stdout } = await this.runCommand(command);
       this.log(`${stdout}`);
-    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {  // eslint-disable-line @typescript-eslint/no-explicit-any
       this.log(`${error.stdout}`);
       this.error(`${error.message}`);
     }
+  }
+
+  private buildCommand(args: any, flags: any): string { // eslint-disable-line @typescript-eslint/no-explicit-any
+    const isWindows = process.platform === "win32";
+    const prefix = isWindows ? 'set ' : '';
+    const suffix = isWindows ? ' && ' : ' ';
+   
+    let command = isWindows ? `${prefix}ROOT_URL=${args.url}${suffix}` : `${prefix}ROOT_URL='${args.url}'${suffix}`;
+    command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
+    command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
+    command += flags.conf ? `${prefix}AUTHENTICATION_CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
+    command += 'npx playwright test --project=chromium';
+
+    return command;
   }
 
   private runCommand(command: string): Promise<{ stderr: string, stdout: string }> {
