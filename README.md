@@ -25,6 +25,12 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally.
 
 Please create a new issue, if you find a bug or some particular feature is needed.
 
+## Limitations
+
+- tested only with Linux (Ubuntu 20.04.6 LTS)
+- not working with Windows
+- not tested with Mac
+
 ## Warnings
 
 Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be illegal. 
