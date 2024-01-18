@@ -5,10 +5,9 @@ import { fail } from 'node:assert';
 
 import {
     Configuration, generateRandomString, hostIsSame,
-    readConfiguration, readFileContent
+    readConfiguration, readFileContent, createNetworkHelper
 } from '../utils/test-utils';
 
-const waitForTimeout = 2000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
@@ -29,23 +28,27 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 test('test an application', async ({ page }) => {
     test.setTimeout(120000); // eslint-disable-line unicorn/numeric-separators-style
     await page.goto(rootUrl);
-    await page.waitForTimeout(waitForTimeout);
 
-    page.on('response', response => {
-        const status = response.status();
-        const url = response.url();
-
-        if (status >= 400) {
-            console.log(`Request to ${url} resulted in status code ${status}`);
-            fail(`Request to ${url} resulted in status code ${status}`);
+    const networkHelper = createNetworkHelper(page);
+    networkHelper.waitForNetworkSettled().then(async () => {
+        page.on('response', response => {
+            const status = response.status();
+            const url = response.url();
+    
+            if (status >= 400) {
+                console.log(`Request to ${url} resulted in status code ${status}`);
+                fail(`Request to ${url} resulted in status code ${status}`);
+            }
+        });
+    
+        if (configuration && configuration.authentication) {
+            await authenticate({ page });
         }
+    
+        await handlePage({ page });
+    }).catch(error => {
+        console.error(error);
     });
-
-    if (configuration && configuration.authentication) {
-        await authenticate({ page });
-    }
-
-    await handlePage({ page });
 });
 
 export const authenticate = async ({ page }: { page: Page }) => {
@@ -79,16 +82,20 @@ export const authenticate = async ({ page }: { page: Page }) => {
 const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());
 
-    await page.waitForTimeout(waitForTimeout);
-    visitedUrlsOrNotVisitLinkUrls.push(page.url());
+    const networkHelper = createNetworkHelper(page);
+    networkHelper.waitForNetworkSettled().then(async () => {
+        visitedUrlsOrNotVisitLinkUrls.push(page.url());
 
-    await checkPageForErrors({ page });
-
-    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
-        await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
-    }
-
-    await visitLinks({ page });
+        await checkPageForErrors({ page });
+    
+        for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
+            await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
+        }
+    
+        await visitLinks({ page });
+    }).catch(error => {
+        console.error(error);
+    });
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
@@ -119,8 +126,12 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
             await button.click();
         }
         
-        await page.waitForTimeout(waitForTimeout);
-        await checkPageForErrors({ page });
+        const networkHelper = createNetworkHelper(page);
+        networkHelper.waitForNetworkSettled().then(async () => {
+            await checkPageForErrors({ page });
+        }).catch(error => {
+            console.error(error);
+        });
     }
 }
 
@@ -163,8 +174,12 @@ const visitLinks = async ({ page }: { page: Page }) => {
     for (const link of links) {
         if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             await page.goto(link);
-            await page.waitForTimeout(waitForTimeout);
-            await handlePage({ page });
+            const networkHelper = createNetworkHelper(page);
+            networkHelper.waitForNetworkSettled().then(async () => {
+                await handlePage({ page });
+            }).catch(error => {
+                console.error(error);
+            });
         }
     }
 }

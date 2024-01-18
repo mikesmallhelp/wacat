@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import fs from 'node:fs';
+import waitForExpect from 'wait-for-expect';
 
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
@@ -54,4 +55,31 @@ export const readConfiguration = async ({ path }: { path: string }): Promise<Con
         console.error('Error reading authentication configuration:', error);
         return null;
     }
+};
+
+export const createNetworkHelper = (page: any): any => {
+    let pendingRequests: Set<any> = new Set();
+
+    const initNetworkSettledListeners = () => {
+        page.on('request', (request: any) => pendingRequests.add(request));
+        page.on('requestfailed', (request: any) => pendingRequests.delete(request));
+        page.on('requestfinished', (request: any) => pendingRequests.delete(request));
+    };
+
+    const waitForNetworkSettled = async (timeout: number = 30000) => {
+        await waitForExpect(() => {
+            if (pendingRequests.size !== 0) {
+                const pendingUrls = Array.from(pendingRequests).map(req => req.url());
+                throw Error(
+                    `Timeout: Waiting for settled network, but there are following pending requests after ${timeout}ms.\n${pendingUrls.join('\n')}`
+                );
+            }
+        }, timeout);
+    };
+
+    initNetworkSettledListeners();
+
+    return {
+        waitForNetworkSettled
+    };
 };
