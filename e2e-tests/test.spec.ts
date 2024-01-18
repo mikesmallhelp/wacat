@@ -27,7 +27,7 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 }
 
 test('test an application', async ({ page }) => {
-    test.setTimeout(120000); // eslint-disable-line unicorn/numeric-separators-style
+    test.setTimeout(120_000);
     await page.goto(rootUrl);
     await page.waitForTimeout(waitForTimeout);
 
@@ -114,7 +114,7 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
 
         const button = buttonsLocator.nth(i);
 
-        if (await button.isVisible()) {
+        if (await button.isVisible() && await button.isEnabled()) {
             console.log('Push the button #' + i);
             await button.click();
         }
