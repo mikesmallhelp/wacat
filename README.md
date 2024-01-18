@@ -23,7 +23,7 @@ Additionally, wacat
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally.
 
-Please create a new issue, if you find a bug or some particular feature is needed.
+Please note wacat is still under construction. Please create a new issue, if you find a bug or some particular feature is needed.
 
 ## Limitations
 
