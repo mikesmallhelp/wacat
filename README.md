@@ -28,7 +28,7 @@ Please note wacat is still under construction. Please create a new issue, if you
 ## Limitations
 
 - tested only with Linux (Ubuntu 20.04.6 LTS)
-- not working with Windows
+- not working with Windows, possibly support will come end of february 
 - not tested with Mac
 
 ## Warnings
