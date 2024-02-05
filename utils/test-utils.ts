@@ -7,7 +7,7 @@ export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): 
 
 export const getHost = ({ url }: { url: string }): string => {
     const parts = url.split("/");
-    return parts.slice(0, 3).join("/");
+    return parts.slice(0, 3).join("/").trim();
 };
 
 export const generateRandomString = (): string => Math.floor(Math.random() * Date.now()).toString(36);
