@@ -225,11 +225,18 @@ Normally wacat fills the form input fields with the random strings. It is possib
 xaxa
 ybyb
 ```
-wacat uses each input text from the file for the each input field in the target application. The run command is for a local file:
+wacat uses each input text from the file for the each input field in the target application. The run command is for a local file in Windows:
+
+```
+wacat test --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
+```
+
+and in Linux:
 
 ```
 wacat test --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
+
 and for the remote file:
 
 ```
