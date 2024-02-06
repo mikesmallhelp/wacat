@@ -66,7 +66,6 @@ function Run-PlaywrightTests {
     $command = "wacat test $testCommandExtraParameters http://localhost:3000 2>&1"
     $testOutput = Invoke-Expression $command
 
-
     Write-Host $testOutput
 
     $testSuccess = $true
