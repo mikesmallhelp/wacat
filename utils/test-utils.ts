@@ -1,7 +1,7 @@
 /* eslint-disable perfectionist/sort-object-types */
 
 import axios from 'axios';
-import fse from 'fs-extra';
+import fse from 'fs-extra'; // eslint-disable-line import/default
 
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
@@ -20,7 +20,7 @@ export const readFileContent = async ({ path }: { path: string }): Promise<strin
             const axiosResponse = await axios.get(path);
             response = axiosResponse.data;
         } else {
-            response = await fse.readFile(path.trim(), 'utf8');
+            response = await fse.readFile(path.trim(), 'utf8'); // eslint-disable-line import/no-named-as-default-member
         }
 
         return response.split('\n');
@@ -48,7 +48,7 @@ export type Configuration = {
 
 export const readConfiguration = async ({ path }: { path: string }): Promise<Configuration> => {
     try {
-        return await fse.readJson(path.trim());;
+        return await fse.readJson(path.trim()); // eslint-disable-line import/no-named-as-default-member
     } catch (error: unknown) {
         console.log('Error reading configuration:', error);
         throw new Error('Error reading file: ' + error);
