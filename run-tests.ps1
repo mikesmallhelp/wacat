@@ -107,7 +107,7 @@ Copy-Item "playwright.config.ts-headless-true" -Destination "playwright.config.t
 Start-Process npm -ArgumentList "run dev" -WorkingDirectory "test-app/test-app" -NoNewWindow
 Start-Sleep -Seconds 10
 
-Run-PlaywrightTests "index-working-page2.tsx" "" "1 passedx" "Push the button #0"
+Run-PlaywrightTests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
 Run-PlaywrightTests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
 
 Copy-Item "playwright.config.ts-headless-false" -Destination "playwright.config.ts"
