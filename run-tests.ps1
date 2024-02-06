@@ -10,7 +10,7 @@ function Run-PlaywrightTestsFailingAndErrorTextFound {
         [string]$testFilename
     )
 
-    Run-PlaywrightTests $testFilename "--conf example-files/configuration-error-texts.json" "1 failed" "expect(content).not.toContain"
+    Run-PlaywrightTests $testFilename "--conf example-files\configuration-error-texts.json" "1 failed" "expect(content).not.toContain"
 }
 
 function Print-TestParameters {
@@ -60,6 +60,9 @@ function Run-PlaywrightTests {
 
     Start-Sleep -Seconds 20
 
+    $command = "wacat test $testCommandExtraParameters http://localhost:3000"
+    Write-Host "Executing command: $command"
+
     $testOutput = wacat test $testCommandExtraParameters http://localhost:3000 2>&1
 
     Write-Host $testOutput
@@ -107,7 +110,7 @@ Copy-Item "playwright.config.ts-headless-true" -Destination "playwright.config.t
 Start-Process npm -ArgumentList "run dev" -WorkingDirectory "test-app/test-app" -NoNewWindow
 Start-Sleep -Seconds 10
 
-Run-PlaywrightTests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
+Run-PlaywrightTestsFailingAndErrorTextFound "index-error-text-in-page.tsx"
 Run-PlaywrightTests "index-working-page2.tsx" "" "1 passed" "Push the button #0"
 
 Copy-Item "playwright.config.ts-headless-false" -Destination "playwright.config.ts"
