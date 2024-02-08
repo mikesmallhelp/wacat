@@ -15,7 +15,8 @@ export default class TestCommand extends Command {
   static flags = {
     'conf': Flags.string({char: 'a', description: 'Path to the configuration file'}),
     'error-texts': Flags.string({char: 'e', description: 'Path to the error texts file'}),
-    'input-texts': Flags.string({char: 'e', description: 'Path to the input texts file'})
+    'input-texts': Flags.string({char: 'e', description: 'Path to the input texts file'}),
+    'debug': Flags.boolean({char: 'd', description: 'Enable debug mode'}),
   }
 
   async run(): Promise<void> {
@@ -25,6 +26,11 @@ export default class TestCommand extends Command {
       const command = this.buildCommand(args, flags);
       
       this.log(`\nTesting in url: ${args.url}. Please wait...`);
+
+      if (flags.debug) {
+        this.log(`The Playwright command: ${command}`);
+      }
+
       const { stdout } = await this.runCommand(command);
       this.log(`${stdout}`);
     } catch (error: any) {  // eslint-disable-line @typescript-eslint/no-explicit-any
