@@ -25,12 +25,6 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally.
 
 Please note wacat is still under construction. Please create a new issue, if you find a bug or some particular feature is needed.
 
-## Limitations
-
-- tested only with Linux (Ubuntu 20.04.6 LTS)
-- not working with Windows, possibly support will come end of february 
-- not tested with Mac
-
 ## Warnings
 
 Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be illegal. 
@@ -173,7 +167,7 @@ The run command (--conf flag is used to pass the JSON file) for Windows is:
 ```
 wacat test --conf example-files\configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
 ```
-The run command for Linux is:
+The run command for Linux and Mac is:
 
 ```
 wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
@@ -245,7 +239,7 @@ wacat uses each input text from the file for the each input field in the target 
 wacat test --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
 
-and in Linux:
+and in Linux and Mac:
 
 ```
 wacat test --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
@@ -334,7 +328,7 @@ The example run command for Windows is:
 wacat test --conf example-files\configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
-The run command for Linux is:
+The run command for Linux and Mac is:
 
 ```
 wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
@@ -405,7 +399,7 @@ The example run command for Windows is:
 ```
 wacat test --conf example-files\configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
-The run command for Linux is:
+The run command for Linux and Mac is:
 
 ```
 wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
@@ -470,7 +464,7 @@ The example run command for Windows is:
 wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
-The run command for Linux is:
+The run command for Linux and Mac is:
 
 ```
 wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
