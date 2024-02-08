@@ -120,6 +120,9 @@ run_playwright_tests "index-api-returns-http-500.tsx" "--conf example-files/conf
 run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #1"
+run_playwright_tests "index-working-page2.tsx" "--only-links" "1 passed" \
+         "In the page: http://localhost:3000/working-page" \
+         "In the page: http://localhost:3000/working-page2" "Push the button #0"
 run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json" "1 passed" \
        "In the page: http://localhost:3000/working-page2"
 run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json" \

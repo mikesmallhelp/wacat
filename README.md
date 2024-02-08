@@ -284,6 +284,24 @@ Push the button #0
 
 In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. But please note that currently wacat doesn't support very long files, maybe there is some memory problem. But you can currently split too long files and test like that.
 
+## Test only links
+
+To test only links in the application use a ```--only-links``` flag. An example command and output are:
+
+```
+wacat test --only-links https://mikesmallhelp-test-application.vercel.app/
+
+Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:30:1 › test an application
+In the page: https://mikesmallhelp-test-application.vercel.app/
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
+  1 passed (14.9s)
+```
+
 ## Do authencation
 
 Here is an application with a simple authentication
