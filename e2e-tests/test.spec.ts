@@ -15,6 +15,7 @@ const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
 const configuration: Configuration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
     await readConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
+const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -85,7 +86,9 @@ const handlePage = async ({ page }: { page: Page }) => {
     await checkPageForErrors({ page });
 
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
-        await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
+        if (!onlyLinks) {
+            await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
+        }
     }
 
     await visitLinks({ page });
