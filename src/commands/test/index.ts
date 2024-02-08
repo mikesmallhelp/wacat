@@ -25,17 +25,16 @@ export default class TestCommand extends Command {
     try {
       const command = this.buildCommand(args, flags);
       
-      this.log(`\nTesting in url: ${args.url}. Please wait...`);
+      this.log(`\nTesting in url: ${args.url}. Please wait...\n`);
 
       if (flags.debug) {
-        this.log(`The Playwright command: ${command}`);
+        this.log(`\nThe Playwright command: ${command}\n`);
       }
 
       const { stdout } = await this.runCommand(command);
       this.log(`${stdout}`);
     } catch (error: any) {  // eslint-disable-line @typescript-eslint/no-explicit-any
-      this.log(`${error.stdout}`);
-      this.error(`${error.message}`);
+      this.error(`\n${error.message}`);
     }
   }
 
