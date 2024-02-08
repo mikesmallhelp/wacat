@@ -24,6 +24,8 @@ const WorkingPage = ({ title }: { title: string }) => {
                 <option value="bbb">bbb</option>
             </select>
 
+            <button disabled>Disabled button</button>
+
             <button onClick={handleButtonClick}>Normal button</button>
 
             <div>{result}</div>

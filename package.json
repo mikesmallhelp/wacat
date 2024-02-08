@@ -8,6 +8,7 @@
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^3.7.0",
     "axios": "^1.6.2",
+    "fs-extra": "^11.2.0",
     "sinon": "^17.0.1"
   },
   "description": "The wacat tests any web application",
@@ -16,6 +17,7 @@
     "@oclif/test": "^3",
     "@playwright/test": "^1.39.0",
     "@types/chai": "^4",
+    "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10",
     "@types/node": "^18",
     "chai": "^4",
