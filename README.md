@@ -168,11 +168,19 @@ We configure in our example that "Error occurred!" is detected by wacat. We want
     "errorTexts": ["abc", "Error occurred!"]
 }
 ```
-Run command (--conf flag is used to pass the JSON file) and output are:
+The run command (--conf flag is used to pass the JSON file) for Windows is:
+
+```
+wacat test --conf example-files\configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
+```
+The run command for Linux is:
 
 ```
 wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
 ```
+
+The command output is:
+
 ```
 Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app. Please wait...
 undefined
@@ -231,18 +239,25 @@ Normally wacat fills the form input fields with the random strings. It is possib
 xaxa
 ybyb
 ```
-wacat uses each input text from the file for the each input field in the target application. The run command is for a local file:
+wacat uses each input text from the file for the each input field in the target application. The run command is for a local file in Windows:
+
+```
+wacat test --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
+```
+
+and in Linux:
 
 ```
 wacat test --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
+
 and for the remote file:
 
 ```
 wacat test --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/
 ```
 
-Both commands should output following:
+All commands should output following:
 
 ```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
@@ -295,16 +310,21 @@ wacat can do authentication to this application with the following JSON file:
 
 Note for example that the application contains "Username" label and this is put into the "usernameLabel" attribute's value in the JSON. The username value is "Mike", which is put into the "usernameValue" attribute's value in the JSON. And same logic applies for the password input field. The application has a button named "Login", which is put into the "loginButtonLabel" attribute's value in the JSON.
 
-An example run command and output are:
+The example run command for Windows is:
 
 ```
+wacat test --conf example-files\configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
+```
 
+The run command for Linux is:
+
+```
 wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
-
 ```
 
-```
+The command output is:
 
+```
 Testing in url: https://mikesmallhelp-test-application-simple-authentication.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
@@ -362,17 +382,20 @@ wacat can do authentication to this application with the following JSON file:
 
 The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given into the "usernameButtonLabel" JSON attribute's value.
 
-An example run command and output are:
+The example run command for Windows is:
 
 ```
+wacat test --conf example-files\configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+```
+The run command for Linux is:
 
+```
 wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
-
-
 ```
 
-```
+The command output is:
 
+```
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
@@ -389,8 +412,6 @@ Fill the #0 input field a value: k1fqcdhg
 #0 drop-down list. Select the option #1
 Push the button #0
   1 passed (24.5s)
-
-
 ```
 
 ### Configure pages, which are not visited
@@ -400,15 +421,12 @@ wacat is designed so that it should not go outside of the host you are testing. 
 Look in the previous example
 
 ```
-
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
-
 ```
 
 If you don't want to go into the logout page, add the "notVisitLinkUrls" attribute into the JSON. It contains the urls, which are not visited. An example JSON is:
 
 ```
-
 {
     "authentication": {
         "beforeAuthenticationLinkTexts": [
@@ -426,19 +444,23 @@ If you don't want to go into the logout page, add the "notVisitLinkUrls" attribu
         "https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout"
     ]
 }
-
 ```
 
-An example run command and output are:
+The example run command for Windows is:
 
 ```
-
 wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
-
 ```
 
+The run command for Linux is:
+
+```
+wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
+The command output is:
+
+```
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
 
 Running 1 test using 1 worker
@@ -454,15 +476,12 @@ Fill the #0 input field a value: 5okrd0c6
 #0 drop-down list. Select the option #1
 Push the button #0
   1 passed (21.4s)
-
 ```
 
 Note now there are not the line:
 
 ```
-
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
-
 ```
 
 in the output.
