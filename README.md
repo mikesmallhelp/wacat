@@ -18,10 +18,11 @@ Additionally, wacat
 - detects error strings from the web pages
   - you give error strings in a parameter file
 - can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
+- can test only links, this could be used in the smoke testing of your application
 - supports some authentication scenarios
   - you give authentication configuration in a JSON file
 
-wacat uses the [Playwright](https://playwright.dev/) tool internally.
+wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is tested to work with Windows, Linux and Mac.
 
 Please note wacat is still under construction. Please create a new issue, if you find a bug or some particular feature is needed.
 
@@ -280,7 +281,7 @@ In the output you can see that values from the input-texts.txt file are used. Yo
 
 ## Test only links
 
-To test only links in the application use a ```--only-links``` flag. An example command and output are:
+To test only links in the application use a ```--only-links``` flag. Then wacat loads pages and detects HTTP errors, but input fields are not filled etc. An example command and output are:
 
 ```
 wacat test --only-links https://mikesmallhelp-test-application.vercel.app/
