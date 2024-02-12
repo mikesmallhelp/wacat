@@ -16,9 +16,9 @@ Additionally, wacat
 
 - detects HTTP errors (for example HTTP 500 errors) between browser and server
 - detects error strings from the web pages
-  - you give error strings in a parameter file
+  - you give the error strings in a parameter file
 - can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
-- can test only links, this could be used in the smoke testing of your application
+- can test only links, this could for example be used in the smoke testing of your application
 - supports some authentication scenarios
   - you give authentication configuration in a JSON file
 
@@ -30,7 +30,7 @@ Please note wacat is still under construction. Please create a new issue, if you
 
 Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be illegal. 
 
-Application is designed not go outside of the host you are testing. But as this is my hobby project everything is possible and it's good to follow what the wacat application is doing and use ctrl + c if it goes to wrong page. Please also note that if your application uses authentication and your wacat authentication configuration is not correct or wacat is not working for your case, then your account could be locked or something like that. Also wacat could mess your applications's database etc. So it's good to test only in the test environment.
+Application is designed not to go outside of the host you are testing. But as this is my hobby project everything is possible and it's good to follow what the wacat application is doing and use ctrl + c if it goes to wrong page. Please also note that if your application uses authentication and your wacat authentication configuration is not correct or wacat is not working for your case, then your account could be locked or something like that. Also wacat could mess your applications's database etc. So it's good to test only in the test environment.
 
 ## Installation
 
@@ -114,7 +114,7 @@ wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
 ```
 Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app/. Please wait...
-undefined
+
  ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-http-500-error.vercel.app/' npx playwright test --project=chromium
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
@@ -156,7 +156,7 @@ Here is an example application, which contains in one sub page an error text "Er
 
 ![](doc/error-in-page.png)
 
-We configure in our example that "Error occurred!" is detected by wacat. We want also that the error text "abc" is detected. We configure this in JSON file like this:
+We configure in our example that "Error occurred!" is detected by wacat. We want also that the error text "abc" is detected. We configure this in a JSON file like this:
 
 ```
 {
@@ -178,7 +178,7 @@ The command output is:
 
 ```
 Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app. Please wait...
-undefined
+
  ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' AUTHENTICATION_CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json
  ›    npx playwright test --project=chromium
  ›    + stderr:  + stdout: 
@@ -224,7 +224,7 @@ undefined
  ›       [chromium] › test.spec.ts:29:1 › test an application
 ```
 
-So wacat detects "Error occurred!" text in one sub page, reports error with a "1 failed" text and execution stops.
+So wacat detects "Error occurred!" text in one sub page, reports error with the "1 failed" text and execution stops.
 
 ### Read input field texts from the file
 
@@ -234,7 +234,7 @@ Normally wacat fills the form input fields with the random strings. It is possib
 xaxa
 ybyb
 ```
-wacat uses each input text from the file for the each input field in the target application. The run command is for a local file in Windows:
+wacat uses each input text from the file for the each input field in the target application. The run command is for the local file in Windows:
 
 ```
 wacat test --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
@@ -285,7 +285,8 @@ To test only links in the application use a ```--only-links``` flag. Then wacat 
 
 ```
 wacat test --only-links https://mikesmallhelp-test-application.vercel.app/
-
+```
+```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
 
@@ -513,11 +514,25 @@ wacat technology stack is simple:
 
 ### Developing
 
-Do your changes and run
+In Linux and Mac, do your changes and run
 
 ```
 npm run test && npm run build && npm install -g && ./run-tests.sh
 ```
+The run-tests.sh script runs all test cases and verifies that wacat works correctly.
+
+In Windows do your changes and run
+
+```
+npm run test && npm run build && npm install -g
+```
+For Windows there isn't yet the automatic test script like ./run-tests.sh. Run
+
+```
+run-manual-tests.bat
+```
+
+and verify from the output that everything works correctly.
 
 ## Contributions
 
