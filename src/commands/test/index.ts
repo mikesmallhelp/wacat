@@ -18,7 +18,9 @@ export default class TestCommand extends Command {
     'error-texts': Flags.string({description: 'Path to the error texts file'}),
     'headless': Flags.boolean({description: 'Headless mode'}),
     'input-texts': Flags.string({description: 'Path to the input texts file'}),
-    'only-links': Flags.boolean({description: 'Test only links'})
+    'only-links': Flags.boolean({description: 'Test only links'}),
+    'timeout': Flags.integer({description: 'Whole test run timeout'}),
+    'wait': Flags.integer({description: 'Wait in milliseconds to wait a page load etc.'})
   }
 
   async run(): Promise<void> {
@@ -50,6 +52,8 @@ export default class TestCommand extends Command {
     command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
     command += flags.conf ? `${prefix}AUTHENTICATION_CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
+    command += flags.timeout ? `${prefix}TIMEOUT=${flags.timeout}${suffix}` : '';
+    command += flags.wait ? `${prefix}WAIT=${flags.wait}${suffix}` : '';
     command += 'npx playwright test --project=chromium';
 
     if (!flags.headless) {

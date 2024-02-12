@@ -8,7 +8,8 @@ import {
     readConfiguration, readFileContent
 } from '../utils/test-utils';
 
-const waitForTimeout = 2000;
+const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 2000;
+const timeout: number = process.env.TIMEOUT ? Number(process.env.TIMEOUT) : 120_000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
@@ -28,9 +29,9 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 }
 
 test('test an application', async ({ page }) => {
-    test.setTimeout(120_000);
+    test.setTimeout(timeout);
     await page.goto(rootUrl);
-    await page.waitForTimeout(waitForTimeout);
+    await page.waitForTimeout(wait);
 
     page.on('response', response => {
         const status = response.status();
@@ -80,7 +81,7 @@ export const authenticate = async ({ page }: { page: Page }) => {
 const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());
 
-    await page.waitForTimeout(waitForTimeout);
+    await page.waitForTimeout(wait);
     visitedUrlsOrNotVisitLinkUrls.push(page.url());
 
     await checkPageForErrors({ page });
@@ -122,7 +123,7 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
             await button.click();
         }
         
-        await page.waitForTimeout(waitForTimeout);
+        await page.waitForTimeout(wait);
         await checkPageForErrors({ page });
     }
 }
@@ -166,7 +167,7 @@ const visitLinks = async ({ page }: { page: Page }) => {
     for (const link of links) {
         if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             await page.goto(link);
-            await page.waitForTimeout(waitForTimeout);
+            await page.waitForTimeout(wait);
             await handlePage({ page });
         }
     }

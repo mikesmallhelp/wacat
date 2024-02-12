@@ -7,7 +7,7 @@ NC='\033[0m'
 run_playwright_tests_failing_and_error_text_found() {
     local test_filename="$1"
 
-    run_playwright_tests "$test_filename" "--conf example-files/configuration-error-texts.json" "1 failed" "expect(content).not.toContain"
+    run_playwright_tests "$test_filename" "--conf example-files/configuration-error-texts.json --wait 1000" "1 failed" "expect(content).not.toContain"
 }
 
 print_test_parameters() {
@@ -109,24 +109,28 @@ run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
 run_playwright_tests_failing_and_error_text_found "index-button-push-causes-error.tsx"
 run_playwright_tests_failing_and_error_text_found "index-input-field-and-button-push-causes-error.tsx"
 run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
-        "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt" "1 failed" "expect(content).not.toContain" "ybyb"
+        "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt --wait 1000" \
+        "1 failed" "expect(content).not.toContain" "ybyb"
 run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
-        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt" "1 failed" "expect(content).not.toContain" "ybyb"        
+        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 1000" "1 failed" "expect(content).not.toContain" "ybyb"        
 run_playwright_tests_failing_and_error_text_found "index-drop-down-list-selection-and-button-push-causes-error.tsx"
-run_playwright_tests "index-api-returns-http-500.tsx" "--conf example-files/configuration-error-texts.json" "1 failed" \
+run_playwright_tests "index-api-returns-http-500.tsx" "--conf example-files/configuration-error-texts.json --wait 1000" "1 failed" \
         "Request to http://localhost:3000/api/http-500 resulted in status code 500"
-run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json" "1 passed" \
+run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json --wait 1000" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #1"
-run_playwright_tests "index-working-page2.tsx" "--only-links" "1 passed" \
+run_playwright_tests "index-working-page2.tsx" "--only-links --wait 1000" "1 passed" \
          "In the page: http://localhost:3000/working-page" \
          "In the page: http://localhost:3000/working-page2" "Push the button #0"
-run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json" "1 passed" \
+run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json --wait 1000" "1 passed" \
        "In the page: http://localhost:3000/working-page2"
-run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json" \
+run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json --wait 1000" \
         "1 passed" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
-run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication-with-not-visit-link-urls.json" \
-        "1 passed" "In the page: http://localhost:3000/working-page" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
+run_playwright_tests "index-auth-complicated.tsx" \
+        "--conf example-files/configuration-complicated-authentication-with-not-visit-link-urls.json --wait 1000" \
+        "1 passed" "In the page: http://localhost:3000/working-page" "In the page: http://localhost:3000/working-page2" \
+        "In the page: http://localhost:3000/logout"
+run_playwright_tests "index-working-page2.tsx" "--timeout 1" "1 failed" "Test timeout of 1ms exceeded."
 
 pkill -f "next"
 
