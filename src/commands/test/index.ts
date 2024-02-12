@@ -13,11 +13,12 @@ export default class TestCommand extends Command {
   ]
 
   static flags = {
-    'conf': Flags.string({char: 'a', description: 'Path to the configuration file'}),
-    'debug': Flags.boolean({char: 'd', description: 'Enable debug mode'}),
-    'error-texts': Flags.string({char: 'e', description: 'Path to the error texts file'}),
-    'input-texts': Flags.string({char: 'e', description: 'Path to the input texts file'}),
-    'only-links': Flags.boolean({char: 'd', description: 'Test only links'})
+    'conf': Flags.string({description: 'Path to the configuration file'}),
+    'debug': Flags.boolean({description: 'Enable debug mode'}),
+    'error-texts': Flags.string({description: 'Path to the error texts file'}),
+    'headless': Flags.boolean({description: 'Headless mode'}),
+    'input-texts': Flags.string({description: 'Path to the input texts file'}),
+    'only-links': Flags.boolean({description: 'Test only links'})
   }
 
   async run(): Promise<void> {
@@ -50,6 +51,10 @@ export default class TestCommand extends Command {
     command += flags.conf ? `${prefix}AUTHENTICATION_CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
     command += 'npx playwright test --project=chromium';
+
+    if (!flags.headless) {
+      command += ' --headed'
+    }
 
     return command;
   }

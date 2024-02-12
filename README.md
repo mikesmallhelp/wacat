@@ -21,6 +21,7 @@ Additionally, wacat
 - can test only links, this could for example be used in the smoke testing of your application
 - supports some authentication scenarios
   - you give authentication configuration in a JSON file
+- supports headless mode
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is tested to work with Windows, Linux and Mac.
 
@@ -499,6 +500,14 @@ In the page: https://mikesmallhelp-test-application-more-complicated-authenticat
 ```
 
 in the output.
+
+### Run in headless mode
+
+Use the flag --headless to run with the headless mode (without browser). The example command is:
+
+```
+wacat test --headless https://mikesmallhelp-test-application.vercel.app/
+```
 
 ## Developing wacat
 
