@@ -23,6 +23,7 @@ Additionally, wacat
   - you give authentication configuration in a JSON file
 - supports a headless mode
 - supports a page download wait time and a whole test timeout value
+- supports running in the CI pipeline
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is tested to work with Windows, Linux and Mac.
 
@@ -509,6 +510,10 @@ Use the flag --headless to run with the headless mode (without browser). The exa
 ```
 wacat test --headless https://mikesmallhelp-test-application.vercel.app/
 ```
+
+### Run in CI pipeline
+
+wacat can be used in the CI pipeline with the --headless flag. The example is https://github.com/mikesmallhelp/mikesmallhelp-test-passing-run/blob/main/.github/workflows/testing.yaml.
 
 ### Configure wait time
 
