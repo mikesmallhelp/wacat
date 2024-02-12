@@ -21,7 +21,8 @@ Additionally, wacat
 - can test only links, this could for example be used in the smoke testing of your application
 - supports some authentication scenarios
   - you give authentication configuration in a JSON file
-- supports headless mode
+- supports a headless mode
+- supports a page download wait time and a whole test timeout value
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is tested to work with Windows, Linux and Mac.
 
@@ -507,6 +508,23 @@ Use the flag --headless to run with the headless mode (without browser). The exa
 
 ```
 wacat test --headless https://mikesmallhelp-test-application.vercel.app/
+```
+
+### Configure wait time
+
+Normally wacat waits each page downloads 2000 milliseconds. Configure the page download wait time with --wait flag. The wait time is at least 1 milliseconds. The example command with 1000 milliseconds wait is:
+
+```
+wacat test --wait 1000 https://mikesmallhelp-test-application.vercel.app/
+```
+Note: wacat uses internally the Playwright tool. Normally the Playwright test can wait for some specific text. But wacat doesn't know what text to wait, so wait time is used.
+
+### Configure whole test timeout
+
+Normally whole test command timeout is 120 000 milliseconds. Configure the whole test timeout with --timeout flag. The timeout value is at least 1 milliseconds. The example command with 50 000 milliseconds timeout is:
+
+```
+wacat test --timeout 50000 https://mikesmallhelp-test-application.vercel.app/
 ```
 
 ## Developing wacat
