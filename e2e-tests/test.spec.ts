@@ -14,8 +14,8 @@ const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
-const configuration: Configuration = process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH ?
-    await readConfiguration({ path: process.env.AUTHENTICATION_CONFIGURATION_FILE_PATH }) : null;
+const configuration: Configuration = process.env.CONFIGURATION_FILE_PATH ?
+    await readConfiguration({ path: process.env.CONFIGURATION_FILE_PATH }) : null;
 const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
 
 if (!rootUrl) {
