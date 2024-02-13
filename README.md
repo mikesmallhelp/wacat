@@ -182,7 +182,7 @@ The command output is:
 ```
 Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app. Please wait...
 
- ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' AUTHENTICATION_CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json
+ ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json
  ›    npx playwright test --project=chromium
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
