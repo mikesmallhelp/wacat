@@ -30,6 +30,8 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 }
 
 test('test an application', async ({ page }) => {
+    ifDebugPrintPlaywrightStartSituation();
+
     test.setTimeout(timeout);
     await page.goto(rootUrl);
     await page.waitForTimeout(wait);
@@ -53,20 +55,20 @@ test('test an application', async ({ page }) => {
 
 export const ifDebugPrintPlaywrightStartSituation = async () => {
     if (debug) {
-        console.log('\nPlaywright test starts...\n');
-        console.log('Parameters:');
-        console.log('rootUrl:' + rootUrl);
-        console.log('wait:' + wait);
-        console.log('timeout:' + timeout);
-        console.log('inputTexts:' + JSON.stringify(inputTexts));
-        console.log('configuration:' + JSON.stringify(configuration));
-        console.log('onlyLinks:' + onlyLinks);
+        console.log('  \nPlaywright test starts...\n');
+        console.log('  Parameters:');
+        console.log('  rootUrl:' + rootUrl);
+        console.log('  wait:' + wait);
+        console.log('  timeout:' + timeout);
+        console.log('  inputTexts.length:' + inputTexts.length);
+        console.log('  configuration:' + JSON.stringify(configuration));
+        console.log('  onlyLinks:' + onlyLinks);
     }
 }
 
 export const authenticate = async ({ page }: { page: Page }) => {
     if (debug) {
-        console.log('authenticate');
+        console.log('  authenticate');
     }
 
     if (!configuration || !configuration.authentication ||
@@ -80,7 +82,7 @@ export const authenticate = async ({ page }: { page: Page }) => {
 
     if (configuration.authentication.beforeAuthenticationLinkTexts) {
         if (debug) {
-            console.log('authenticate, beforeAuthenticationLinkTexts');
+            console.log('  authenticate, beforeAuthenticationLinkTexts');
         }
 
         for (const linkName of configuration.authentication.beforeAuthenticationLinkTexts) {
@@ -92,7 +94,7 @@ export const authenticate = async ({ page }: { page: Page }) => {
 
     if (configuration.authentication.usernameButtonLabel) {
         if (debug) {
-            console.log('authenticate, usernameButtonLabel');
+            console.log('  authenticate, usernameButtonLabel');
         }
 
         await page.getByRole('button', { exact: true, name: `${configuration.authentication.usernameButtonLabel}` }).click();
@@ -115,7 +117,7 @@ const handlePage = async ({ page }: { page: Page }) => {
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
         if (onlyLinks) {
             if (debug) {
-                console.log('handlePage, onlyLinks');
+                console.log('  handlePage, onlyLinks');
             }
         } else {
             await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
@@ -127,7 +129,7 @@ const handlePage = async ({ page }: { page: Page }) => {
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
     if (debug) {
-        console.log('checkPageForErrors');
+        console.log('  checkPageForErrors');
     }
 
     if (!configuration || !configuration.errorTexts || configuration.errorTexts.length === 0) {
@@ -135,7 +137,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 
     if (debug) {
-        console.log('checkPageForErrors, errorTexts.length: ' + configuration.errorTexts.length);
+        console.log('  checkPageForErrors, errorTexts.length: ' + configuration.errorTexts.length);
     }
 
     const content = await page.locator('body').textContent();
@@ -148,7 +150,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
 
 const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, page }: { inputText: string, page: Page }) => {
     if (debug) {
-        console.log('fillInputsAndSelectFromDropDownListsAndClickButtons');
+        console.log('  fillInputsAndSelectFromDropDownListsAndClickButtons');
     }
 
     const buttonsLocator = page.locator('button');
@@ -174,7 +176,7 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
 
 const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
     if (debug) {
-        console.log('fillInputs');
+        console.log('  fillInputs');
     }
 
     const inputsLocator = page.locator('input');
@@ -192,7 +194,7 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
 
 const selectFromDropDownLists = async ({ page }: { page: Page }) => {
     if (debug) {
-        console.log('selectFromDropDownLists');
+        console.log('  selectFromDropDownLists');
     }
 
     const selectsLocator = page.locator('select');
@@ -213,7 +215,7 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
 
 const visitLinks = async ({ page }: { page: Page }) => {
     if (debug) {
-        console.log('visitLinks');
+        console.log('  visitLinks');
     }
 
     const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[]) =>
@@ -222,12 +224,12 @@ const visitLinks = async ({ page }: { page: Page }) => {
 
     for (const link of links) {
         if (debug) {
-            console.log('visitLinks, for, link: ' + link);
+            console.log('  visitLinks, for, link: ' + link);
         }
 
         if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
             if (debug) {
-                console.log('visitLinks, for, link: ' + link);
+                console.log('  visitLinks, for, link: ' + link);
             }
 
             await page.goto(link);
