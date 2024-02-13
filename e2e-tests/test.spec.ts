@@ -113,12 +113,12 @@ const handlePage = async ({ page }: { page: Page }) => {
     await checkPageForErrors({ page });
 
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
-        if (!onlyLinks) {
-            await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
-        } else {
+        if (onlyLinks) {
             if (debug) {
                 console.log('handlePage, onlyLinks');
             }
+        } else {
+            await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
         }
     }
 
