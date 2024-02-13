@@ -17,6 +17,7 @@ const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
 const configuration: Configuration = process.env.CONFIGURATION_FILE_PATH ?
     await readConfiguration({ path: process.env.CONFIGURATION_FILE_PATH }) : null;
 const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
+const debug: boolean = Boolean(process.env.DEBUG);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -50,7 +51,24 @@ test('test an application', async ({ page }) => {
     await handlePage({ page });
 });
 
+export const ifDebugPrintPlaywrightStartSituation = async () => {
+    if (debug) {
+        console.log('\nPlaywright test starts...\n');
+        console.log('Parameters:');
+        console.log('rootUrl:' + rootUrl);
+        console.log('wait:' + wait);
+        console.log('timeout:' + timeout);
+        console.log('inputTexts:' + JSON.stringify(inputTexts));
+        console.log('configuration:' + JSON.stringify(configuration));
+        console.log('onlyLinks:' + onlyLinks);
+    }
+}
+
 export const authenticate = async ({ page }: { page: Page }) => {
+    if (debug) {
+        console.log('authenticate');
+    }
+
     if (!configuration || !configuration.authentication ||
         !configuration?.authentication?.usernameLabel ||
         !configuration?.authentication?.usernameValue ||
@@ -61,6 +79,10 @@ export const authenticate = async ({ page }: { page: Page }) => {
     }
 
     if (configuration.authentication.beforeAuthenticationLinkTexts) {
+        if (debug) {
+            console.log('authenticate, beforeAuthenticationLinkTexts');
+        }
+
         for (const linkName of configuration.authentication.beforeAuthenticationLinkTexts) {
             page.getByText(linkName).click();
         }
@@ -69,6 +91,10 @@ export const authenticate = async ({ page }: { page: Page }) => {
     await page.getByLabel(configuration.authentication.usernameLabel).fill(configuration.authentication.usernameValue);
 
     if (configuration.authentication.usernameButtonLabel) {
+        if (debug) {
+            console.log('authenticate, usernameButtonLabel');
+        }
+
         await page.getByRole('button', { exact: true, name: `${configuration.authentication.usernameButtonLabel}` }).click();
     }
 
@@ -89,6 +115,10 @@ const handlePage = async ({ page }: { page: Page }) => {
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
         if (!onlyLinks) {
             await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
+        } else {
+            if (debug) {
+                console.log('handlePage, onlyLinks');
+            }
         }
     }
 
@@ -96,8 +126,16 @@ const handlePage = async ({ page }: { page: Page }) => {
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
+    if (debug) {
+        console.log('checkPageForErrors');
+    }
+
     if (!configuration || !configuration.errorTexts || configuration.errorTexts.length === 0) {
         return;
+    }
+
+    if (debug) {
+        console.log('checkPageForErrors, errorTexts.length: ' + configuration.errorTexts.length);
     }
 
     const content = await page.locator('body').textContent();
@@ -109,10 +147,16 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
 }
 
 const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, page }: { inputText: string, page: Page }) => {
+    if (debug) {
+        console.log('fillInputsAndSelectFromDropDownListsAndClickButtons');
+    }
+
     const buttonsLocator = page.locator('button');
     const buttonsCount = await buttonsLocator.count();
 
     for (let i = 0; i < buttonsCount; i++) {
+        console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, for loop');
+
         await fillInputs({ inputText, page });
         await selectFromDropDownLists({ page });
 
@@ -129,6 +173,10 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
 }
 
 const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
+    if (debug) {
+        console.log('fillInputs');
+    }
+
     const inputsLocator = page.locator('input');
     const inputsCount = await inputsLocator.count();
 
@@ -143,6 +191,10 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
 }
 
 const selectFromDropDownLists = async ({ page }: { page: Page }) => {
+    if (debug) {
+        console.log('selectFromDropDownLists');
+    }
+
     const selectsLocator = page.locator('select');
     const selectsCount = await selectsLocator.count();
 
@@ -160,12 +212,24 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
 }
 
 const visitLinks = async ({ page }: { page: Page }) => {
+    if (debug) {
+        console.log('visitLinks');
+    }
+
     const links = await page.locator('a').evaluateAll((links: HTMLAnchorElement[]) =>
         links.map((link) => link.href)
     );
 
     for (const link of links) {
+        if (debug) {
+            console.log('visitLinks, for, link: ' + link);
+        }
+
         if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
+            if (debug) {
+                console.log('visitLinks, for, link: ' + link);
+            }
+
             await page.goto(link);
             await page.waitForTimeout(wait);
             await handlePage({ page });

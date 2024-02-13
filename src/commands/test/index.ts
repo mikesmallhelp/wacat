@@ -48,6 +48,8 @@ export default class TestCommand extends Command {
     const suffix = isWindows ? ' && ' : ' ';
    
     let command = isWindows ? `${prefix}ROOT_URL=${args.url}${suffix}` : `${prefix}ROOT_URL='${args.url}'${suffix}`;
+
+    command += flags.debug ? `${prefix}DEBUG=true${suffix}` : '';
     command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
     command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
     command += flags.conf ? `${prefix}CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
