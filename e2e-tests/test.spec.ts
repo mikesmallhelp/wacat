@@ -157,7 +157,9 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
     const buttonsCount = await buttonsLocator.count();
 
     for (let i = 0; i < buttonsCount; i++) {
-        console.log('  fillInputsAndSelectFromDropDownListsAndClickButtons, for loop');
+        if (debug) {
+            console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, for loop');
+        }
 
         await fillInputs({ inputText, page });
         await selectFromDropDownLists({ page });
