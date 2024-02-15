@@ -47,6 +47,15 @@ export const generateRandomString = (): string => {
     return randomString;
 };
 
+export const shuffleArray = (array: string[]): string[] => {
+    const result = [...array];
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+};
+
 export const readFileContent = async ({ path }: { path: string }): Promise<string[]> => {
     try {
         let response: string;
