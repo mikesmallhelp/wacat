@@ -16,7 +16,7 @@ export const generateRandomString = (): string => {
     let randomString = '';
     for (let i = 0; i < length; i++) {
         const min = 0x20;
-        const max = 0xD7FF;
+        const max = 0xD7_FF;
 
         const codePoint = Math.floor(Math.random() * (max - min + 1)) + min;
 
