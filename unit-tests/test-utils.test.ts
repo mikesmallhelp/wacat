@@ -44,13 +44,13 @@ describe('shuffleArray function', () => {
     const originalArray = ['a', 'b', 'c', 'd', 'e'];
     const shuffledArray = shuffleArray(originalArray);
 
-    originalArray.forEach(element => {
+    for (const element of originalArray) {
       expect(shuffledArray).to.include(element);
-    });
+    }
 
-    shuffledArray.forEach(element => {
+    for (const element of shuffledArray) {
       expect(originalArray).to.include(element);
-    });
+    }
 
     expect(shuffledArray.length).to.equal(originalArray.length);
   });
