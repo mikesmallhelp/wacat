@@ -11,21 +11,41 @@ export const getHost = ({ url }: { url: string }): string => {
 };
 
 export const generateRandomString = (): string => {
-    const length = Math.floor(Math.random() * 500) + 1;
+    // Generate a random length between 1 and 55
+    const length = Math.floor(Math.random() * 55) + 1;
 
     let randomString = '';
     for (let i = 0; i < length; i++) {
-        const min = 0x20;
-        const max = 0xD7_FF;
+        let codePoint: number;
 
-        const codePoint = Math.floor(Math.random() * (max - min + 1)) + min;
+        // Decide whether to generate a western character or a non-western character
+        // Approximately 5% chance to pick a non-western character
+        if (Math.random() < 0.95) {
+            // Western character ranges (mainly ASCII including letters, digits, and some punctuation)
+            const ranges = [
+                [0x30, 0x39], // Digits 0-9
+                [0x41, 0x5A], // Uppercase A-Z
+                [0x61, 0x7A], // Lowercase a-z
+                [0x20, 0x2F], // Punctuation and space
+            ];
 
+            // Select a random range and generate a code point within that range
+            const range = ranges[Math.floor(Math.random() * ranges.length)];
+            codePoint = Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];
+        } else {
+            // Non-western character range (e.g., Chinese characters)
+            // This range includes a part of the CJK Unified Ideographs block
+            const min = 0x4E_00;
+            const max = 0x9F_AF;
+            codePoint = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Append the character to the string
         randomString += String.fromCodePoint(codePoint);
     }
 
     return randomString;
 };
-
 
 export const readFileContent = async ({ path }: { path: string }): Promise<string[]> => {
     try {
