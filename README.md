@@ -280,7 +280,7 @@ Push the button #0
   1 passed (22.9s)
 ```
 
-In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. But please note that currently wacat doesn't support very long files, maybe there is some memory problem. But you can currently split too long files and test like that.
+In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. When you use a big input text file, use --timeout parameter (see below) with enough big value. Currently running wacat with huge files seems to use a lot of time in first page of the application. There is issue about that. 
 
 ## Test only links
 
