@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-    generateRandomString, getHost, hostIsSame
+    generateRandomString, getHost, hostIsSame, shuffleStringArray
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -38,3 +38,21 @@ describe('generateRandomString', () => {
         expect(generateRandomString().length).greaterThanOrEqual(1);
     });
 });
+
+describe('shuffleStringArray function', () => {
+  it('should contain all original elements after shuffling', () => {
+    const originalArray = ['a', 'b', 'c', 'd', 'e'];
+    const shuffledArray = shuffleStringArray(originalArray);
+
+    for (const element of originalArray) {
+      expect(shuffledArray).to.include(element);
+    }
+
+    for (const element of shuffledArray) {
+      expect(originalArray).to.include(element);
+    }
+
+    expect(shuffledArray.length).to.equal(originalArray.length);
+  });
+});
+
