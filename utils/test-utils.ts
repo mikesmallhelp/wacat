@@ -10,7 +10,22 @@ export const getHost = ({ url }: { url: string }): string => {
     return parts.slice(0, 3).join("/").trim();
 };
 
-export const generateRandomString = (): string => Math.floor(Math.random() * Date.now()).toString(36);
+export const generateRandomString = (): string => {
+    const length = Math.floor(Math.random() * 500) + 1;
+
+    let randomString = '';
+    for (let i = 0; i < length; i++) {
+        const min = 0x20;
+        const max = 0xD7FF;
+
+        const codePoint = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        randomString += String.fromCodePoint(codePoint);
+    }
+
+    return randomString;
+};
+
 
 export const readFileContent = async ({ path }: { path: string }): Promise<string[]> => {
     try {
