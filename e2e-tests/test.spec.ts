@@ -114,14 +114,12 @@ const handlePage = async ({ page }: { page: Page }) => {
 
     await checkPageForErrors({ page });
 
-    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
-        if (onlyLinks) {
-            if (debug) {
-                console.log('  handlePage, onlyLinks');
-            }
-        } else {
-            await fillInputsAndSelectFromDropDownListsAndClickButtons({ inputText, page });
+    if (onlyLinks) {
+        if (debug) {
+            console.log('  handlePage, onlyLinks');
         }
+    } else {
+        await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
     }
 
     await visitLinks({ page });
@@ -148,7 +146,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 }
 
-const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, page }: { inputText: string, page: Page }) => {
+const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { page: Page }) => {
     if (debug) {
         console.log('  fillInputsAndSelectFromDropDownListsAndClickButtons');
     }
@@ -156,23 +154,36 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ inputText, 
     const buttonsLocator = page.locator('button');
     const buttonsCount = await buttonsLocator.count();
 
-    for (let i = 0; i < buttonsCount; i++) {
+    if (buttonsCount == 0) {
         if (debug) {
-            console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, for loop');
+            console.log('  buttonsCount == 0, do not fill input texts etc.');
+            return;
+        }
+    }
+
+    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
+        if (debug) {
+            console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, inputText:' + inputText);
         }
 
-        await fillInputs({ inputText, page });
-        await selectFromDropDownLists({ page });
+        for (let i = 0; i < buttonsCount; i++) {
+            if (debug) {
+                console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, button i:' + i);
+            }
 
-        const button = buttonsLocator.nth(i);
+            await fillInputs({ inputText, page });
+            await selectFromDropDownLists({ page });
 
-        if (await button.isVisible() && await button.isEnabled()) {
-            console.log('Push the button #' + i);
-            await button.click();
+            const button = buttonsLocator.nth(i);
+
+            if (await button.isVisible() && await button.isEnabled()) {
+                console.log('Push the button #' + i);
+                await button.click();
+            }
+
+            await page.waitForTimeout(wait);
+            await checkPageForErrors({ page });
         }
-        
-        await page.waitForTimeout(wait);
-        await checkPageForErrors({ page });
     }
 }
 
@@ -187,7 +198,7 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
         const input = inputsLocator.nth(inputIndex);
         console.log('Fill the #' + inputIndex + " input field a value: " + inputText);
-        
+
         if (await input.isVisible()) {
             input.fill(inputText);
         }
