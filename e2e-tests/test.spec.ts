@@ -154,11 +154,12 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
     const buttonsLocator = page.locator('button');
     const buttonsCount = await buttonsLocator.count();
 
-    if (buttonsCount == 0) {
+    if (buttonsCount === 0) {
         if (debug) {
             console.log('  buttonsCount == 0, do not fill input texts etc.');
-            return;
         }
+
+        return;
     }
 
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
