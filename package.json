@@ -38,7 +38,10 @@
     "/bin",
     "/dist",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "playwright.config.ts",
+    "e2e-tests",
+    "utils"
   ],
   "homepage": "https://github.com/mikesmallhelp/wacat",
   "license": "MIT",

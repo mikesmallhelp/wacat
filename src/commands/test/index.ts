@@ -1,5 +1,7 @@
 import {Args, Command, Flags} from '@oclif/core';
 import {exec} from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export default class TestCommand extends Command {
   static args = {
@@ -56,7 +58,12 @@ export default class TestCommand extends Command {
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
     command += flags.timeout ? `${prefix}TIMEOUT=${flags.timeout}${suffix}` : '';
     command += flags.wait ? `${prefix}WAIT=${flags.wait}${suffix}` : '';
-    command += 'npx playwright test --project=chromium';
+
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const playwrightConfigPath = path.join(__dirname, '..', 'playwright.config.ts');
+    const testsPath = path.join(__dirname, '..', 'e2e-tests', 'test.spec.ts');
+    command += `npx playwright test --project=chromium --config=${playwrightConfigPath} ${testsPath}`;
 
     if (!flags.headless) {
       command += ' --headed'

@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+/* eslint-disable node/no-unpublished-import */
 
 import { Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
