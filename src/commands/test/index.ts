@@ -20,7 +20,7 @@ export default class TestCommand extends Command {
     'input-texts': Flags.string({description: 'Path to the input texts file'}),
     'only-links': Flags.boolean({description: 'Test only links'}),
     'timeout': Flags.integer({description: 'A whole test run timeout in seconds'}),
-    'wait': Flags.integer({description: 'A wait in milliseconds to wait a page load etc.'})
+    'wait': Flags.integer({description: 'A wait in milliseconds to wait a page load'})
   }
 
   async run(): Promise<void> {
