@@ -19,8 +19,8 @@ export default class TestCommand extends Command {
     'headless': Flags.boolean({description: 'Headless mode'}),
     'input-texts': Flags.string({description: 'Path to the input texts file'}),
     'only-links': Flags.boolean({description: 'Test only links'}),
-    'timeout': Flags.integer({description: 'Whole test run timeout'}),
-    'wait': Flags.integer({description: 'Wait in milliseconds to wait a page load etc.'})
+    'timeout': Flags.integer({description: 'A whole test run timeout in seconds'}),
+    'wait': Flags.integer({description: 'A wait in milliseconds to wait a page load'})
   }
 
   async run(): Promise<void> {

@@ -517,7 +517,7 @@ wacat can be used in the CI pipeline with the --headless flag. The example is ht
 
 ### Configure wait time
 
-Normally wacat waits each page downloads 2000 milliseconds. Configure the page download wait time with --wait flag. The wait time is at least 1 milliseconds. The example command with 1000 milliseconds wait is:
+By default wacat waits each page download 2000 milliseconds. Configure the page download wait time in milliseconds with --wait flag. The wait time is at least 1 milliseconds. The example command with 1000 milliseconds wait is:
 
 ```
 wacat test --wait 1000 https://mikesmallhelp-test-application.vercel.app/
@@ -526,10 +526,46 @@ Note: wacat uses internally the Playwright tool. Normally the Playwright test ca
 
 ### Configure whole test timeout
 
-Normally whole test command timeout is 120 000 milliseconds. Configure the whole test timeout with --timeout flag. The timeout value is at least 1 milliseconds. The example command with 50 000 milliseconds timeout is:
+By default whole test command timeout is 120 seconds. Configure the whole test timeout in seconds with --timeout flag. The timeout value is at least 1 seconds. The example command with 50 seconds timeout is:
 
 ```
-wacat test --timeout 50000 https://mikesmallhelp-test-application.vercel.app/
+wacat test --timeout 50 https://mikesmallhelp-test-application.vercel.app/
+```
+Note: Playwright uses internally milliseconds. So if the timeout in this example happens the output is something like:
+
+```
+Test timeout of 50000ms exceeded.
+```
+
+### Help command
+
+To see all the flags, run the command:
+
+```
+wacat test --help
+Test any web application, for example: wacat test http://localhost:3000
+
+USAGE
+  $ wacat test URL [--conf <value>] [--debug] [--error-texts <value>] [--headless] [--input-texts <value>] [--only-links] [--timeout <value>] [--wait <value>]
+
+ARGUMENTS
+  URL  Application url to test, for example: http://localhost:3000
+
+FLAGS
+  --conf=<value>         Path to the configuration file
+  --debug                Enable debug mode
+  --error-texts=<value>  Path to the error texts file
+  --headless             Headless mode
+  --input-texts=<value>  Path to the input texts file
+  --only-links           Test only links
+  --timeout=<value>      A whole test run timeout in seconds
+  --wait=<value>         A wait in milliseconds to wait a page load etc.
+
+DESCRIPTION
+  Test any web application, for example: wacat test http://localhost:3000
+
+EXAMPLES
+  $ wacat test http://localhost:3000
 ```
 
 ## Developing wacat

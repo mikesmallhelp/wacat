@@ -9,7 +9,7 @@ import {
 } from '../utils/test-utils';
 
 const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 2000;
-const timeout: number = process.env.TIMEOUT ? Number(process.env.TIMEOUT) : 120_000;
+const timeout: number = process.env.TIMEOUT ? Number(process.env.TIMEOUT) * 1000 : 120_000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
