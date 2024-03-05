@@ -21,6 +21,7 @@
     "@types/mocha": "^10",
     "@types/node": "^18",
     "chai": "^4",
+    "copyfiles": "^2.4.1",
     "eslint": "^8",
     "eslint-config-oclif": "^5",
     "eslint-config-oclif-typescript": "^3",
@@ -38,10 +39,7 @@
     "/bin",
     "/dist",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json",
-    "playwright.config.ts",
-    "e2e-tests",
-    "utils"
+    "/oclif.manifest.json"
   ],
   "homepage": "https://github.com/mikesmallhelp/wacat",
   "license": "MIT",
@@ -64,7 +62,7 @@
   },
   "repository": "mikesmallhelp/wacat",
   "scripts": {
-    "build": "shx rm -rf dist && tsc -b",
+    "build": "shx rm -rf dist && tsc -b && copyfiles ./playwright.config.ts dist && copyfiles -a ./e2e-tests/**/* dist/e2e-tests && copyfiles -a ./utils/**/* dist/utils",
     "lint": "eslint . --ext .ts",
     "postpack": "shx rm -f oclif.manifest.json",
     "prepack": "npm run build && oclif manifest && oclif readme",

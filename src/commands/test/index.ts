@@ -61,8 +61,8 @@ export default class TestCommand extends Command {
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    const playwrightConfigPath = path.join(__dirname, '..', 'playwright.config.ts');
-    const testsPath = path.join(__dirname, '..', 'e2e-tests', 'test.spec.ts');
+    const playwrightConfigPath = path.join(__dirname, '..', '..', 'playwright.config.ts');
+    const testsPath = path.join(__dirname, '..', '..', 'e2e-tests', 'test.spec.ts');
     command += `npx playwright test --project=chromium --config=${playwrightConfigPath} ${testsPath}`;
 
     if (!flags.headless) {
