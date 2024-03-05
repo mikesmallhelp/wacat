@@ -62,7 +62,7 @@
   },
   "repository": "mikesmallhelp/wacat",
   "scripts": {
-    "build": "shx rm -rf dist && tsc -b && copyfiles ./playwright.config.ts dist && copyfiles -a ./e2e-tests/**/* dist/e2e-tests && copyfiles -a ./utils/**/* dist/utils",
+    "build": "shx rm -rf dist && tsc -b && copyfiles ./playwright.config.ts dist && copyfiles -a ./e2e-tests/**/* dist && copyfiles -a ./utils/**/* dist",
     "lint": "eslint . --ext .ts",
     "postpack": "shx rm -f oclif.manifest.json",
     "prepack": "npm run build && oclif manifest && oclif readme",
