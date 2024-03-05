@@ -517,7 +517,7 @@ wacat can be used in the CI pipeline with the --headless flag. The example is ht
 
 ### Configure wait time
 
-Normally wacat waits each page downloads 2000 milliseconds. Configure the page download wait time with --wait flag. The wait time is at least 1 milliseconds. The example command with 1000 milliseconds wait is:
+By default wacat waits each page download 2000 milliseconds. Configure the page download wait time in milliseconds with --wait flag. The wait time is at least 1 milliseconds. The example command with 1000 milliseconds wait is:
 
 ```
 wacat test --wait 1000 https://mikesmallhelp-test-application.vercel.app/
@@ -526,10 +526,15 @@ Note: wacat uses internally the Playwright tool. Normally the Playwright test ca
 
 ### Configure whole test timeout
 
-Normally whole test command timeout is 120 000 milliseconds. Configure the whole test timeout with --timeout flag. The timeout value is at least 1 milliseconds. The example command with 50 000 milliseconds timeout is:
+By default whole test command timeout is 120 seconds. Configure the whole test timeout in seconds with --timeout flag. The timeout value is at least 1 seconds. The example command with 50 seconds timeout is:
 
 ```
-wacat test --timeout 50000 https://mikesmallhelp-test-application.vercel.app/
+wacat test --timeout 50 https://mikesmallhelp-test-application.vercel.app/
+```
+Note: Playwright uses internally milliseconds. So if the timeout in this example happens the output is something like:
+
+```
+Test timeout of 50000ms exceeded.
 ```
 
 ### Help command
