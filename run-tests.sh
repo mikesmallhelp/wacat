@@ -130,7 +130,7 @@ run_playwright_tests "index-auth-complicated.tsx" \
         "--conf example-files/configuration-complicated-authentication-with-not-visit-link-urls.json --wait 2000" \
         "1 passed" "In the page: http://localhost:3000/working-page" "In the page: http://localhost:3000/working-page2" \
         "In the page: http://localhost:3000/logout"
-run_playwright_tests "index-working-page2.tsx" "--timeout 1" "1 failed" "Test timeout of 1ms exceeded."
+run_playwright_tests "index-working-page2.tsx" "--timeout 1" "1 failed" "Test timeout of 1000ms exceeded."
 
 pkill -f "next"
 

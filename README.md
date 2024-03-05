@@ -532,6 +532,37 @@ Normally whole test command timeout is 120 000 milliseconds. Configure the whole
 wacat test --timeout 50000 https://mikesmallhelp-test-application.vercel.app/
 ```
 
+### Help command
+
+To see all the flags, run the command:
+
+```
+wacat test --help
+Test any web application, for example: wacat test http://localhost:3000
+
+USAGE
+  $ wacat test URL [--conf <value>] [--debug] [--error-texts <value>] [--headless] [--input-texts <value>] [--only-links] [--timeout <value>] [--wait <value>]
+
+ARGUMENTS
+  URL  Application url to test, for example: http://localhost:3000
+
+FLAGS
+  --conf=<value>         Path to the configuration file
+  --debug                Enable debug mode
+  --error-texts=<value>  Path to the error texts file
+  --headless             Headless mode
+  --input-texts=<value>  Path to the input texts file
+  --only-links           Test only links
+  --timeout=<value>      A whole test run timeout in seconds
+  --wait=<value>         A wait in milliseconds to wait a page load etc.
+
+DESCRIPTION
+  Test any web application, for example: wacat test http://localhost:3000
+
+EXAMPLES
+  $ wacat test http://localhost:3000
+```
+
 ## Developing wacat
 
 ### Technologies
