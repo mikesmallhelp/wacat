@@ -86,7 +86,8 @@ export type AuthenticationConfiguration = {
 } | null;
 
 export type Configuration = {
-    errorTexts?: string[];
+    errorTextsInPages?: string[];
+    errorTextsInBrowserConsole?: string [];
     authentication?: AuthenticationConfiguration;
     notVisitLinkUrls?: string[];
 } | null;
