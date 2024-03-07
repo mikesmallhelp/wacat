@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageTemplate from './PageTemplate';
 import { fetchData } from '../util/util';
 
@@ -34,6 +34,10 @@ const WorkingPage = ({ title }: { title: string }) => {
             <a href='https://github.com/mikesmallhelp'>Github - don't go here</a>
         </div>
     );
+
+    useEffect(() => {
+        console.warn("Be careful!");
+      }, []);
 
     return (
         <>

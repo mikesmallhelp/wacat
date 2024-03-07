@@ -18,6 +18,8 @@ const configuration: Configuration = process.env.CONFIGURATION_FILE_PATH ?
     await readConfiguration({ path: process.env.CONFIGURATION_FILE_PATH }) : null;
 const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
 const debug: boolean = Boolean(process.env.DEBUG);
+const bypassHttpErrors = Boolean(process.env.BYPASS_HTTP_ERRORS);
+const bypassBrowserConsoleErrors = Boolean(process.env.BYPASS_BROWSER_CONSOLE_ERRORS);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -38,11 +40,27 @@ test('test an application', async ({ page }) => {
 
     page.on('response', response => {
         const status = response.status();
-        const url = response.url();
 
         if (status >= 400) {
-            console.log(`Request to ${url} resulted in status code ${status}`);
-            fail(`Request to ${url} resulted in status code ${status}`);
+            const message = `In the page: ${page.url()}: Request to ${response.url()} resulted in status code ${status}`;
+            console.log(message);
+
+            if (!bypassHttpErrors) {
+                fail(message);
+            }
+        }
+    });
+
+    page.on('console', msg => {
+        if (msg.type() === 'error') {
+            const message = `In the page: ${page.url()}: Found an error message in the browser's log: ${msg.text()}`;
+            console.log(message);
+
+            if (!bypassBrowserConsoleErrors && 
+                // this is because a http error goes to the browser's console
+                !bypassHttpErrors) {
+                fail(message);
+            }
         }
     });
 
@@ -53,7 +71,7 @@ test('test an application', async ({ page }) => {
     await handlePage({ page });
 });
 
-export const ifDebugPrintPlaywrightStartSituation = async () => {
+const ifDebugPrintPlaywrightStartSituation = async () => {
     if (debug) {
         console.log('  \nPlaywright test starts...\n');
         console.log('  Parameters:');
@@ -66,7 +84,7 @@ export const ifDebugPrintPlaywrightStartSituation = async () => {
     }
 }
 
-export const authenticate = async ({ page }: { page: Page }) => {
+const authenticate = async ({ page }: { page: Page }) => {
     if (debug) {
         console.log('  authenticate');
     }
@@ -130,17 +148,17 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('  checkPageForErrors');
     }
 
-    if (!configuration || !configuration.errorTexts || configuration.errorTexts.length === 0) {
+    if (!configuration || !configuration.errorTextsInPages || configuration.errorTextsInPages.length === 0) {
         return;
     }
 
     if (debug) {
-        console.log('  checkPageForErrors, errorTexts.length: ' + configuration.errorTexts.length);
+        console.log('  checkPageForErrors, errorTextsInPages.length: ' + configuration.errorTextsInPages.length);
     }
 
     const content = await page.locator('body').textContent();
 
-    for (const errorText of configuration.errorTexts) {
+    for (const errorText of configuration.errorTextsInPages) {
         console.log(`Check the page not contain the ${errorText} text`);
         expect(content).not.toContain(errorText);
     }

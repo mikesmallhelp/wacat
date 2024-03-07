@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageTemplate from '../../components/PageTemplate';
 
 const IndexComponent = () => {
@@ -7,6 +7,10 @@ const IndexComponent = () => {
   const PageContent = (
       <div>Error occurred!</div>
   );
+
+  useEffect(() => {
+    console.error("Hello! Something wrong!");
+  }, []);
 
   return (
     <>

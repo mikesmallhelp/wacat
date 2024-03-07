@@ -163,7 +163,7 @@ We configure in our example that "Error occurred!" is detected by wacat. We want
 
 ```
 {
-    "errorTexts": ["abc", "Error occurred!"]
+    "errorTextsInPages": ["abc", "Error occurred!"]
 }
 ```
 The run command (--conf flag is used to pass the JSON file) for Windows is:
@@ -209,7 +209,7 @@ Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app.
  ›       Received string:        "Test page - error-text-in-pageError occurred!{\"props\":{\"pageProps\":{}},\"page\":\"/error-text-in-page\",\"query\":{},\"buildId\":\"qQ0wdj-2mwRrndTkG4FBO\",\"nextExp
  ›   ort\":true,\"autoExport\":true,\"isFallback\":false,\"scriptLoader\":[]}"
  ›
- ›          96 |     for (const errorText of configuration.errorTexts) {
+ ›          96 |     for (const errorText of configuration.errorTextsInPages) {
  ›          97 |         console.log(`Check the page not contain the ${errorText} text`);
  ›       >  98 |         expect(content).not.toContain(errorText);
  ›             |                             ^
