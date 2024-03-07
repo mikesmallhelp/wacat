@@ -13,6 +13,8 @@ export default class TestCommand extends Command {
   ]
 
   static flags = {
+    'bypass-browser-console-errors': Flags.boolean({description: 'Bypass the browser console\'s error messages'}),
+    'bypass-http-errors': Flags.boolean({description: 'Bypass the HTTP errors'}),
     'conf': Flags.string({description: 'Path to the configuration file'}),
     'debug': Flags.boolean({description: 'Enable debug mode'}),
     'error-texts': Flags.string({description: 'Path to the error texts file'}),
@@ -49,13 +51,16 @@ export default class TestCommand extends Command {
    
     let command = isWindows ? `${prefix}ROOT_URL=${args.url}${suffix}` : `${prefix}ROOT_URL='${args.url}'${suffix}`;
 
+    command += flags['bypass-browser-console-errors'] ? `${prefix}BYPASS_BROWSER_CONSOLE_ERRORS=true${suffix}` : '';
+    command += flags['bypass-http-errors'] ? `${prefix}BYPASS_HTTP_ERRORS=true${suffix}` : '';
+    command += flags.conf ? `${prefix}CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
     command += flags.debug ? `${prefix}DEBUG=true${suffix}` : '';
     command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
     command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
-    command += flags.conf ? `${prefix}CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
     command += flags.timeout ? `${prefix}TIMEOUT=${flags.timeout}${suffix}` : '';
     command += flags.wait ? `${prefix}WAIT=${flags.wait}${suffix}` : '';
+
     command += 'npx playwright test --project=chromium';
 
     if (!flags.headless) {

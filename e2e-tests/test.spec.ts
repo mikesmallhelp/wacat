@@ -18,6 +18,8 @@ const configuration: Configuration = process.env.CONFIGURATION_FILE_PATH ?
     await readConfiguration({ path: process.env.CONFIGURATION_FILE_PATH }) : null;
 const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
 const debug: boolean = Boolean(process.env.DEBUG);
+const bypassHttpErrors = Boolean(process.env.BYPASS_HTTP_ERRORS);
+const bypassBrowserConsoleErrors = Boolean(process.env.BYPASS_BROWSER_CONSOLE_ERRORS);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -38,24 +40,25 @@ test('test an application', async ({ page }) => {
 
     page.on('response', response => {
         const status = response.status();
-        const url = response.url();
 
         if (status >= 400) {
-            const message = `In the page: ${page.url()}: Request to ${url} resulted in status code ${status}`;
+            const message = `In the page: ${page.url()}: Request to ${response.url()} resulted in status code ${status}`;
             console.log(message);
-            fail(message);
+
+            if (!bypassHttpErrors) {
+                fail(message);
+            }
         }
     });
 
     page.on('console', msg => {
-        if (!configuration || !configuration.errorTextsInBrowserConsole || configuration.errorTextsInBrowserConsole.length === 0) {
-            return;
-        }
+        if (msg.type() === 'error') {
+            const message = `In the page: ${page.url()}: Found an error message in the browser's log: ${msg.text()}`;
+            console.log(message);
 
-        for (const errorText of configuration.errorTextsInBrowserConsole) {
-            if (msg.text().includes(errorText)) {
-                const message = `In the page: ${page.url()}: The error text ${errorText} found in the browser's console message: ${msg.text()}`;
-                console.log(message)
+            if (!bypassBrowserConsoleErrors && 
+                // this is because a http error goes to the browser's console
+                !bypassHttpErrors) {
                 fail(message);
             }
         }

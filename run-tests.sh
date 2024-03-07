@@ -7,7 +7,8 @@ NC='\033[0m'
 run_playwright_tests_failing_and_error_text_found() {
     local test_filename="$1"
 
-    run_playwright_tests "$test_filename" "--conf example-files/configuration-error-texts.json --wait 2000" "1 failed" "expect(content).not.toContain"
+    run_playwright_tests "$test_filename" "--conf example-files/configuration-error-texts.json --wait 2000 --bypass-browser-console-errors" \
+                   "1 failed" "expect(content).not.toContain"
 }
 
 print_test_parameters() {
@@ -114,8 +115,13 @@ run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
 run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
         "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 2000" "1 failed" "expect(content).not.toContain" "xaxa"        
 run_playwright_tests_failing_and_error_text_found "index-drop-down-list-selection-and-button-push-causes-error.tsx"
-run_playwright_tests "index-api-returns-http-500.tsx" "--conf example-files/configuration-error-texts.json --wait 2000" "1 failed" \
-        "Request to http://localhost:3000/api/http-500 resulted in status code 500"
+run_playwright_tests "index-api-returns-http-500.tsx" "--wait 2000" "1 failed" \
+        "http://localhost:3000/api-returns-http-500: Request to" \
+        "http://localhost:3000/api/http-500 resulted in status code 500"
+run_playwright_tests "index-api-returns-http-500.tsx" "--bypass-http-errors --wait 2000" "1 passed" \
+        "In the page: http://localhost:3000/api-returns-http-500: Request to http://localhost:3000/api/http-500 resulted in status code 500"
+run_playwright_tests "index-error-text-in-page.tsx" "" "1 failed" \
+   "AssertionError: In the page: http://localhost:3000/error-text-in-page:" "Found an error message in the browser's log: Hello! Something wrong!"
 run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json --wait 2000" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #1"

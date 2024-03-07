@@ -9,7 +9,7 @@ const IndexComponent = () => {
   );
 
   useEffect(() => {
-    console.warn("Hello! Something wrong!");
+    console.error("Hello! Something wrong!");
   }, []);
 
   return (
