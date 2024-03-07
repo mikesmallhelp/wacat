@@ -265,25 +265,21 @@ Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.
  ›   Running 1 test using 1 worker
      [chromium] › test.spec.ts:34:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/
-     In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/working-page
-     Fill the #0 input field a value: !pX8&$gd*墄V8 m0!tOeTFPcxuJ屢uA111%C
-     #0 drop-down list. Select the option #1
-     Push the button #0
      In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's log: Hello! Something wrong!
        1) [chromium] › test.spec.ts:34:1 › test an application ──────────────────────────────────────────
  ›   
  ›       AssertionError: In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's log: Hello! Something 
  ›   wrong!
  ›
- ›         60 |                 // this is because a http error goes to the browser's console
- ›         61 |                 !bypassHttpErrors) {
- ›       > 62 |                 fail(message);
+ ›         58 |
+ ›         59 |             if (!bypassBrowserConsoleErrors && !bypassHttpErrors) {
+ ›       > 60 |                 fail(message);
  ›            |                 ^
- ›         63 |             }
- ›         64 |         }
- ›         65 |     });
+ ›         61 |             }
+ ›         62 |         }
+ ›         63 |     });
  ›
- ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:62:17)
+ ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:60:17)
  ›
        1 failed
  ›       [chromium] › test.spec.ts:34:1 › test an application

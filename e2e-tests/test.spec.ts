@@ -56,9 +56,7 @@ test('test an application', async ({ page }) => {
             const message = `In the page: ${page.url()}: Found an error message in the browser's log: ${msg.text()}`;
             console.log(message);
 
-            if (!bypassBrowserConsoleErrors && 
-                // this is because a http error goes to the browser's console
-                !bypassHttpErrors) {
+            if (!bypassBrowserConsoleErrors && !bypassHttpErrors) {
                 fail(message);
             }
         }
