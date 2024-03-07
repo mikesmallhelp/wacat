@@ -10,18 +10,23 @@ export const getHost = ({ url }: { url: string }): string => {
     return parts.slice(0, 3).join("/").trim();
 };
 
-export const generateRandomString = (): string => {
-    // Generate a random length between 1 and 55
-    const length = Math.floor(Math.random() * 55) + 1;
+export const generateRandomString = (minLength: number, maxLength: number): string => {
+    // Ensure that minLength and maxLength are valid
+    if (minLength < 1 || maxLength < minLength) {
+        throw new Error("Invalid minimum or maximum length.");
+    }
+
+    // Generate a random length between minLength and maxLength
+    const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
 
     let randomString = '';
     for (let i = 0; i < length; i++) {
         let codePoint: number;
 
-        // Decide whether to generate a western character or a non-western character
-        // Approximately 5% chance to pick a non-western character
+        // Decide whether to generate a Western or non-Western character
+        // Approximately 5% chance to pick a non-Western character
         if (Math.random() < 0.95) {
-            // Western character ranges (mainly ASCII including letters, digits, and some punctuation)
+            // Ranges for Western characters (mainly ASCII including letters, digits, and some punctuation)
             const ranges = [
                 [0x30, 0x39], // Digits 0-9
                 [0x41, 0x5A], // Uppercase A-Z
@@ -33,7 +38,7 @@ export const generateRandomString = (): string => {
             const range = ranges[Math.floor(Math.random() * ranges.length)];
             codePoint = Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];
         } else {
-            // Non-western character range (e.g., Chinese characters)
+            // Range for non-Western characters (e.g., Chinese characters)
             // This range includes a part of the CJK Unified Ideographs block
             const min = 0x4E_00;
             const max = 0x9F_AF;

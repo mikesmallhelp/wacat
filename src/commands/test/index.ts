@@ -20,6 +20,8 @@ export default class TestCommand extends Command {
     'error-texts': Flags.string({description: 'Path to the error texts file'}),
     'headless': Flags.boolean({description: 'Headless mode'}),
     'input-texts': Flags.string({description: 'Path to the input texts file'}),
+    'input-texts-max-length': Flags.integer({description: 'Input texts max length'}),
+    'input-texts-min-length': Flags.integer({description: 'Input texts min length'}),
     'only-links': Flags.boolean({description: 'Test only links'}),
     'timeout': Flags.integer({description: 'A whole test run timeout in seconds'}),
     'wait': Flags.integer({description: 'A wait in milliseconds to wait a page load'})
@@ -57,6 +59,8 @@ export default class TestCommand extends Command {
     command += flags.debug ? `${prefix}DEBUG=true${suffix}` : '';
     command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
     command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
+    command += flags['input-texts-max-length'] ? `${prefix}INPUT_TEXTS_MAX_LENGTH=${flags['input-texts-max-length']}${suffix}` : '';
+    command += flags['input-texts-min-length'] ? `${prefix}INPUT_TEXTS_MIN_LENGTH=${flags['input-texts-min-length']}${suffix}` : '';
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
     command += flags.timeout ? `${prefix}TIMEOUT=${flags.timeout}${suffix}` : '';
     command += flags.wait ? `${prefix}WAIT=${flags.wait}${suffix}` : '';

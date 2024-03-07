@@ -20,6 +20,8 @@ const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
 const debug: boolean = Boolean(process.env.DEBUG);
 const bypassHttpErrors = Boolean(process.env.BYPASS_HTTP_ERRORS);
 const bypassBrowserConsoleErrors = Boolean(process.env.BYPASS_BROWSER_CONSOLE_ERRORS);
+const inputTextsMinLength = process.env.INPUT_TEXTS_MIN_LENGTH ? Number(process.env.INPUT_TEXTS_MIN_LENGTH) : 1;
+const inputTextsMaxLength = process.env.INPUT_TEXTS_MAX_LENGTH ? Number(process.env.INPUT_TEXTS_MAX_LENGTH) : inputTextsMinLength + 59;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -178,7 +180,7 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
         return;
     }
 
-    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString()]) {
+    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(inputTextsMinLength, inputTextsMaxLength)]) {
         if (debug) {
             console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, inputText:' + inputText);
         }
