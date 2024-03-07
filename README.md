@@ -86,19 +86,19 @@ wacat test https://mikesmallhelp-test-application.vercel.app/
 ```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
+
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:30:1 › test an application
+[chromium] › test.spec.ts:34:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
-Fill the #0 input field a value: elq4npt0
+Fill the #0 input field a value: s&O6JgFqE1!D
 #0 drop-down list. Select the option #1
 Push the button #0
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
-Fill the #0 input field a value: b8wzde2s
+Fill the #0 input field a value: g0-悟3峫禈E#(/!
 #0 drop-down list. Select the option #1
 Push the button #0
-  1 passed (7.4s)
-
+  1 passed (19.7s)
 ```
 Note that output contains "1 passed" so wacat didn't find any errors in the application.
 
@@ -118,40 +118,53 @@ wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
 Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app/. Please wait...
 
- ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-http-500-error.vercel.app/' npx playwright test --project=chromium
+ ›   Error: 
+ ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-http-500-error.vercel.app/' npx playwright test --project=chromium --headed
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
-     [chromium] › test.spec.ts:29:1 › test an application
+     [chromium] › test.spec.ts:34:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/
-     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/working-page
-     Fill the #0 input field a value: 33g4z1kv
-     #0 drop-down list. Select the option #1
-     Push the button #0
      In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500
-     Fill the #0 input field a value: 78nyp02h
+     Fill the #0 input field a value: &*f'Xgf20bc2gT璐)*RgZw7T0V
      #0 drop-down list. Select the option #1
      Push the button #0
-     Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
-       1) [chromium] › test.spec.ts:29:1 › test an application ──────────────────────────────────────────
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted
+ ›    in status code 500
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's log: Failed to load resource: the server responded with a
+ ›    status of 500 ()
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's log: Error fetching data: Error: Network response was not
+ ›    ok
+ ›       at r (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:1402)
+ ›       at async n (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:735)
+       1) [chromium] › test.spec.ts:34:1 › test an application ──────────────────────────────────────────
  ›   
- ›       AssertionError: Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
+ ›       AssertionError: In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to 
+ ›   https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
  ›
- ›         37 |         if (status >= 400) {
- ›         38 |             console.log(`Request to ${url} resulted in status code ${status}`);
- ›       > 39 |             fail(`Request to ${url} resulted in status code ${status}`);
- ›            |             ^
- ›         40 |         }
- ›         41 |     });
- ›         42 |
+ ›         47 |
+ ›         48 |             if (!bypassHttpErrors) {
+ ›       > 49 |                 fail(message);
+ ›            |                 ^
+ ›         50 |             }
+ ›         51 |         }
+ ›         52 |     });
  ›
- ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:39:13)
+ ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:49:17)
  ›
        1 failed
- ›       [chromium] › test.spec.ts:29:1 › test an application
+ ›       [chromium] › test.spec.ts:34:1 › test an application ───────────────────────────────────────────
 
 ```
 
 So wacat detects HTTP 500 error, prints the error log with the text "1 failed" and stops the execution.
+
+If you want to bypass stopping the execution in the HTTP errors use the flag --bypass-http-errors. For example the command
+
+```
+wacat test --bypass-http-errors https://mikesmallhelp-test-application-http-500-error.vercel.app/
+```
+
+not stop into the HTTP 500 error like in the previous example. wacat prints to the log the HTTP 500 error, but the execution continues.
 
 ### Detect error strings from a target application's pages
 
@@ -228,6 +241,61 @@ Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app.
 ```
 
 So wacat detects "Error occurred!" text in one sub page, reports error with the "1 failed" text and execution stops.
+
+### Detect errors in the browser's console
+
+Here is an example application, which contains an error logging in the browser's console
+
+![](doc/console-error.png)
+
+When an example command
+
+```
+wacat test https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
+```
+
+is run the execution stops into the error logging in the browser's console:
+
+```
+Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app. Please wait...
+
+ ›   Error: 
+ ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-browser-console.vercel.app' npx playwright test --project=chromium --headed
+ ›    + stderr:  + stdout: 
+ ›   Running 1 test using 1 worker
+     [chromium] › test.spec.ts:34:1 › test an application
+ ›   In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/
+     In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/working-page
+     Fill the #0 input field a value: !pX8&$gd*墄V8 m0!tOeTFPcxuJ屢uA111%C
+     #0 drop-down list. Select the option #1
+     Push the button #0
+     In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's log: Hello! Something wrong!
+       1) [chromium] › test.spec.ts:34:1 › test an application ──────────────────────────────────────────
+ ›   
+ ›       AssertionError: In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's log: Hello! Something 
+ ›   wrong!
+ ›
+ ›         60 |                 // this is because a http error goes to the browser's console
+ ›         61 |                 !bypassHttpErrors) {
+ ›       > 62 |                 fail(message);
+ ›            |                 ^
+ ›         63 |             }
+ ›         64 |         }
+ ›         65 |     });
+ ›
+ ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:62:17)
+ ›
+       1 failed
+ ›       [chromium] › test.spec.ts:34:1 › test an application
+```
+wacat prints the message "Found an error message in the browser's log: Hello! Something wrong!" and stops the execution.
+
+If you want to bypass this check and stop the execution use the flag --bypass-browser-console-errors. If the command
+
+```
+wacat test --bypass-browser-console-errors https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
+```
+is run the execution doesn't stop like in the previous example. wacat logs the error message, but continues the execution.
 
 ### Read input field texts from the file
 
