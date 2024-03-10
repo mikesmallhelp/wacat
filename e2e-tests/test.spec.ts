@@ -192,6 +192,7 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
 
             await fillInputs({ inputText, page });
             await selectFromDropDownLists({ page });
+            await fillCheckboxes({ page });
 
             const button = buttonsLocator.nth(i);
 
@@ -211,7 +212,7 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
         console.log('  fillInputs');
     }
 
-    const inputsLocator = page.locator('input');
+    const inputsLocator = page.locator('input:not([type="checkbox"])');
     const inputsCount = await inputsLocator.count();
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
@@ -219,7 +220,7 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
         console.log('Fill the #' + inputIndex + " input field a value: " + inputText);
 
         if (await input.isVisible()) {
-            input.fill(inputText);
+            await input.fill(inputText);
         }
     }
 }
@@ -241,6 +242,24 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
 
         if (await select.isVisible()) {
             await select.selectOption({ index: optionNumberToSelect })
+        }
+    }
+}
+
+const fillCheckboxes = async ({ page }: { page: Page }) => {
+    if (debug) {
+        console.log('  fillCheckboxes');
+    }
+
+    const checkboxesLocator = page.locator('input[type="checkbox"]');
+    const checkboxesCount = await checkboxesLocator.count();
+
+    for (let checkboxIndex = 0; checkboxIndex < checkboxesCount; checkboxIndex++) {
+        const checkbox = checkboxesLocator.nth(checkboxIndex);
+        console.log('Selecting the #' + checkboxIndex + " checkbox");
+
+        if (await checkbox.isVisible()) {
+            await checkbox.click();
         }
     }
 }

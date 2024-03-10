@@ -23,7 +23,7 @@ const IndexComponent = () => {
 
   const handleButtonClick = async () => {
     await fetchData('200', setLoading);
-    
+
     if (inputValue && optionValue && checkbox) {
       setErrorMessage('Error occurred!');
     }
@@ -47,13 +47,11 @@ const IndexComponent = () => {
         <option value="bbb">bbb</option>
       </select>
 
-      <div>
-        <input type="checkbox" />
-        <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} /> Second Checkbox
-      </div>
+      <input type="checkbox" />
+      <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
 
       <button onClick={handleButtonClick}>Button</button>
-      
+
       <a href='/'>Back to main page</a>
     </div>
   );
