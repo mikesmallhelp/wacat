@@ -212,7 +212,7 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
         console.log('  fillInputs');
     }
 
-    const inputsLocator = page.locator('input:not([type="checkbox"])');
+    const inputsLocator = page.locator('input:not([type])');
     const inputsCount = await inputsLocator.count();
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
