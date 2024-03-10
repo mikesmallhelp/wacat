@@ -106,7 +106,7 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests_failing_and_error_text_found "index-input-field-and-button-push-causes-error.tsx"
+run_playwright_tests_failing_and_error_text_found "index-different-types-inputs-and-button-push-causes-error.tsx"
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
 run_playwright_tests_failing_and_error_text_found "index-button-push-causes-error.tsx"
 
