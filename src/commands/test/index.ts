@@ -17,14 +17,14 @@ export default class TestCommand extends Command {
     'bypass-http-errors': Flags.boolean({description: 'Bypass the HTTP errors'}),
     'conf': Flags.string({description: 'Path to the configuration file'}),
     'debug': Flags.boolean({description: 'Enable debug mode'}),
-    'error-texts': Flags.string({description: 'Path to the error texts file'}),
     'headless': Flags.boolean({description: 'Headless mode'}),
     'input-texts': Flags.string({description: 'Path to the input texts file'}),
-    'input-texts-max-length': Flags.integer({description: 'Input texts max length'}),
-    'input-texts-min-length': Flags.integer({description: 'Input texts min length'}),
     'only-links': Flags.boolean({description: 'Test only links'}),
-    'timeout': Flags.integer({description: 'A whole test run timeout in seconds'}),
-    'wait': Flags.integer({description: 'A wait in milliseconds to wait a page load'})
+    'random-input-texts-charset': Flags.string({description: 'Random input texts character set'}),
+    'random-input-texts-max-length': Flags.integer({description: 'Random input texts max length', min: 1}),
+    'random-input-texts-min-length': Flags.integer({description: 'Random input texts min length', min: 1}),
+    'timeout': Flags.integer({description: 'A whole test run timeout in seconds', min: 1}),
+    'wait': Flags.integer({description: 'A wait in milliseconds to wait a page load', min: 0})
   }
 
   async run(): Promise<void> {
@@ -59,9 +59,10 @@ export default class TestCommand extends Command {
     command += flags.debug ? `${prefix}DEBUG=true${suffix}` : '';
     command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
     command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
-    command += flags['input-texts-max-length'] ? `${prefix}INPUT_TEXTS_MAX_LENGTH=${flags['input-texts-max-length']}${suffix}` : '';
-    command += flags['input-texts-min-length'] ? `${prefix}INPUT_TEXTS_MIN_LENGTH=${flags['input-texts-min-length']}${suffix}` : '';
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
+    command += flags['random-input-texts-charset'] ? `${prefix}RANDOM_INPUT_TEXTS_CHARSET=${flags['random-input-texts-charset']}${suffix}` : '';
+    command += flags['random-input-texts-max-length'] ? `${prefix}RANDOM_INPUT_TEXTS_MAX_LENGTH=${flags['random-input-texts-max-length']}${suffix}` : '';
+    command += flags['random-input-texts-min-length'] ? `${prefix}RANDOM_INPUT_TEXTS_MIN_LENGTH=${flags['random-input-texts-min-length']}${suffix}` : '';
     command += flags.timeout ? `${prefix}TIMEOUT=${flags.timeout}${suffix}` : '';
     command += flags.wait ? `${prefix}WAIT=${flags.wait}${suffix}` : '';
 
