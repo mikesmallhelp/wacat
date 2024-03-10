@@ -108,14 +108,12 @@ sleep 10
 
 
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
-run_playwright_tests_failing_and_error_text_found "index-button-push-causes-error.tsx"
 run_playwright_tests_failing_and_error_text_found "index-different-types-inputs-and-button-push-causes-error.tsx"
-run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
+run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
         "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt --wait 2000" \
         "1 failed" "expect(content).not.toContain" "xaxa"
-run_playwright_tests "index-input-field-and-button-push-causes-error.tsx" \
-        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 2000" "1 failed" "expect(content).not.toContain" "xaxa"        
-run_playwright_tests_failing_and_error_text_found "index-drop-down-list-selection-and-button-push-causes-error.tsx"
+run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
+        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 2000" "1 failed" "expect(content).not.toContain" "xaxa"
 run_playwright_tests "index-api-returns-http-500.tsx" "--wait 2000" "1 failed" \
         "http://localhost:3000/api-returns-http-500: Request to" \
         "http://localhost:3000/api/http-500 resulted in status code 500"
