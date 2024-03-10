@@ -293,6 +293,32 @@ wacat test --bypass-browser-console-errors https://mikesmallhelp-test-applicatio
 ```
 is run the execution doesn't stop like in the previous example. wacat logs the error message, but continues the execution.
 
+### Configure the random form inputs
+
+Normally wacat creates random form inputs. By default the length is something between 1 and 60 characters and a default character set is used. Give the min length with the flag --random-input-texts-min-length and the max length with the flag --random-input-texts-max-length. Give the character set with the flag --random-input-texts-charset. The example command and output is:
+
+```
+wacat test --random-input-texts-min-length 1 --random-input-texts-max-length 3 --random-input-texts-charset ®©¥¬¿ https://mikesmallhelp-test-application.vercel.app/
+
+Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:38:1 › test an application
+In the page: https://mikesmallhelp-test-application.vercel.app/
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
+Fill the #0 input field a value: ¥
+#0 drop-down list. Select the option #1
+Push the button #0
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page
+Fill the #0 input field a value: ¥©¬
+#0 drop-down list. Select the option #1
+Push the button #0
+  1 passed (19.0s)
+```
+
+In this example wacat generates random string ```¥©¬```.
+
 ### Read input field texts from the file
 
 Normally wacat fills the form input fields with the random strings. It is possible to read input fields from the file, for example from the file example-files/input.texts, which contents are:
@@ -581,7 +607,7 @@ wacat can be used in the CI pipeline with the --headless flag. The example is ht
 
 ### Configure wait time
 
-By default wacat waits each page download 2000 milliseconds. Configure the page download wait time in milliseconds with --wait flag. The wait time is at least 1 milliseconds. The example command with 1000 milliseconds wait is:
+By default wacat waits each page download 2000 milliseconds. Configure the page download wait time in milliseconds with --wait flag. The example command with 1000 milliseconds wait is:
 
 ```
 wacat test --wait 1000 https://mikesmallhelp-test-application.vercel.app/

@@ -20,8 +20,10 @@ const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
 const debug: boolean = Boolean(process.env.DEBUG);
 const bypassHttpErrors = Boolean(process.env.BYPASS_HTTP_ERRORS);
 const bypassBrowserConsoleErrors = Boolean(process.env.BYPASS_BROWSER_CONSOLE_ERRORS);
-const inputTextsMinLength = process.env.INPUT_TEXTS_MIN_LENGTH ? Number(process.env.INPUT_TEXTS_MIN_LENGTH) : 1;
-const inputTextsMaxLength = process.env.INPUT_TEXTS_MAX_LENGTH ? Number(process.env.INPUT_TEXTS_MAX_LENGTH) : inputTextsMinLength + 59;
+const randomInputTextsMinLength = process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH ? Number(process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH) : 1;
+const randomInputTextsMaxLength = process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH 
+                                           ? Number(process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH) : randomInputTextsMinLength + 59;
+const randomInputTextsCharset = process.env.RANDOM_INPUT_TEXTS_CHARSET;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -180,7 +182,8 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
         return;
     }
 
-    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(inputTextsMinLength, inputTextsMaxLength)]) {
+    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
+                                                                                randomInputTextsCharset)]) {
         if (debug) {
             console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, inputText:' + inputText);
         }

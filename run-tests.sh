@@ -125,6 +125,8 @@ run_playwright_tests "index-error-text-in-page.tsx" "" "1 failed" \
 run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json --wait 2000" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #1"
+run_playwright_tests "index-working-page2.tsx" "--random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
+                     "1 passed" "¿¿¿¿¿"
 run_playwright_tests "index-working-page2.tsx" "--only-links --wait 2000" "1 passed" \
          "In the page: http://localhost:3000/working-page" \
          "In the page: http://localhost:3000/working-page2" "Push the button #0"
