@@ -88,17 +88,17 @@ Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait.
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:34:1 › test an application
+[chromium] › test.spec.ts:38:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
-Fill the #0 input field a value: s&O6JgFqE1!D
+Fill the #0 input field a value: etOX=,V~Yzj&$/'8gAKHC`ENd=QK08qg6ptg=YM3o7s=q8C3}KB1';4mu
 #0 drop-down list. Select the option #1
 Push the button #0
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
-Fill the #0 input field a value: g0-悟3峫禈E#(/!
+Fill the #0 input field a value: 1CF[f
 #0 drop-down list. Select the option #1
 Push the button #0
-  1 passed (19.7s)
+  1 passed (19.1s)
 ```
 Note that output contains "1 passed" so wacat didn't find any errors in the application.
 
@@ -122,10 +122,14 @@ Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app
  ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-http-500-error.vercel.app/' npx playwright test --project=chromium --headed
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
-     [chromium] › test.spec.ts:34:1 › test an application
+     [chromium] › test.spec.ts:38:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/working-page
+     Fill the #0 input field a value: )M]Z>Yv
+     #0 drop-down list. Select the option #1
+     Push the button #0
      In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500
-     Fill the #0 input field a value: &*f'Xgf20bc2gT璐)*RgZw7T0V
+     Fill the #0 input field a value: S|,/9(@4SSLKO4c9.ZIeEmnZ(KNA<X'h~W_4uiX[gFTJ
      #0 drop-down list. Select the option #1
      Push the button #0
      In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted
@@ -136,23 +140,23 @@ Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app
  ›    ok
  ›       at r (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:1402)
  ›       at async n (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:735)
-       1) [chromium] › test.spec.ts:34:1 › test an application ──────────────────────────────────────────
+       1) [chromium] › test.spec.ts:38:1 › test an application ──────────────────────────────────────────
  ›   
  ›       AssertionError: In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to 
  ›   https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
  ›
- ›         47 |
- ›         48 |             if (!bypassHttpErrors) {
- ›       > 49 |                 fail(message);
+ ›         51 |
+ ›         52 |             if (!bypassHttpErrors) {
+ ›       > 53 |                 fail(message);
  ›            |                 ^
- ›         50 |             }
- ›         51 |         }
- ›         52 |     });
+ ›         54 |             }
+ ›         55 |         }
+ ›         56 |     });
  ›
- ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:49:17)
+ ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:53:17)
  ›
        1 failed
- ›       [chromium] › test.spec.ts:34:1 › test an application ───────────────────────────────────────────
+ ›       [chromium] › test.spec.ts:38:1 › test an application
 
 ```
 
@@ -299,7 +303,9 @@ Normally wacat creates random form inputs. By default the length is something be
 
 ```
 wacat test --random-input-texts-min-length 1 --random-input-texts-max-length 3 --random-input-texts-charset ®©¥¬¿ https://mikesmallhelp-test-application.vercel.app/
+```
 
+```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
 
