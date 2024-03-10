@@ -10,6 +10,7 @@ wacat (walking cat) application for example:
 - visits every link in your application
 - adds random inputs to form inputs
 - selects values from dropdown menus
+- selects values from checkboxes
 - clicks on every button
 
 Additionally, wacat
@@ -91,14 +92,16 @@ Running 1 test using 1 worker
 [chromium] › test.spec.ts:38:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
-Fill the #0 input field a value: etOX=,V~Yzj&$/'8gAKHC`ENd=QK08qg6ptg=YM3o7s=q8C3}KB1';4mu
+Fill the #0 input field a value: ps@7M#m5J8h+8,QHkW'26+!s/:Do;z*:/)3H
 #0 drop-down list. Select the option #1
+Selecting the #0 checkbox
 Push the button #0
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
-Fill the #0 input field a value: 1CF[f
+Fill the #0 input field a value: ,R!Qs|Na28#$M&r+C`%I/>#FO'gk(qN/'v&O/oQ
 #0 drop-down list. Select the option #1
+Selecting the #0 checkbox
 Push the button #0
-  1 passed (19.1s)
+  1 passed (20.0s)
 ```
 Note that output contains "1 passed" so wacat didn't find any errors in the application.
 
