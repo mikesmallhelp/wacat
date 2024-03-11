@@ -57,7 +57,7 @@ test('test an application', async ({ page }) => {
 
     page.on('console', msg => {
         if (msg.type() === 'error') {
-            const message = `In the page: ${page.url()}: Found an error message in the browser's log: ${msg.text()}`;
+            const message = `In the page: ${page.url()}: Found an error message in the browser's console: ${msg.text()}`;
             console.log(message);
 
             if (!bypassBrowserConsoleErrors && !bypassHttpErrors) {
