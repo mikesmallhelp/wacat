@@ -51,35 +51,38 @@ const IndexComponent = () => {
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
+        <option value="ddd">ddd</option>
       </select>
 
       <select name="someValues2" id="someValues2">
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
+        <option value="ddd">ddd</option>
       </select>
 
       <select onChange={handleOptionValueChange} name="someValues3" id="someValues3">
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
+        <option value="ddd">ddd</option>
       </select>
 
       <input type="checkbox" />
       <input type="checkbox" />
       <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
 
-      <div>Radios 1</div>
+      <div>RadioGroup 1</div>
       <input type="radio" name="radioGroup" value="Option 1" />
       <input type="radio" name="radioGroup" value="Option 2" />
       <input type="radio" name="radioGroup" value="Option 3" />
 
-      <div>Radios 2</div>
+      <div>RadioGroup 2</div>
       <input type="radio" name="radioGroup2" value="Option 1" />
       <input type="radio" name="radioGroup2" value="Option 2" />
       <input type="radio" name="radioGroup2" value="Option 3" />
 
-      <div>Radios 3</div>
+      <div>RadioGroup 3</div>
       <input type="radio" name="radioGroup3" value="Option 1" onChange={handleRadioChange} />
       <input type="radio" name="radioGroup3" value="Option 2" onChange={handleRadioChange} />
       <input type="radio" name="radioGroup3" value="Option 3" onChange={handleRadioChange} />

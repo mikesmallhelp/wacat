@@ -46,14 +46,18 @@ describe('generateRandomString', () => {
 });
 
 describe('generateRandomIndex', () => {
-    it('should return 0 when n is 0', () => {
+    it('should return 0 when maxIndex is 0', () => {
         expect(generateRandomIndex(0)).to.equal(0);
     });
 
-    it('should return a number between 0 and 3, inclusive', () => {
-        const result = generateRandomIndex(3);
-        expect(result).to.be.at.least(0);
-        expect(result).to.be.at.most(3);
+    it('should return 1 when maxIndex is 1', () => {
+        expect(generateRandomIndex(1)).to.equal(1);
+    });
+
+    it('should return a number between 1 and 4, inclusive', () => {
+        const result = generateRandomIndex(4);
+        expect(result).to.be.at.least(1);
+        expect(result).to.be.at.most(4);
     });
 });
 
