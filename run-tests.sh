@@ -4,13 +4,6 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-run_playwright_tests_failing_and_error_text_found() {
-    local test_filename="$1"
-
-    run_playwright_tests "$test_filename" "--conf example-files/configuration-error-texts.json --wait 2000 --bypass-browser-console-errors" \
-                   "1 failed" "expect(content).not.toContain"
-}
-
 print_test_parameters() {
     local test_filename="$1"
     local test_command_extra_parameters="$2"
