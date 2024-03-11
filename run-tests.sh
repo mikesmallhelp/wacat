@@ -106,8 +106,10 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests_failing_and_error_text_found "index-errors-in-page-and-console.tsx"
-run_playwright_tests_failing_and_error_text_found "index-different-types-inputs-and-button-push-causes-error.tsx"
+run_playwright_tests "index-errors-in-page-and-console.tsx" "--conf example-files/configuration-error-texts.json --wait 2000 --bypass-browser-console-errors" \
+                   "1 failed" "expect(content).not.toContain"
+run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --wait 2000" \
+                   "1 failed" "expect(content).not.toContain"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
         "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt --wait 2000" \
         "1 failed" "expect(content).not.toContain" "xaxa"
