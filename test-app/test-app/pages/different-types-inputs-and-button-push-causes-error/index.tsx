@@ -49,9 +49,6 @@ const IndexComponent = () => {
 
       <select name="someValues" id="someValues">
         <option value="aaa">aaa</option>
-        <option value="bbb">bbb</option>
-        <option value="ccc">ccc</option>
-        <option value="ddd">ddd</option>
       </select>
 
       <select name="someValues2" id="someValues2">
