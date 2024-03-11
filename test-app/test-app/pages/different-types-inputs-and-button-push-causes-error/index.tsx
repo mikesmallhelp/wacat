@@ -26,15 +26,15 @@ const IndexComponent = () => {
     setRadioValue(event.target.value);
   };
 
-  const handleButtonClick1 = async () => {
+  const handleButtonClick1And2 = async () => {
     await fetchData('200', setLoading);
     setCheckbox(false);
   }
 
-  const handleButtonClick2 = async () => {
+  const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && optionValue && checkbox) {
+    if (inputValue && optionValue && checkbox && radioValue) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -70,22 +70,23 @@ const IndexComponent = () => {
       <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
 
       <div>RadioGroup 1</div>
-      <input type="radio" name="radioGroup" value="Option 1" />
+      <input type="radio" name="radioGroup" value="Option 1" checked />
       <input type="radio" name="radioGroup" value="Option 2" />
       <input type="radio" name="radioGroup" value="Option 3" />
 
       <div>RadioGroup 2</div>
-      <input type="radio" name="radioGroup2" value="Option 1" />
+      <input type="radio" name="radioGroup2" value="Option 1" checked />
       <input type="radio" name="radioGroup2" value="Option 2" />
       <input type="radio" name="radioGroup2" value="Option 3" />
 
       <div>RadioGroup 3</div>
-      <input type="radio" name="radioGroup3" value="Option 1" onChange={handleRadioChange} />
+      <input type="radio" name="radioGroup3" value="Option 1" onChange={handleRadioChange} checked />
       <input type="radio" name="radioGroup3" value="Option 2" onChange={handleRadioChange} />
       <input type="radio" name="radioGroup3" value="Option 3" onChange={handleRadioChange} />
 
-      <button onClick={handleButtonClick1}>Button1</button>
-      <button onClick={handleButtonClick2}>Button2</button>
+      <button onClick={handleButtonClick1And2}>Button1</button>
+      <button onClick={handleButtonClick1And2}>Button2</button>
+      <button onClick={handleButtonClick3}>Button3</button>
 
       <a href='/'>Back to main page</a>
     </div>

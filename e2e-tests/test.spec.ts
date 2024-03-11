@@ -267,6 +267,39 @@ const fillCheckboxes = async ({ page }: { page: Page }) => {
     }
 }
 
+const selectLastFromRadioButtons = async ({ page }) => {
+    if (debug) {
+        console.log('  selectLastFromRadioButtons');
+    }
+
+    // Hae kaikki radio button -ryhmien nimet
+    const radioGroups = await page.locator('input[type="radio"]').evaluateAll((radios: HTMLInputElement[]) =>
+        [...new Set(radios.map((radio) => radio.name))]
+    );
+
+    for (const groupName of radioGroups) {
+        if (debug) {
+            console.log(`Processing radio button group: ${groupName}`);
+        }
+        
+        // Hae kaikki kyseisen ryhmän radio buttonit
+        const radioButtonsLocator = page.locator(`input[type="radio"][name="${groupName}"]`);
+        const radioButtonsCount = await radioButtonsLocator.count();
+
+        if (radioButtonsCount > 0) {
+            // Valitse ryhmän viimeinen radio button
+            const lastRadioButton = radioButtonsLocator.nth(radioButtonsCount - 1);
+
+            if (await lastRadioButton.isVisible()) {
+                await lastRadioButton.check();
+                if (debug) {
+                    console.log(`Selected the last radio button in group ${groupName}`);
+                }
+            }
+        }
+    }
+}
+
 const visitLinks = async ({ page }: { page: Page }) => {
     if (debug) {
         console.log('  visitLinks');
