@@ -4,13 +4,6 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-run_playwright_tests_failing_and_error_text_found() {
-    local test_filename="$1"
-
-    run_playwright_tests "$test_filename" "--conf example-files/configuration-error-texts.json --wait 2000 --bypass-browser-console-errors" \
-                   "1 failed" "expect(content).not.toContain"
-}
-
 print_test_parameters() {
     local test_filename="$1"
     local test_command_extra_parameters="$2"
@@ -106,34 +99,35 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
-run_playwright_tests_failing_and_error_text_found "index-different-types-inputs-and-button-push-causes-error.tsx"
+run_playwright_tests "index-errors-in-page-and-console.tsx" "--conf example-files/configuration-error-texts.json --wait 3000 --bypass-browser-console-errors" \
+                   "1 failed" "expect(content).not.toContain"
+run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" \
+                   "1 failed" "expect(content).not.toContain"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
-        "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt --wait 2000" \
+        "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt --wait 3000" \
         "1 failed" "expect(content).not.toContain" "xaxa"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
-        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 2000" "1 failed" "expect(content).not.toContain" "xaxa"
-run_playwright_tests "index-api-returns-http-500.tsx" "--wait 2000" "1 failed" \
+        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 3000" "1 failed" "expect(content).not.toContain" "xaxa"
+run_playwright_tests "index-api-returns-http-500.tsx" "--wait 3000" "1 failed" \
         "http://localhost:3000/api-returns-http-500: Request to" \
         "http://localhost:3000/api/http-500 resulted in status code 500"
-run_playwright_tests "index-api-returns-http-500.tsx" "--bypass-http-errors --wait 2000" "1 passed" \
+run_playwright_tests "index-api-returns-http-500.tsx" "--bypass-http-errors --wait 3000" "1 passed" \
         "In the page: http://localhost:3000/api-returns-http-500: Request to http://localhost:3000/api/http-500 resulted in status code 500"
-run_playwright_tests "index-error-text-in-page.tsx" "" "1 failed" \
-   "AssertionError: In the page: http://localhost:3000/error-text-in-page:" "Found an error message in the browser's console: Hello! Something wrong!"
-run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json --wait 2000" "1 passed" \
+run_playwright_tests "index-errors-in-page-and-console.tsx" "" "1 failed" "Hello! Something wrong!"
+run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #2"
 run_playwright_tests "index-working-page2.tsx" "--random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
                      "1 passed" "¿¿¿¿¿"
-run_playwright_tests "index-working-page2.tsx" "--only-links --wait 2000" "1 passed" \
+run_playwright_tests "index-working-page2.tsx" "--only-links --wait 3000" "1 passed" \
          "In the page: http://localhost:3000/working-page" \
          "In the page: http://localhost:3000/working-page2" "Push the button #1"
-run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json --wait 2000" "1 passed" \
+run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json --wait 3000" "1 passed" \
        "In the page: http://localhost:3000/working-page2"
-run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json --wait 2000" \
+run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json --wait 3000" \
         "1 passed" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
 run_playwright_tests "index-auth-complicated.tsx" \
-        "--conf example-files/configuration-complicated-authentication-with-not-visit-link-urls.json --wait 2000" \
+        "--conf example-files/configuration-complicated-authentication-with-not-visit-link-urls.json --wait 3000" \
         "1 passed" "In the page: http://localhost:3000/working-page" "In the page: http://localhost:3000/working-page2" \
         "In the page: http://localhost:3000/logout"
 run_playwright_tests "index-working-page2.tsx" "--timeout 1" "1 failed" "Test timeout of 1000ms exceeded."

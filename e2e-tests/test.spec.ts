@@ -139,7 +139,7 @@ const handlePage = async ({ page }: { page: Page }) => {
             console.log('  handlePage, onlyLinks');
         }
     } else {
-        await fillInputsAndSelectFromDropDownListsAndClickButtons({ page });
+        await fillDifferentTypesInputsAndClickButtons({ page });
     }
 
     await visitLinks({ page });
@@ -166,9 +166,9 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 }
 
-const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { page: Page }) => {
+const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page }) => {
     if (debug) {
-        console.log('  fillInputsAndSelectFromDropDownListsAndClickButtons');
+        console.log('  fillDifferentTypesInputsAndClickButtons');
     }
 
     const buttonsLocator = page.locator('button');
@@ -185,12 +185,12 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
                                                                                 randomInputTextsCharset)]) {
         if (debug) {
-            console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, inputText:' + inputText);
+            console.log('fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
         }
 
         for (let i = 0; i < buttonsCount; i++) {
             if (debug) {
-                console.log('fillInputsAndSelectFromDropDownListsAndClickButtons, button i:' + i);
+                console.log('fillDifferentTypesInputsAndClickButtons, button i:' + i);
             }
 
             await fillInputs({ inputText, page });
