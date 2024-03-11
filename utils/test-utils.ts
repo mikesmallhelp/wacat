@@ -14,9 +14,9 @@ export const generateRandomString = (
     minLength: number,
     maxLength: number,
     charset: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:\'",.<>/?`~'
-  ): string => {
+): string => {
     const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-    
+
     let randomString = '';
     for (let i = 0; i < length; i++) {
         const randomPos = Math.floor(Math.random() * charset.length);
@@ -25,6 +25,8 @@ export const generateRandomString = (
 
     return randomString;
 };
+
+export const generateRandomIndex = (max: number): number => Math.floor(Math.random() * (max + 1));
 
 export const shuffleStringArray = (array: string[]): string[] => {
     const result = [...array];

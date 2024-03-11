@@ -4,7 +4,7 @@ import { Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateRandomString, hostIsSame,
+    Configuration, generateRandomIndex, generateRandomString, hostIsSame,
     readConfiguration, readFileContent, shuffleStringArray
 } from '../utils/test-utils';
 
@@ -200,7 +200,7 @@ const fillInputsAndSelectFromDropDownListsAndClickButtons = async ({ page }: { p
             const button = buttonsLocator.nth(i);
 
             if (await button.isVisible() && await button.isEnabled()) {
-                console.log('Push the button #' + i);
+                console.log('Push the button #' + (i + 1));
                 await button.click();
             }
 
@@ -220,7 +220,7 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
         const input = inputsLocator.nth(inputIndex);
-        console.log('Fill the #' + inputIndex + " input field a value: " + inputText);
+        console.log('Fill the #' + (inputIndex + 1) + " input field a value: " + inputText);
 
         if (await input.isVisible()) {
             await input.fill(inputText);
@@ -240,8 +240,8 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
         const select = selectsLocator.nth(selectIndex);
         const optionsLocator = select.locator('option');
         const optionsCount = await optionsLocator.count();
-        const optionNumberToSelect = optionsCount > 1 ? 1 : 0;
-        console.log('#' + selectIndex + " drop-down list. Select the option #" + optionNumberToSelect);
+        const optionNumberToSelect = generateRandomIndex(optionsCount - 1);
+        console.log('#' + (selectIndex + 1) + " drop-down list. Select the option #" + (optionNumberToSelect + 1));
 
         if (await select.isVisible()) {
             await select.selectOption({ index: optionNumberToSelect })
@@ -259,7 +259,7 @@ const fillCheckboxes = async ({ page }: { page: Page }) => {
 
     for (let checkboxIndex = 0; checkboxIndex < checkboxesCount; checkboxIndex++) {
         const checkbox = checkboxesLocator.nth(checkboxIndex);
-        console.log('Selecting the #' + checkboxIndex + " checkbox");
+        console.log('Selecting the #' + (checkboxIndex + 1) + " checkbox");
 
         if (await checkbox.isVisible()) {
             await checkbox.click();

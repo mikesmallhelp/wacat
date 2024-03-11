@@ -21,7 +21,12 @@ const IndexComponent = () => {
     setCheckbox(event.target.checked);
   };
 
-  const handleButtonClick = async () => {
+  const handleButtonClick1 = async () => {
+    await fetchData('200', setLoading);
+    setCheckbox(false);
+  }
+
+  const handleButtonClick2 = async () => {
     await fetchData('200', setLoading);
 
     if (inputValue && optionValue && checkbox) {
@@ -34,23 +39,33 @@ const IndexComponent = () => {
       <div>{errorMessage}</div>
 
       <input />
-
+      <input />
       <input onChange={handleInputValueChange} />
 
       <select name="someValues" id="someValues">
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
+        <option value="ccc">ccc</option>
       </select>
 
-      <select onChange={handleOptionValueChange} name="someValues2" id="someValues2">
+      <select name="someValues2" id="someValues2">
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
+        <option value="ccc">ccc</option>
+      </select>
+
+      <select onChange={handleOptionValueChange} name="someValues3" id="someValues3">
+        <option value="aaa">aaa</option>
+        <option value="bbb">bbb</option>
+        <option value="ccc">ccc</option>
       </select>
 
       <input type="checkbox" />
+      <input type="checkbox" />
       <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
 
-      <button onClick={handleButtonClick}>Button</button>
+      <button onClick={handleButtonClick1}>Button1</button>
+      <button onClick={handleButtonClick2}>Button2</button>
 
       <a href='/'>Back to main page</a>
     </div>
@@ -58,7 +73,7 @@ const IndexComponent = () => {
 
   return (
     <>
-      <PageTemplate title={'Test page - input-field-and-button-push-causes-error'} content={PageContent} loading={loading} setLoading={setLoading} />
+      <PageTemplate title={'Test page - different-types-inputs-and-button-push-causes-error'} content={PageContent} loading={loading} setLoading={setLoading} />
     </>
   );
 };

@@ -106,7 +106,6 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-
 run_playwright_tests_failing_and_error_text_found "index-error-text-in-page.tsx"
 run_playwright_tests_failing_and_error_text_found "index-different-types-inputs-and-button-push-causes-error.tsx"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
@@ -123,12 +122,12 @@ run_playwright_tests "index-error-text-in-page.tsx" "" "1 failed" \
    "AssertionError: In the page: http://localhost:3000/error-text-in-page:" "Found an error message in the browser's log: Hello! Something wrong!"
 run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json --wait 2000" "1 passed" \
         "Check the page not contain the Error occurred! text"
-run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #1"
+run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #2"
 run_playwright_tests "index-working-page2.tsx" "--random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
                      "1 passed" "¿¿¿¿¿"
 run_playwright_tests "index-working-page2.tsx" "--only-links --wait 2000" "1 passed" \
          "In the page: http://localhost:3000/working-page" \
-         "In the page: http://localhost:3000/working-page2" "Push the button #0"
+         "In the page: http://localhost:3000/working-page2" "Push the button #1"
 run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json --wait 2000" "1 passed" \
        "In the page: http://localhost:3000/working-page2"
 run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json --wait 2000" \
