@@ -241,7 +241,7 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
         const optionsLocator = select.locator('option');
         const optionsCount = await optionsLocator.count();
         const optionNumberToSelect = generateRandomIndex(optionsCount - 1);
-        console.log('#' + (selectIndex + 1) + " drop-down list. Select the option #" + optionNumberToSelect);
+        console.log('#' + (selectIndex + 1) + " drop-down list. Select the option #" + (optionNumberToSelect + 1));
 
         if (await select.isVisible()) {
             await select.selectOption({ index: optionNumberToSelect })
