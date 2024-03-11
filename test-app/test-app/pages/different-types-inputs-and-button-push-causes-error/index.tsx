@@ -8,6 +8,7 @@ const IndexComponent = () => {
   const [inputValue, setInputValue] = React.useState('');
   const [optionValue, setOptionValue] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
+  const [radioValue, setRadioValue] = useState('');
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -19,6 +20,10 @@ const IndexComponent = () => {
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckbox(event.target.checked);
+  };
+
+  const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRadioValue(event.target.value);
   };
 
   const handleButtonClick1 = async () => {
@@ -63,6 +68,21 @@ const IndexComponent = () => {
       <input type="checkbox" />
       <input type="checkbox" />
       <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
+
+      <div>Radios 1</div>
+      <input type="radio" name="radioGroup" value="Option 1" />
+      <input type="radio" name="radioGroup" value="Option 2" />
+      <input type="radio" name="radioGroup" value="Option 3" />
+
+      <div>Radios 2</div>
+      <input type="radio" name="radioGroup2" value="Option 1" />
+      <input type="radio" name="radioGroup2" value="Option 2" />
+      <input type="radio" name="radioGroup2" value="Option 3" />
+
+      <div>Radios 3</div>
+      <input type="radio" name="radioGroup3" value="Option 1" onChange={handleRadioChange} />
+      <input type="radio" name="radioGroup3" value="Option 2" onChange={handleRadioChange} />
+      <input type="radio" name="radioGroup3" value="Option 3" onChange={handleRadioChange} />
 
       <button onClick={handleButtonClick1}>Button1</button>
       <button onClick={handleButtonClick2}>Button2</button>
