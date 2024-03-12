@@ -273,16 +273,16 @@ const selectFromRadioButtons = async ({ page }) => {
         console.log('  selectFromRadioButtons');
     }
 
-    const radioGroups = await page.locator('input[type="radio"]').evaluateAll((radios: HTMLInputElement[]) =>
-        [...new Set(radios.map((radio) => radio.name))]
+    const radioButtonGroups = await page.locator('input[type="radio"]').evaluateAll((radioTypeInputs: HTMLInputElement[]) =>
+        [...new Set(radioTypeInputs.map((radioTypeInput) => radioTypeInput.name))]
     );
 
-    for (const groupName of radioGroups) {
+    for (const radiobButtonGroup of radioButtonGroups) {
         if (debug) {
-            console.log(`Processing radio button group: ${groupName}`);
+            console.log(`Processing radio button group: ${radiobButtonGroup}`);
         }
         
-        const radioButtonsLocator = page.locator(`input[type="radio"][name="${groupName}"]`);
+        const radioButtonsLocator = page.locator(`input[type="radio"][name="${radiobButtonGroup}"]`);
         const radioButtonsCount = await radioButtonsLocator.count();
 
         if (radioButtonsCount > 0) {
@@ -291,7 +291,7 @@ const selectFromRadioButtons = async ({ page }) => {
             if (await lastRadioButton.isVisible()) {
                 await lastRadioButton.check();
                 if (debug) {
-                    console.log(`Selected the last radio button in group ${groupName}`);
+                    console.log(`Selected the last radio button in group ${radiobButtonGroup}`);
                 }
             }
         }
