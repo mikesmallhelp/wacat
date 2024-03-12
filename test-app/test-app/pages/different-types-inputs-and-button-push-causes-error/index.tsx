@@ -58,10 +58,15 @@ const IndexComponent = () => {
       <input onChange={handleInputValueChange} />
 
       <select name="someValues" id="someValues">
+      <option value="">-- Select --</option>
         <option value="aaa">aaa</option>
+        <option value="bbb">bbb</option>
+        <option value="ccc">ccc</option>
+        <option value="ddd">ddd</option>
       </select>
 
       <select name="someValues2" id="someValues2">
+        <option value="">-- Select --</option>
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
@@ -69,6 +74,7 @@ const IndexComponent = () => {
       </select>
 
       <select onChange={handleOptionValueChange} name="someValues3" id="someValues3">
+        <option value="">-- Select --</option>
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
