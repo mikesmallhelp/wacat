@@ -8,9 +8,9 @@ const IndexComponent = () => {
   const [inputValue, setInputValue] = React.useState('');
   const [optionValue, setOptionValue] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
-  const [radioButtonValue, setRadioButtonValue] = useState('Option 1');
-  const [radioButtonValue2, setRadioButtonValue2] = useState('Option 1');
-  const [radioButtonValue3, setRadioButtonValue3] = useState('Option 1');
+  const [radioButtonValue, setRadioButtonValue] = useState('');
+  const [radioButtonValue2, setRadioButtonValue2] = useState('');
+  const [radioButtonValue3, setRadioButtonValue3] = useState('');
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
