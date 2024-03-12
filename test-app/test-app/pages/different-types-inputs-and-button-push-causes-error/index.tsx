@@ -80,19 +80,19 @@ const IndexComponent = () => {
       <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
 
       <div>RadioButtonGroup</div>
-      <input type="radioButton" name="radioButtonGroup" value="Option 1" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 1"} />
-      <input type="radioButton" name="radioButtonGroup" value="Option 2" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 2"} />
-      <input type="radioButton" name="radioButtonGroup" value="Option 3" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 3"} />
+      <input type="radio" name="radioButtonGroup" value="Option 1" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 1"} />
+      <input type="radio" name="radioButtonGroup" value="Option 2" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 2"} />
+      <input type="radio" name="radioButtonGroup" value="Option 3" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 3"} />
 
       <div>RadioButtonGroup 2</div>
-      <input type="radioButton" name="radioButtonGroup2" value="Option 1" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 1"} />
-      <input type="radioButton" name="radioButtonGroup2" value="Option 2" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 2"} />
-      <input type="radioButton" name="radioButtonGroup2" value="Option 3" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 3"} />
+      <input type="radio" name="radioButtonGroup2" value="Option 1" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 1"} />
+      <input type="radio" name="radioButtonGroup2" value="Option 2" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 2"} />
+      <input type="radio" name="radioButtonGroup2" value="Option 3" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 3"} />
 
       <div>RadioButtonGroup 3</div>
-      <input type="radioButton" name="radioButtonGroup3" value="Option 1" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 1"} />
-      <input type="radioButton" name="radioButtonGroup3" value="Option 2" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 2"} />
-      <input type="radioButton" name="radioButtonGroup3" value="Option 3" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 3"} />
+      <input type="radio" name="radioButtonGroup3" value="Option 1" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 1"} />
+      <input type="radio" name="radioButtonGroup3" value="Option 2" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 2"} />
+      <input type="radio" name="radioButtonGroup3" value="Option 3" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 3"} />
 
 
       <button onClick={handleButtonClick1And2}>Button1</button>
