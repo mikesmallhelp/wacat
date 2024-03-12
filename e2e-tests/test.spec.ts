@@ -193,7 +193,8 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('fillDifferentTypesInputsAndClickButtons, button i:' + i);
             }
 
-            await fillInputs({ inputText, page });
+            await fillInputsWithoutType({ inputText, page });
+            await fillInputsWithTextType({ inputText, page });
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
             await selectFromRadioButtons({ page });
@@ -211,12 +212,30 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 }
 
-const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
+const fillInputsWithoutType = async ({ inputText, page }: { inputText: string, page: Page }) => {
     if (debug) {
         console.log('  fillInputs');
     }
 
-    const inputsLocator = page.locator('input:not([type]), input[type="text"]');
+    const inputsLocator = page.locator('input:not([type])');
+    const inputsCount = await inputsLocator.count();
+
+    for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
+        const input = inputsLocator.nth(inputIndex);
+
+        if (await input.isVisible()) {
+            console.log('Filling the #' + (inputIndex + 1) + " input field a value: " + inputText);
+            await input.fill(inputText);
+        }
+    }
+}
+
+const fillInputsWithTextType = async ({ inputText, page }: { inputText: string, page: Page }) => {
+    if (debug) {
+        console.log('  fillInputs');
+    }
+
+    const inputsLocator = page.locator('input[type="text"]');
     const inputsCount = await inputsLocator.count();
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {

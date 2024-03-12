@@ -54,7 +54,7 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue) {
+    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3) {
       setErrorMessage('Error occurred!');
     }
   }
