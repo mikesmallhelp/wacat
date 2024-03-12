@@ -12,6 +12,7 @@ const IndexComponent = () => {
   const [radioButtonValue, setRadioButtonValue] = useState('');
   const [radioButtonValue2, setRadioButtonValue2] = useState('');
   const [radioButtonValue3, setRadioButtonValue3] = useState('');
+  const [emailValue, setEmailValue] = React.useState('');
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -41,6 +42,10 @@ const IndexComponent = () => {
     setRadioButtonValue3(event.target.value);
   };
 
+  const handleEmailValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmailValue(event.target.value);
+  };
+
   const handleButtonClick1And2 = async () => {
     await fetchData('200', setLoading);
     setCheckbox(false);
@@ -49,7 +54,7 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3) {
+    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -105,6 +110,10 @@ const IndexComponent = () => {
       <input type="radio" name="radioButtonGroup3" value="Option 2" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 2"} />
       <input type="radio" name="radioButtonGroup3" value="Option 3" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 3"} />
 
+      <div>Emails</div>
+      <input type="email" />
+      <input type="email" />
+      <input type="email" onChange={handleEmailValueChange} />
 
       <button onClick={handleButtonClick1And2}>Button1</button>
       <button onClick={handleButtonClick1And2}>Button2</button>
