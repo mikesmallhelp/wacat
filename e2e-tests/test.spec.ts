@@ -216,7 +216,7 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
         console.log('  fillInputs');
     }
 
-    const inputsLocator = page.locator('input:not([type])');
+    const inputsLocator = page.locator('input:not([type]), input[type="text"]');
     const inputsCount = await inputsLocator.count();
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {

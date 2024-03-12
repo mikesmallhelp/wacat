@@ -6,6 +6,7 @@ const IndexComponent = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [inputValue, setInputValue] = React.useState('');
+  const [inputValue2, setInputValue2] = React.useState('');
   const [optionValue, setOptionValue] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
   const [radioButtonValue, setRadioButtonValue] = useState('');
@@ -14,6 +15,10 @@ const IndexComponent = () => {
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+  };
+
+  const handleInputValueChange2 = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue2(event.target.value);
   };
 
   const handleOptionValueChange = async (event: ChangeEvent<HTMLSelectElement>) => {
@@ -44,7 +49,7 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && optionValue && checkbox && radioButtonValue3) {
+    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -54,8 +59,8 @@ const IndexComponent = () => {
       <div>{errorMessage}</div>
 
       <input />
-      <input />
       <input onChange={handleInputValueChange} />
+      <input type="text" onChange={handleInputValueChange2} />
 
       <select name="someValues" id="someValues">
       <option value="">-- Select --</option>
