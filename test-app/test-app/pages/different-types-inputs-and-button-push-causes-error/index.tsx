@@ -8,7 +8,9 @@ const IndexComponent = () => {
   const [inputValue, setInputValue] = React.useState('');
   const [optionValue, setOptionValue] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
-  const [radioValue, setRadioValue] = useState('');
+  const [radioButtonValue, setRadioButtonValue] = useState('Option 1');
+  const [radioButtonValue2, setRadioButtonValue2] = useState('Option 1');
+  const [radioButtonValue3, setRadioButtonValue3] = useState('Option 1');
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -22,8 +24,16 @@ const IndexComponent = () => {
     setCheckbox(event.target.checked);
   };
 
-  const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRadioValue(event.target.value);
+  const handleRadioButtonChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRadioButtonValue(event.target.value);
+  };
+
+  const handleRadioButtonChange2 = (event: ChangeEvent<HTMLInputElement>) => {
+    setRadioButtonValue2(event.target.value);
+  };
+
+  const handleRadioButtonChange3 = (event: ChangeEvent<HTMLInputElement>) => {
+    setRadioButtonValue3(event.target.value);
   };
 
   const handleButtonClick1And2 = async () => {
@@ -34,7 +44,7 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && optionValue && checkbox && radioValue) {
+    if (inputValue && optionValue && checkbox && radioButtonValue3) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -69,20 +79,21 @@ const IndexComponent = () => {
       <input type="checkbox" />
       <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
 
-      <div>RadioGroup 1</div>
-      <input type="radio" name="radioGroup" value="Option 1" checked />
-      <input type="radio" name="radioGroup" value="Option 2" />
-      <input type="radio" name="radioGroup" value="Option 3" />
+      <div>RadioButtonGroup</div>
+      <input type="radioButton" name="radioButtonGroup" value="Option 1" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 1"} />
+      <input type="radioButton" name="radioButtonGroup" value="Option 2" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 2"} />
+      <input type="radioButton" name="radioButtonGroup" value="Option 3" onChange={handleRadioButtonChange} checked={radioButtonValue === "Option 3"} />
 
-      <div>RadioGroup 2</div>
-      <input type="radio" name="radioGroup2" value="Option 1" checked />
-      <input type="radio" name="radioGroup2" value="Option 2" />
-      <input type="radio" name="radioGroup2" value="Option 3" />
+      <div>RadioButtonGroup 2</div>
+      <input type="radioButton" name="radioButtonGroup2" value="Option 1" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 1"} />
+      <input type="radioButton" name="radioButtonGroup2" value="Option 2" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 2"} />
+      <input type="radioButton" name="radioButtonGroup2" value="Option 3" onChange={handleRadioButtonChange2} checked={radioButtonValue2 === "Option 3"} />
 
-      <div>RadioGroup 3</div>
-      <input type="radio" name="radioGroup3" value="Option 1" onChange={handleRadioChange} checked />
-      <input type="radio" name="radioGroup3" value="Option 2" onChange={handleRadioChange} />
-      <input type="radio" name="radioGroup3" value="Option 3" onChange={handleRadioChange} />
+      <div>RadioButtonGroup 3</div>
+      <input type="radioButton" name="radioButtonGroup3" value="Option 1" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 1"} />
+      <input type="radioButton" name="radioButtonGroup3" value="Option 2" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 2"} />
+      <input type="radioButton" name="radioButtonGroup3" value="Option 3" onChange={handleRadioButtonChange3} checked={radioButtonValue3 === "Option 3"} />
+
 
       <button onClick={handleButtonClick1And2}>Button1</button>
       <button onClick={handleButtonClick1And2}>Button2</button>

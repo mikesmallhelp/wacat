@@ -196,6 +196,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             await fillInputs({ inputText, page });
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
+            await selectFromRadioButtons({ page });
 
             const button = buttonsLocator.nth(i);
 
@@ -267,12 +268,11 @@ const fillCheckboxes = async ({ page }: { page: Page }) => {
     }
 }
 
-const selectLastFromRadioButtons = async ({ page }) => {
+const selectFromRadioButtons = async ({ page }) => {
     if (debug) {
-        console.log('  selectLastFromRadioButtons');
+        console.log('  selectFromRadioButtons');
     }
 
-    // Hae kaikki radio button -ryhmien nimet
     const radioGroups = await page.locator('input[type="radio"]').evaluateAll((radios: HTMLInputElement[]) =>
         [...new Set(radios.map((radio) => radio.name))]
     );
@@ -282,12 +282,10 @@ const selectLastFromRadioButtons = async ({ page }) => {
             console.log(`Processing radio button group: ${groupName}`);
         }
         
-        // Hae kaikki kyseisen ryhmän radio buttonit
         const radioButtonsLocator = page.locator(`input[type="radio"][name="${groupName}"]`);
         const radioButtonsCount = await radioButtonsLocator.count();
 
         if (radioButtonsCount > 0) {
-            // Valitse ryhmän viimeinen radio button
             const lastRadioButton = radioButtonsLocator.nth(radioButtonsCount - 1);
 
             if (await lastRadioButton.isVisible()) {
