@@ -57,7 +57,7 @@ test('test an application', async ({ page }) => {
 
     page.on('console', msg => {
         if (msg.type() === 'error') {
-            const message = `In the page: ${page.url()}: Found an error message in the browser's log: ${msg.text()}`;
+            const message = `In the page: ${page.url()}: Found an error message in the browser's console: ${msg.text()}`;
             console.log(message);
 
             if (!bypassBrowserConsoleErrors && !bypassHttpErrors) {
@@ -196,6 +196,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             await fillInputs({ inputText, page });
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
+            await selectFromRadioButtons({ page });
 
             const button = buttonsLocator.nth(i);
 
@@ -220,9 +221,9 @@ const fillInputs = async ({ inputText, page }: { inputText: string, page: Page }
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
         const input = inputsLocator.nth(inputIndex);
-        console.log('Fill the #' + (inputIndex + 1) + " input field a value: " + inputText);
 
         if (await input.isVisible()) {
+            console.log('Filling the #' + (inputIndex + 1) + " input field a value: " + inputText);
             await input.fill(inputText);
         }
     }
@@ -241,9 +242,9 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
         const optionsLocator = select.locator('option');
         const optionsCount = await optionsLocator.count();
         const optionNumberToSelect = generateRandomIndex(optionsCount - 1);
-        console.log('#' + (selectIndex + 1) + " drop-down list. Select the option #" + (optionNumberToSelect + 1));
 
         if (await select.isVisible()) {
+            console.log('The #' + (selectIndex + 1) + " drop-down list. Selecting the option #" + (optionNumberToSelect + 1));
             await select.selectOption({ index: optionNumberToSelect })
         }
     }
@@ -259,11 +260,43 @@ const fillCheckboxes = async ({ page }: { page: Page }) => {
 
     for (let checkboxIndex = 0; checkboxIndex < checkboxesCount; checkboxIndex++) {
         const checkbox = checkboxesLocator.nth(checkboxIndex);
-        console.log('Selecting the #' + (checkboxIndex + 1) + " checkbox");
 
         if (await checkbox.isVisible()) {
+            console.log('Selecting the #' + (checkboxIndex + 1) + " checkbox");
             await checkbox.click();
         }
+    }
+}
+
+const selectFromRadioButtons = async ({ page }) => {
+    if (debug) {
+        console.log('  selectFromRadioButtons');
+    }
+
+    const radioButtonGroups = await page.locator('input[type="radio"]').evaluateAll((radioTypeInputs: HTMLInputElement[]) =>
+        [...new Set(radioTypeInputs.map((radioTypeInput) => radioTypeInput.name))]
+    );
+
+    let radioButtonGroupCount = 1;
+    for (const radiobButtonGroup of radioButtonGroups) {
+        if (debug) {
+            console.log(`Processing radio button group: ${radiobButtonGroup}`);
+        }
+        
+        const radioButtonsLocator = page.locator(`input[type="radio"][name="${radiobButtonGroup}"]`);
+        const radioButtonsCount = await radioButtonsLocator.count();
+
+        if (radioButtonsCount > 0) {
+            const radioButtonIndex = generateRandomIndex(radioButtonsCount - 1);
+            const radioButton = radioButtonsLocator.nth(radioButtonIndex);
+
+            if (await radioButton.isVisible()) {
+                console.log(`The #${radioButtonGroupCount} radio button group. Selecting the radio button #${radioButtonIndex + 1}`);
+                await radioButton.check();
+            }
+        }
+
+        radioButtonGroupCount++;
     }
 }
 
