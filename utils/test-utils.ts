@@ -80,3 +80,14 @@ export const readConfiguration = async ({ path }: { path: string }): Promise<Con
         throw new Error('Error reading file: ' + error);
     }
 };
+
+export const generateRandomEmail = (): string => {
+    const chars = 'abcdefghijklmnopqrstuvwxyz';
+    return generateRandomString(6, 12, chars) + '.' + generateRandomString(6, 12, chars) + '@' + 
+           generateRandomString(6, 12, chars) + '.' + getRandomDomain();
+};
+
+const getRandomDomain = (): string => {
+    const domains = ['com', 'net', 'org', 'gov', 'edu'];
+    return domains[Math.floor(Math.random() * domains.length)];
+};

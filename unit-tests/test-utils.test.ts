@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-    generateRandomIndex, generateRandomString, getHost, hostIsSame, shuffleStringArray
+    generateRandomEmail, generateRandomIndex, generateRandomString, getHost, hostIsSame, shuffleStringArray
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -57,7 +57,6 @@ describe('generateRandomIndex', () => {
     });
 });
 
-
 describe('shuffleStringArray function', () => {
     it('should contain all original elements after shuffling', () => {
         const originalArray = ['a', 'b', 'c', 'd', 'e'];
@@ -74,4 +73,24 @@ describe('shuffleStringArray function', () => {
         expect(shuffledArray.length).to.equal(originalArray.length);
     });
 });
+
+describe('generateRandomEmail', () => {
+    it('should generate a valid email address', () => {
+        const email = generateRandomEmail();
+        console.log('email:', email);
+        expect(validateEmail(email)).to.equal(true);
+    });
+
+    it('should generate an email with a valid domain', () => {
+        const email = generateRandomEmail();
+        const domain = email.split('@')[1].split('.')[1];
+        const validDomains = ['com', 'net', 'org', 'gov', 'edu'];
+        expect(validDomains).to.include(domain);
+    });
+});
+
+const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
 
