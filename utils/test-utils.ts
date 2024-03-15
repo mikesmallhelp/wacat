@@ -26,7 +26,7 @@ export const generateRandomString = (
     return randomString;
 };
 
-export const generateRandomIndex = (max: number): number => Math.floor(Math.random() * (max + 1));
+export const generateRandomIndex = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
 export const shuffleStringArray = (array: string[]): string[] => {
     const result = [...array];
@@ -79,4 +79,15 @@ export const readConfiguration = async ({ path }: { path: string }): Promise<Con
         console.log('Error reading configuration:', error);
         throw new Error('Error reading file: ' + error);
     }
+};
+
+export const generateRandomEmail = (): string => {
+    const chars = 'abcdefghijklmnopqrstuvwxyz';
+    return generateRandomString(6, 12, chars) + '.' + generateRandomString(6, 12, chars) + '@' + 
+           generateRandomString(6, 12, chars) + '.' + getRandomDomain();
+};
+
+const getRandomDomain = (): string => {
+    const domains = ['com', 'net', 'org', 'gov', 'edu'];
+    return domains[Math.floor(Math.random() * domains.length)];
 };
