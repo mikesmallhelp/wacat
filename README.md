@@ -137,9 +137,9 @@ Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app
      Push the button #0
      In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted
  ›    in status code 500
-     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's console: Failed to load resource: the server responded with a
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's log: Failed to load resource: the server responded with a
  ›    status of 500 ()
-     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's console: Error fetching data: Error: Network response was not
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's log: Error fetching data: Error: Network response was not
  ›    ok
  ›       at r (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:1402)
  ›       at async n (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:735)
@@ -272,10 +272,10 @@ Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.
  ›   Running 1 test using 1 worker
      [chromium] › test.spec.ts:34:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/
-     In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's console: Hello! Something wrong!
+     In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's log: Hello! Something wrong!
        1) [chromium] › test.spec.ts:34:1 › test an application ──────────────────────────────────────────
  ›   
- ›       AssertionError: In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's console: Hello! Something 
+ ›       AssertionError: In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's log: Hello! Something 
  ›   wrong!
  ›
  ›         58 |
@@ -291,7 +291,7 @@ Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.
        1 failed
  ›       [chromium] › test.spec.ts:34:1 › test an application
 ```
-wacat prints the message "Found an error message in the browser's console: Hello! Something wrong!" and stops the execution.
+wacat prints the message "Found an error message in the browser's log: Hello! Something wrong!" and stops the execution.
 
 If you want to bypass this check and stop the execution use the flag --bypass-browser-console-errors. If the command
 
