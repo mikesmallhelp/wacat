@@ -45,18 +45,6 @@ describe('generateRandomString', () => {
     });
 });
 
-describe('generateRandomIndex', () => {
-    it('should return 0 when maxIndex is 0', () => {
-        expect(generateRandomIndex(0)).to.equal(0);
-    });
-
-    it('should return a number between 0 and 3, inclusive', () => {
-        const result = generateRandomIndex(3);
-        expect(result).to.be.at.least(0);
-        expect(result).to.be.at.most(3);
-    });
-});
-
 describe('shuffleStringArray function', () => {
     it('should contain all original elements after shuffling', () => {
         const originalArray = ['a', 'b', 'c', 'd', 'e'];
@@ -94,3 +82,25 @@ const validateEmail = (email: string) => {
     return emailRegex.test(email);
 };
 
+describe('generateRandomIndex', () => {
+    it('should generate a random index within the specified range 0..2', () => {
+        const min = 0;
+        const max = 2;
+        const randomIndex = generateRandomIndex(min, max);
+        expect(randomIndex).to.be.a('number').and.to.be.at.least(min).and.at.most(max);
+    });
+
+    it('should generate a random index within the specified range 1..3', () => {
+        const min = 1;
+        const max = 3;
+        const randomIndex = generateRandomIndex(min, max);
+        expect(randomIndex).to.be.a('number').and.to.be.at.least(min).and.at.most(max);
+    });
+
+    it('should return min when min and max are equal', () => {
+        const min = 3;
+        const max = 3;
+        const randomIndex = generateRandomIndex(min, max);
+        expect(randomIndex).to.equal(min);
+    });
+});

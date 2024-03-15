@@ -26,7 +26,7 @@ export const generateRandomString = (
     return randomString;
 };
 
-export const generateRandomIndex = (max: number): number => Math.floor(Math.random() * (max + 1));
+export const generateRandomIndex = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
 export const shuffleStringArray = (array: string[]): string[] => {
     const result = [...array];

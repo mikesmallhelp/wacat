@@ -40,7 +40,7 @@ test('test an application', async ({ page }) => {
 
     test.setTimeout(timeout);
     await page.goto(rootUrl);
-    await page.waitForTimeout(wait);
+    await waitForTimeout({ page });
 
     page.on('response', response => {
         const status = response.status();
@@ -129,7 +129,7 @@ const authenticate = async ({ page }: { page: Page }) => {
 const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());
 
-    await page.waitForTimeout(wait);
+    await waitForTimeout({ page });
     visitedUrlsOrNotVisitLinkUrls.push(page.url());
 
     await checkPageForErrors({ page });
@@ -194,7 +194,6 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             }
 
             await fillInputsWithoutType({ inputText, page });
-            await fillInputsWithTextType({ inputText, page });
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
             await selectFromRadioButtons({ page });
@@ -206,7 +205,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 await button.click();
             }
 
-            await page.waitForTimeout(wait);
+            await waitForTimeout({ page });
             await checkPageForErrors({ page });
         }
     }
@@ -217,25 +216,7 @@ const fillInputsWithoutType = async ({ inputText, page }: { inputText: string, p
         console.log('  fillInputs');
     }
 
-    const inputsLocator = page.locator('input:not([type])');
-    const inputsCount = await inputsLocator.count();
-
-    for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
-        const input = inputsLocator.nth(inputIndex);
-
-        if (await input.isVisible()) {
-            console.log('Filling the #' + (inputIndex + 1) + " input field a value: " + inputText);
-            await input.fill(inputText);
-        }
-    }
-}
-
-const fillInputsWithTextType = async ({ inputText, page }: { inputText: string, page: Page }) => {
-    if (debug) {
-        console.log('  fillInputs');
-    }
-
-    const inputsLocator = page.locator('input[type="text"]');
+    const inputsLocator = page.locator('input:not([type]), input[type="text"]');
     const inputsCount = await inputsLocator.count();
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
@@ -256,15 +237,24 @@ const selectFromDropDownLists = async ({ page }: { page: Page }) => {
     const selectsLocator = page.locator('select');
     const selectsCount = await selectsLocator.count();
 
+    if (debug) {
+        console.log('  selectsCount:', selectsCount);
+    }
+
     for (let selectIndex = 0; selectIndex < selectsCount; selectIndex++) {
         const select = selectsLocator.nth(selectIndex);
         const optionsLocator = select.locator('option');
         const optionsCount = await optionsLocator.count();
-        const optionNumberToSelect = generateRandomIndex(optionsCount - 1);
+
+        if (debug) {
+            console.log('  optionsCount:', optionsCount);
+        }
+
+        const optionIndexToSelect = generateRandomIndex(1, optionsCount - 1);
 
         if (await select.isVisible()) {
-            console.log('The #' + (selectIndex + 1) + " drop-down list. Selecting the option #" + (optionNumberToSelect + 1));
-            await select.selectOption({ index: optionNumberToSelect })
+            console.log('The #' + (selectIndex + 1) + " drop-down list. Selecting the option #" + (optionIndexToSelect + 1));
+            await select.selectOption({ index: optionIndexToSelect })
         }
     }
 }
@@ -306,7 +296,7 @@ const selectFromRadioButtons = async ({ page }) => {
         const radioButtonsCount = await radioButtonsLocator.count();
 
         if (radioButtonsCount > 0) {
-            const radioButtonIndex = generateRandomIndex(radioButtonsCount - 1);
+            const radioButtonIndex = generateRandomIndex(0, radioButtonsCount - 1);
             const radioButton = radioButtonsLocator.nth(radioButtonIndex);
 
             if (await radioButton.isVisible()) {
@@ -339,8 +329,16 @@ const visitLinks = async ({ page }: { page: Page }) => {
             }
 
             await page.goto(link);
-            await page.waitForTimeout(wait);
+            await waitForTimeout({ page });
             await handlePage({ page });
         }
     }
+}
+
+const waitForTimeout = async ({ page }: { page: Page }) => {
+    if (debug) {
+        console.log('  waitForTimeout');
+    }
+
+    await page.waitForTimeout(wait);
 }
