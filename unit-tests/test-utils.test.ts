@@ -46,7 +46,7 @@ describe('generateRandomString', () => {
 });
 
 describe('generateRandomIndex', () => {
-    it('should return 0 when maxIndex is 0', () => {
+    it('should return 0 when n is 0', () => {
         expect(generateRandomIndex(0)).to.equal(0);
     });
 
