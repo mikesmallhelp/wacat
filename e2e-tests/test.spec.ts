@@ -4,7 +4,7 @@ import { Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateRandomIndex, generateRandomString, hostIsSame,
+    Configuration, generateRandomEmail, generateRandomIndex, generateRandomString, hostIsSame,
     readConfiguration, readFileContent, shuffleStringArray
 } from '../utils/test-utils';
 
@@ -193,10 +193,11 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('fillDifferentTypesInputsAndClickButtons, button i:' + i);
             }
 
-            await fillInputsWithoutType({ inputText, page });
+            await fillTextInputs({ inputText, page });
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
             await selectFromRadioButtons({ page });
+            await fillEmails({ page });
 
             const button = buttonsLocator.nth(i);
 
@@ -211,7 +212,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 }
 
-const fillInputsWithoutType = async ({ inputText, page }: { inputText: string, page: Page }) => {
+const fillTextInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
     if (debug) {
         console.log('  fillInputs');
     }
@@ -223,7 +224,7 @@ const fillInputsWithoutType = async ({ inputText, page }: { inputText: string, p
         const input = inputsLocator.nth(inputIndex);
 
         if (await input.isVisible()) {
-            console.log('Filling the #' + (inputIndex + 1) + " input field a value: " + inputText);
+            console.log('Filling the #' + (inputIndex + 1) + " text input field a value: " + inputText);
             await input.fill(inputText);
         }
     }
@@ -306,6 +307,25 @@ const selectFromRadioButtons = async ({ page }) => {
         }
 
         radioButtonGroupCount++;
+    }
+}
+
+const fillEmails = async ({ page }: { page: Page }) => {
+    if (debug) {
+        console.log('  fillInputs');
+    }
+
+    const emailInputsLocator = page.locator('input[type="email"]');
+    const emailInputsCount = await emailInputsLocator.count();
+
+    for (let emailInputIndex = 0; emailInputIndex < emailInputsCount; emailInputIndex++) {
+        const emailInput = emailInputsLocator.nth(emailInputIndex);
+
+        if (await emailInput.isVisible()) {
+            const email = generateRandomEmail();
+            console.log('Filling the #' + (emailInputIndex + 1) + " email input field a value: " + email);
+            await emailInput.fill(email);
+        }
     }
 }
 
