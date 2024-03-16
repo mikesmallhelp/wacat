@@ -13,6 +13,7 @@ const IndexComponent = () => {
   const [radioButtonValue2, setRadioButtonValue2] = useState('');
   const [radioButtonValue3, setRadioButtonValue3] = useState('');
   const [emailValue, setEmailValue] = React.useState('');
+  const [passwordValue, setPasswordValue] = React.useState('');
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -46,6 +47,10 @@ const IndexComponent = () => {
     setEmailValue(event.target.value);
   };
 
+  const handlePasswordValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPasswordValue(event.target.value);
+  };
+
   const handleButtonClick1And2 = async () => {
     await fetchData('200', setLoading);
     setCheckbox(false);
@@ -54,7 +59,7 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue) {
+    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue && passwordValue) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -112,6 +117,11 @@ const IndexComponent = () => {
       <input type="email" />
       <input type="email" />
       <input type="email" onChange={handleEmailValueChange} />
+
+      <div>Passwords</div>
+      <input type="password" />
+      <input type="password" />
+      <input type="password" onChange={handlePasswordValueChange} />
 
       <button onClick={handleButtonClick1And2}>Button1</button>
       <button onClick={handleButtonClick1And2}>Button2</button>
