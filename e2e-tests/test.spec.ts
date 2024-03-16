@@ -21,8 +21,8 @@ const debug: boolean = Boolean(process.env.DEBUG);
 const bypassHttpErrors = Boolean(process.env.BYPASS_HTTP_ERRORS);
 const bypassBrowserConsoleErrors = Boolean(process.env.BYPASS_BROWSER_CONSOLE_ERRORS);
 const randomInputTextsMinLength = process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH ? Number(process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH) : 1;
-const randomInputTextsMaxLength = process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH 
-                                           ? Number(process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH) : randomInputTextsMinLength + 59;
+const randomInputTextsMaxLength = process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
+    ? Number(process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH) : randomInputTextsMinLength + 59;
 const randomInputTextsCharset = process.env.RANDOM_INPUT_TEXTS_CHARSET;
 
 if (!rootUrl) {
@@ -185,7 +185,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
     let movedToDifferentPage = false;
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
-                                                                                randomInputTextsCharset)]) {
+        randomInputTextsCharset)]) {
         if (debug) {
             console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
         }
@@ -195,11 +195,15 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + i);
             }
 
-            await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]'});
+            await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
             await selectFromRadioButtons({ page });
-            await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]'});
+            await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]' });
+            await fillTextInputs({
+                inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
+                selector: 'input[type="password"]'
+            });
 
             const button = buttonsLocator.nth(i);
 
@@ -240,8 +244,10 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 }
 
-const fillTextInputs = async ({ inputText, inputType, page, selector }: { inputText: string, inputType: string, page: Page
-                                                                          selector: string, }) => {
+const fillTextInputs = async ({ inputText, inputType, page, selector }: {
+    inputText: string, inputType: string, page: Page
+    selector: string,
+}) => {
     if (debug) {
         console.log('  fillInputs');
     }
@@ -321,7 +327,7 @@ const selectFromRadioButtons = async ({ page }) => {
         if (debug) {
             console.log(`Processing radio button group: ${radiobButtonGroup}`);
         }
-        
+
         const radioButtonsLocator = page.locator(`input[type="radio"][name="${radiobButtonGroup}"]`);
         const radioButtonsCount = await radioButtonsLocator.count();
 

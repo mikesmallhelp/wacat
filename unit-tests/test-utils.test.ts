@@ -65,7 +65,6 @@ describe('shuffleStringArray function', () => {
 describe('generateRandomEmail', () => {
     it('should generate a valid email address', () => {
         const email = generateRandomEmail();
-        console.log('email:', email);
         expect(validateEmail(email)).to.equal(true);
     });
 
