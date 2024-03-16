@@ -27,7 +27,7 @@ const IndexComponent = () => {
           </label>
           <label>
             Password:
-            <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </label>
           <button onClick={handleLogin}>Login</button>
           <p>{errorText}</p>

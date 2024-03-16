@@ -71,7 +71,7 @@ const UsernameButtonClickedComponent = ({ username }: { username: string }) => {
         <>
           <label>
             Password:
-            <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </label>
           <button onClick={handleLoginButtonClick}>Login</button>
           <p>{errorText}</p>
