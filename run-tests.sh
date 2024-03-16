@@ -114,23 +114,23 @@ run_playwright_tests "index-api-returns-http-500.tsx" "--wait 3000" "1 failed" \
 run_playwright_tests "index-api-returns-http-500.tsx" "--bypass-http-errors --wait 3000" "1 passed" \
         "In the page: http://localhost:3000/api-returns-http-500: Request to http://localhost:3000/api/http-500 resulted in status code 500"
 run_playwright_tests "index-errors-in-page-and-console.tsx" "" "1 failed" "Hello! Something wrong!"
-run_playwright_tests "index-working-page2.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" "1 passed" \
+run_playwright_tests "index-working-page3.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" "1 passed" \
         "Check the page not contain the Error occurred! text"
-run_playwright_tests "index-working-page2.tsx" "" "1 passed" "Push the button #2"
-run_playwright_tests "index-working-page2.tsx" "--random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
+run_playwright_tests "index-working-page3.tsx" "" "1 passed" "Push the button #2"
+run_playwright_tests "index-working-page3.tsx" "--random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
                      "1 passed" "¿¿¿¿¿"
-run_playwright_tests "index-working-page2.tsx" "--only-links --wait 3000" "1 passed" \
-         "In the page: http://localhost:3000/working-page" \
-         "In the page: http://localhost:3000/working-page2" "Push the button #1"
+run_playwright_tests "index-working-page3.tsx" "--only-links --wait 3000" "1 passed" \
+         "In the page: http://localhost:3000/working-page2" \
+         "In the page: http://localhost:3000/working-page3" "Push the button #1"
 run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json --wait 3000" "1 passed" \
        "In the page: http://localhost:3000/working-page2"
 run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json --wait 3000" \
-        "1 passed" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/logout"
+        "1 passed" "In the page: http://localhost:3000/working-page3" "In the page: http://localhost:3000/logout"
 run_playwright_tests "index-auth-complicated.tsx" \
         "--conf example-files/configuration-complicated-authentication-with-not-visit-link-urls.json --wait 3000" \
-        "1 passed" "In the page: http://localhost:3000/working-page" "In the page: http://localhost:3000/working-page2" \
+        "1 passed" "In the page: http://localhost:3000/working-page2" "In the page: http://localhost:3000/working-page3" \
         "In the page: http://localhost:3000/logout"
-run_playwright_tests "index-working-page2.tsx" "--timeout 1" "1 failed" "Test timeout of 1000ms exceeded."
+run_playwright_tests "index-working-page3.tsx" "--timeout 1" "1 failed" "Test timeout of 1000ms exceeded."
 
 pkill -f "next"
 

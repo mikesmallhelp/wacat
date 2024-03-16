@@ -7,6 +7,7 @@ const FrontPage = ({ pageDirectory, showLogoutLink = false }: { pageDirectory: s
     const content = (
         <div>
             <a href='/working-page'>Link for a working page</a>
+            <a href='/working-page2'>Link for a working page 2</a>
             <a href={`/${pageDirectory}`}>{`Link for a ${pageDirectory} page`}</a>
         </div>
     );

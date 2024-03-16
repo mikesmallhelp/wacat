@@ -18,7 +18,7 @@ const IndexComponent = () => {
   return (
     <>
       {authenticated ? (
-        <FrontPage pageDirectory='working-page2' />
+        <FrontPage pageDirectory='working-page3' />
       ) : (
         <>
           <label>
