@@ -195,11 +195,11 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + i);
             }
 
-            await fillTextInputs({ inputText, page });
+            await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]'});
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
             await selectFromRadioButtons({ page });
-            await fillEmails({ page });
+            await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]'});
 
             const button = buttonsLocator.nth(i);
 
@@ -226,7 +226,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             if (debug) {
                 console.log('  break the outer loop');
             }
-            
+
             break;
         }
     }
@@ -234,21 +234,26 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     if (movedToDifferentPage) {
         await handlePage({ page });
     }
+
+    if (movedToDifferentPage) {
+        await handlePage({ page });
+    }
 }
 
-const fillTextInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
+const fillTextInputs = async ({ inputText, inputType, page, selector }: { inputText: string, inputType: string, page: Page
+                                                                          selector: string, }) => {
     if (debug) {
         console.log('  fillInputs');
     }
 
-    const inputsLocator = page.locator('input:not([type]), input[type="text"]');
+    const inputsLocator = page.locator(selector);
     const inputsCount = await inputsLocator.count();
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
         const input = inputsLocator.nth(inputIndex);
 
         if (await input.isVisible()) {
-            console.log('Filling the #' + (inputIndex + 1) + " text input field a value: " + inputText);
+            console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + inputText);
             await input.fill(inputText);
         }
     }
@@ -331,25 +336,6 @@ const selectFromRadioButtons = async ({ page }) => {
         }
 
         radioButtonGroupCount++;
-    }
-}
-
-const fillEmails = async ({ page }: { page: Page }) => {
-    if (debug) {
-        console.log('  fillInputs');
-    }
-
-    const emailInputsLocator = page.locator('input[type="email"]');
-    const emailInputsCount = await emailInputsLocator.count();
-
-    for (let emailInputIndex = 0; emailInputIndex < emailInputsCount; emailInputIndex++) {
-        const emailInput = emailInputsLocator.nth(emailInputIndex);
-
-        if (await emailInput.isVisible()) {
-            const email = generateRandomEmail();
-            console.log('Filling the #' + (emailInputIndex + 1) + " email input field a value: " + email);
-            await emailInput.fill(email);
-        }
     }
 }
 
