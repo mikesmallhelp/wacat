@@ -195,11 +195,11 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + i);
             }
 
-            await fillTextInputs({ inputText, page, selector: 'input:not([type]), input[type="text"]', inputType: 'text'});
+            await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]'});
             await selectFromDropDownLists({ page });
             await fillCheckboxes({ page });
             await selectFromRadioButtons({ page });
-            await fillTextInputs({ inputText, page, selector: 'input[type="email"]', inputType: 'email'});
+            await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]'});
 
             const button = buttonsLocator.nth(i);
 
@@ -240,8 +240,8 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 }
 
-const fillTextInputs = async ({ inputText, page, selector, inputType }: { inputText: string, page: Page, selector: string,
-                                                                          inputType: string }) => {
+const fillTextInputs = async ({ inputText, inputType, page, selector }: { inputText: string, inputType: string, page: Page
+                                                                          selector: string, }) => {
     if (debug) {
         console.log('  fillInputs');
     }
@@ -253,7 +253,7 @@ const fillTextInputs = async ({ inputText, page, selector, inputType }: { inputT
         const input = inputsLocator.nth(inputIndex);
 
         if (await input.isVisible()) {
-            console.log('Filling the #' + (inputIndex + 1) + " text input field a value: " + inputText);
+            console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + inputText);
             await input.fill(inputText);
         }
     }
