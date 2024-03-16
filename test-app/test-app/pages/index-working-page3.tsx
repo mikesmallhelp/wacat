@@ -4,7 +4,7 @@ import FrontPage from '../components/FrontPage';
 const IndexComponent = () => {
   return (
     <>
-      <FrontPage pageDirectory='working-page2' />
+      <FrontPage pageDirectory='working-page3' />
     </>
   );
 };

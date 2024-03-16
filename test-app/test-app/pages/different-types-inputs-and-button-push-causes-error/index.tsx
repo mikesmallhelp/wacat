@@ -72,7 +72,6 @@ const IndexComponent = () => {
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
-        <option value="ddd">ddd</option>
       </select>
 
       <select name="someValues2" id="someValues2">
@@ -80,7 +79,7 @@ const IndexComponent = () => {
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
-        <option value="ddd">ddd</option>
+
       </select>
 
       <select onChange={handleOptionValueChange} name="someValues3" id="someValues3">
@@ -88,7 +87,6 @@ const IndexComponent = () => {
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>
-        <option value="ddd">ddd</option>
       </select>
 
       <input type="checkbox" />
