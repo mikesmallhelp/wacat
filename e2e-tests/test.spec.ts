@@ -171,6 +171,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         console.log('  fillDifferentTypesInputsAndClickButtons');
     }
 
+    const currentUrl = page.url();
     const buttonsLocator = page.locator('button');
     const buttonsCount = await buttonsLocator.count();
 
@@ -182,15 +183,16 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         return;
     }
 
+    let movedToDifferentPage = false;
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
                                                                                 randomInputTextsCharset)]) {
         if (debug) {
-            console.log('fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
+            console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
         }
 
         for (let i = 0; i < buttonsCount; i++) {
             if (debug) {
-                console.log('fillDifferentTypesInputsAndClickButtons, button i:' + i);
+                console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + i);
             }
 
             await fillTextInputs({ inputText, page });
@@ -208,7 +210,29 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
             await waitForTimeout({ page });
             await checkPageForErrors({ page });
+
+            if (currentUrl !== page.url()) {
+                movedToDifferentPage = true;
+
+                if (debug) {
+                    console.log('  break the inner loop');
+                }
+
+                break;
+            }
         }
+
+        if (movedToDifferentPage) {
+            if (debug) {
+                console.log('  break the outer loop');
+            }
+            
+            break;
+        }
+    }
+
+    if (movedToDifferentPage) {
+        await handlePage({ page });
     }
 }
 
