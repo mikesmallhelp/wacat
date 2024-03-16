@@ -67,7 +67,7 @@ const UsernameButtonClickedComponent = ({ username }: { username: string }) => {
 
   return (
     <>
-      {authenticated ? (<FrontPage pageDirectory='working-page2' showLogoutLink={true} />) : (
+      {authenticated ? (<FrontPage pageDirectory='working-page3' showLogoutLink={true} />) : (
         <>
           <label>
             Password:
