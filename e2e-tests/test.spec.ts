@@ -225,8 +225,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         if (movedToDifferentPage) {
             if (debug) {
                 console.log('  break the outer loop');
-                break;
             }
+            
+            break;
         }
     }
 
