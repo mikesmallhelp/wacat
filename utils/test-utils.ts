@@ -28,7 +28,7 @@ export const generateRandomString = (
 
 export const generateRandomIndex = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
-export const shuffleStringArray = (array: string[]): string[] => {
+export const shuffleArray = (array: any[]): any[] => { // eslint-disable-line @typescript-eslint/no-explicit-any
     const result = [...array];
     for (let i = result.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -91,3 +91,5 @@ const getRandomDomain = (): string => {
     const domains = ['com', 'net', 'org', 'gov', 'edu'];
     return domains[Math.floor(Math.random() * domains.length)];
 };
+
+export const generateNumberArrayFrom0ToMax = (max: number): number[] => Array.from({ length: max + 1 }, (_, i) => i);

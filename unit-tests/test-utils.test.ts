@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-    generateRandomEmail, generateRandomIndex, generateRandomString, getHost, hostIsSame, shuffleStringArray
+    generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, getHost, hostIsSame, shuffleArray
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -45,10 +45,11 @@ describe('generateRandomString', () => {
     });
 });
 
-describe('shuffleStringArray function', () => {
+describe('shuffleArray function', () => {
     it('should contain all original elements after shuffling', () => {
         const originalArray = ['a', 'b', 'c', 'd', 'e'];
-        const shuffledArray = shuffleStringArray(originalArray);
+        const shuffledArray = shuffleArray(originalArray);
+        console.log(shuffledArray);
 
         for (const element of originalArray) {
             expect(shuffledArray).to.include(element);
@@ -101,5 +102,25 @@ describe('generateRandomIndex', () => {
         const max = 3;
         const randomIndex = generateRandomIndex(min, max);
         expect(randomIndex).to.equal(min);
+    });
+});
+
+describe('generateNumberArrayFrom0ToMax', () => {
+    it('should generate an array from 0 to 5', () => {
+        const result = generateNumberArrayFrom0ToMax(5);
+        console.log(result);
+        expect(result).to.deep.equal([0, 1, 2, 3, 4, 5]);
+    });
+
+    it('should return an array with only 0 when max is 0', () => {
+        const result = generateNumberArrayFrom0ToMax(0);
+        console.log(result);
+        expect(result).to.deep.equal([0]);
+    });
+
+    it('should generate an array from 0 to 1 when max is 1', () => {
+        const result = generateNumberArrayFrom0ToMax(1);
+        console.log(result);
+        expect(result).to.deep.equal([0, 1]);
     });
 });

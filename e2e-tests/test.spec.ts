@@ -5,7 +5,7 @@ import { fail } from 'node:assert';
 
 import {
     Configuration, generateRandomEmail, generateRandomIndex, generateRandomString, hostIsSame,
-    readConfiguration, readFileContent, shuffleStringArray
+    readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
 
 const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 2000;
@@ -354,7 +354,7 @@ const visitLinks = async ({ page }: { page: Page }) => {
         links.map((link) => link.href)
     );
 
-    for (const link of shuffleStringArray(links)) {
+    for (const link of shuffleArray(links)) {
         if (debug) {
             console.log('  visitLinks, for, link: ' + link);
         }
