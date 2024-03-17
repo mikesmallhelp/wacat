@@ -17,12 +17,12 @@ const IndexComponent = () => {
     <div>
         <input />
         <input />
-
-        <button onClick={handleButtonClick}>Move to page: Middle-page 2</button>
+  
+        <input type="button" value="Move to page: Middle-page 2" onClick={handleButtonClick} />
         
         <a href='/'>Back to main page</a>
     </div>
-  );
+  );  
 
   return (
     <>
