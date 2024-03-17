@@ -116,13 +116,13 @@ run_playwright_tests "index-api-returns-http-500.tsx" "--bypass-http-errors --wa
 run_playwright_tests "index-errors-in-page-and-console.tsx" "" "1 failed" "Hello! Something wrong!"
 run_playwright_tests "index-working-page3.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" "1 passed" \
         "Check the page not contain the Error occurred! text"
-run_playwright_tests "index-working-page3.tsx" "" "1 passed" "Push the button #2"
+run_playwright_tests "index-working-page3.tsx" "" "1 passed" "Push the button"
 run_playwright_tests "index-working-page3.tsx" "--debug" "1 passed" "Went outside of the tested application to the page https://mikesmallhelp-test-application.vercel.app/, returning back to the test application"
 run_playwright_tests "index-working-page3.tsx" "--random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
                      "1 passed" "¿¿¿¿¿"
 run_playwright_tests "index-working-page3.tsx" "--only-links --wait 3000" "1 passed" \
          "In the page: http://localhost:3000/working-page2" \
-         "In the page: http://localhost:3000/working-page3" "Push the button #1"
+         "In the page: http://localhost:3000/working-page3" "Push the button"
 run_playwright_tests "index-auth.tsx" "--conf example-files/configuration-authentication.json --wait 3000" "1 passed" \
        "In the page: http://localhost:3000/working-page2"
 run_playwright_tests "index-auth-complicated.tsx" "--conf example-files/configuration-complicated-authentication.json --wait 3000" \
