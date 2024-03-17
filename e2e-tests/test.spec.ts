@@ -226,6 +226,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                         console.log('  Went outside of the tested application to the page ' + page.url() + 
                         ', returning back to the test application');
                     }
+
                     return;
                 }
 
