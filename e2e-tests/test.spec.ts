@@ -4,7 +4,7 @@ import { Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateRandomEmail, generateRandomIndex, generateRandomString, hostIsSame,
+    Configuration, generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, hostIsSame,
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
 
@@ -190,9 +190,14 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
         }
 
-        for (let i = 0; i < buttonsCount; i++) {
+        const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
+        const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
+
+        while (buttonIndexesInRandomOrder.length) {
+            const buttonIndex = buttonIndexesInRandomOrder.shift();
+
             if (debug) {
-                console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + i);
+                console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
             }
 
             await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
@@ -205,10 +210,10 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 selector: 'input[type="password"]'
             });
 
-            const button = buttonsLocator.nth(i);
+            const button = buttonsLocator.nth(buttonIndex);
 
             if (await button.isVisible() && await button.isEnabled()) {
-                console.log('Push the button #' + (i + 1));
+                console.log('Push the button #' + (buttonIndex + 1));
                 await button.click();
             }
 
