@@ -93,3 +93,11 @@ const getRandomDomain = (): string => {
 };
 
 export const generateNumberArrayFrom0ToMax = (max: number): number[] => Array.from({ length: max + 1 }, (_, i) => i);
+
+export const generateRandomUrl = (): string => {
+    const domainSuffixes = [".com", ".net", ".org", ".info", ".biz"];
+    const randomSuffix = domainSuffixes[Math.floor(Math.random() * domainSuffixes.length)];
+    const randomDomain = generateRandomString(5, 10, "abcdefghijklmnopqrstuvwxyz0123456789");
+    return "https://" + randomDomain + randomSuffix;
+};
+

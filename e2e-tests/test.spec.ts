@@ -4,7 +4,8 @@ import { Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, hostIsSame,
+    Configuration, generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, generateRandomUrl,
+    hostIsSame,
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
 
@@ -213,6 +214,11 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
                 inputType: 'search', page,
                 selector: 'input[type="search"]'
+            });
+            await fillTextInputs({
+                inputText: generateRandomUrl(),
+                inputType: 'url', page,
+                selector: 'input[type="url"]'
             });
 
             const button = buttonsLocator.nth(buttonIndex);

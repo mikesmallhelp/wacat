@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 
 import {
-    generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, getHost, hostIsSame, shuffleArray
+    generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, 
+    generateRandomUrl, getHost, hostIsSame, shuffleArray
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -124,3 +125,36 @@ describe('generateNumberArrayFrom0ToMax', () => {
         expect(result).to.deep.equal([0, 1]);
     });
 });
+
+describe('generateRandomUrl function', () => {
+    it('should start with "https://"', () => {
+        const url = generateRandomUrl();
+        console.log(url);
+        expect(url).to.match(/^https:\/\//);
+    });
+
+    it('should contain a valid domain suffix', () => {
+        const url = generateRandomUrl();
+        console.log(url);
+        const domainSuffixes = ['.com', '.net', '.org', '.info', '.biz'];
+        const containsValidSuffix = domainSuffixes.some(suffix => url.endsWith(suffix));
+        expect(containsValidSuffix).to.be.true;
+    });
+
+    it('should be at least 17 characters long (minimum domain length + protocol + suffix)', () => {
+        const url = generateRandomUrl();
+        console.log(url);
+        // 8 characters for 'https://' + at least 5 characters for the domain + 1 for the dot + at least 3 for the suffix
+        expect(url.length).to.be.at.least(17);
+    });
+
+    it('should only contain letters, numbers, or dot characters in the domain name', () => {
+        const url = generateRandomUrl();
+        console.log(url);
+        // Remove the protocol and suffix to test only the domain name
+        const domainName = url.replace('https://', '').split('.')[0];
+        console.log(domainName);
+        expect(domainName).to.match(/^[\da-z]+$/);
+    });
+});
+
