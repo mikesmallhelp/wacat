@@ -221,6 +221,15 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             await checkPageForErrors({ page });
 
             if (currentUrl !== page.url()) {
+                if (!hostIsSame({ rootUrl, url: page.url() })) {
+                    if (debug) {
+                        console.log('  Went outside of the tested application to the page ' + page.url() + 
+                        ', returning back to the test application');
+                    }
+
+                    return;
+                }
+
                 movedToDifferentPage = true;
 
                 if (debug) {
