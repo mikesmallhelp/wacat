@@ -209,6 +209,11 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
                 selector: 'input[type="password"]'
             });
+            await fillTextInputs({
+                inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
+                inputType: 'search', page,
+                selector: 'input[type="search"]'
+            });
 
             const button = buttonsLocator.nth(buttonIndex);
 
@@ -223,8 +228,8 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             if (currentUrl !== page.url()) {
                 if (!hostIsSame({ rootUrl, url: page.url() })) {
                     if (debug) {
-                        console.log('  Went outside of the tested application to the page ' + page.url() + 
-                        ', returning back to the test application');
+                        console.log('  Went outside of the tested application to the page ' + page.url() +
+                            ', returning back to the test application');
                     }
 
                     return;
