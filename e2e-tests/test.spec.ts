@@ -193,7 +193,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
         const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
 
-        while (buttonIndexesInRandomOrder.length) {
+        while (buttonIndexesInRandomOrder.length > 0) {
             const buttonIndex = buttonIndexesInRandomOrder.shift();
 
             if (debug) {
