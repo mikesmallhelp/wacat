@@ -99,6 +99,7 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
+run_playwright_tests "index-working-page3.tsx" "--debug" "1 passed" "Went outside of the tested application to the page https://mikesmallhelp-test-application.vercel.app/, returning back to the test application"
 run_playwright_tests "index-errors-in-page-and-console.tsx" "--conf example-files/configuration-error-texts.json --wait 3000 --bypass-browser-console-errors" \
                    "1 failed" "expect(content).not.toContain"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" \
