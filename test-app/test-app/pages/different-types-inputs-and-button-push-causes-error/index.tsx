@@ -14,6 +14,7 @@ const IndexComponent = () => {
   const [radioButtonValue3, setRadioButtonValue3] = useState('');
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
+  const [searchValue, setSearchValue] = React.useState('');
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -51,6 +52,10 @@ const IndexComponent = () => {
     setPasswordValue(event.target.value);
   };
 
+  const handleSearchValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
   const handleButtonClick1And2 = async () => {
     await fetchData('200', setLoading);
     setCheckbox(false);
@@ -59,7 +64,8 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue && passwordValue) {
+    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue && passwordValue &&
+        searchValue) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -122,6 +128,11 @@ const IndexComponent = () => {
       <input type="password" />
       <input type="password" />
       <input type="password" onChange={handlePasswordValueChange} />
+
+      <div>Searches</div>
+      <input type="search" />
+      <input type="search" />
+      <input type="search" onChange={handleSearchValueChange} />
 
       <button onClick={handleButtonClick1And2}>Button1</button>
       <button onClick={handleButtonClick1And2}>Button2</button>
