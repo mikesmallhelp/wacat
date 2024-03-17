@@ -15,6 +15,7 @@ const IndexComponent = () => {
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
   const [searchValue, setSearchValue] = React.useState('');
+  const [urlValue, setUrlValue] = React.useState('');
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -56,6 +57,10 @@ const IndexComponent = () => {
     setSearchValue(event.target.value);
   };
 
+  const handleUrlValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUrlValue(event.target.value);
+  };
+
   const handleButtonClick1And2 = async () => {
     await fetchData('200', setLoading);
     setCheckbox(false);
@@ -65,7 +70,7 @@ const IndexComponent = () => {
     await fetchData('200', setLoading);
 
     if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue && passwordValue &&
-        searchValue) {
+        searchValue && urlValue) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -133,6 +138,11 @@ const IndexComponent = () => {
       <input type="search" />
       <input type="search" />
       <input type="search" onChange={handleSearchValueChange} />
+
+      <div>Urls</div>
+      <input type="url" />
+      <input type="url" />
+      <input type="url" onChange={handleUrlValueChange} />
 
       <button onClick={handleButtonClick1And2}>Button1</button>
       <button onClick={handleButtonClick1And2}>Button2</button>
