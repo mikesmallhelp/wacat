@@ -9,7 +9,7 @@ import {
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
 
-const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 2000;
+const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 5000;
 const timeout: number = process.env.TIMEOUT ? Number(process.env.TIMEOUT) * 1000 : 120_000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
