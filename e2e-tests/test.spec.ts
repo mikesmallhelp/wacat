@@ -37,8 +37,6 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 }
 
 test('test an application', async ({ page }) => {
-    ifDebugPrintPlaywrightStartSituation();
-
     test.setTimeout(timeout);
     await page.goto(rootUrl);
     await waitForTimeout({ page });
@@ -73,19 +71,6 @@ test('test an application', async ({ page }) => {
 
     await handlePage({ page });
 });
-
-const ifDebugPrintPlaywrightStartSituation = async () => {
-    if (debug) {
-        console.log('  \nPlaywright test starts...\n');
-        console.log('  Parameters:');
-        console.log('  rootUrl:' + rootUrl);
-        console.log('  wait:' + wait);
-        console.log('  timeout:' + timeout);
-        console.log('  inputTexts.length:' + inputTexts.length);
-        console.log('  configuration:' + JSON.stringify(configuration));
-        console.log('  onlyLinks:' + onlyLinks);
-    }
-}
 
 const authenticate = async ({ page }: { page: Page }) => {
     if (debug) {
