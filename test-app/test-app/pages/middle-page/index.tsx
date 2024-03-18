@@ -18,6 +18,7 @@ const IndexComponent = () => {
         <input />
         <input />
   
+        <input disabled type="button" value="Disabled" />
         <input type="button" value="Move to page: Middle-page 2" onClick={handleButtonClick} />
         
         <a href='/'>Back to main page</a>

@@ -3,7 +3,7 @@ import PageTemplate from './PageTemplate';
 import { fetchData } from '../util/util';
 import Router from "next/router";
 
-const WorkingPage = ({ title }: { title: string }) => {
+const WorkingPage = ({ title, showVercelButton = false }: { title: string; showVercelButton?: boolean }) => {
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState('');
 
@@ -18,11 +18,11 @@ const WorkingPage = ({ title }: { title: string }) => {
 
     const handleVercelButtonClick = async () => {
         try {
-          await Router.push('https://mikesmallhelp-test-application.vercel.app/');
+            await Router.push('https://mikesmallhelp-test-application.vercel.app/');
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      };
+    };
 
     const PageContent = (
         <div>
@@ -41,13 +41,15 @@ const WorkingPage = ({ title }: { title: string }) => {
 
             <a href='/'>Back to main page</a>
             <a href='https://github.com/mikesmallhelp'>Github - don't go there</a>
-            <input type="button" value="Move to Vercel app" onClick={handleVercelButtonClick} />
+            {showVercelButton && (
+                <input type="button" value="Move to Vercel app" onClick={handleVercelButtonClick} />
+            )}
         </div>
     );
 
     useEffect(() => {
         console.warn("Be careful!");
-      }, []);
+    }, []);
 
     return (
         <>

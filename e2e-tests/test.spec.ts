@@ -159,7 +159,8 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     const currentUrl = page.url();
-    const buttonsLocator = page.locator('button, input[type="submit"], input[type="button"]');
+    const buttonsLocator = 
+       page.locator('button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])');
     const buttonsCount = await buttonsLocator.count();
 
     if (buttonsCount === 0) {
