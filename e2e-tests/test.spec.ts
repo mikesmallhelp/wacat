@@ -13,8 +13,6 @@ const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 5000;
 const timeout: number = process.env.TIMEOUT ? Number(process.env.TIMEOUT) * 1000 : 120_000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
-const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
-    await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
 const configuration: Configuration = process.env.CONFIGURATION_FILE_PATH ?
     await readConfiguration({ path: process.env.CONFIGURATION_FILE_PATH }) : null;
 const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
@@ -25,6 +23,9 @@ const randomInputTextsMinLength = process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH ? Nu
 const randomInputTextsMaxLength = process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
     ? Number(process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH) : randomInputTextsMinLength + 59;
 const randomInputTextsCharset = process.env.RANDOM_INPUT_TEXTS_CHARSET;
+const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
+    await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
+        randomInputTextsCharset)];
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -171,19 +172,21 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
     let movedToDifferentPage = false;
     let firstButtonClickIsDone = false;
+    let inputTextsIndex = 0;
 
-    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
-        randomInputTextsCharset)]) {
-        if (debug) {
-            console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
-        }
-
+    while (inputTextsIndex < inputTexts.length) {
+        const inputText = inputTexts[inputTextsIndex];
         const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
         const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
 
         while (buttonIndexesInRandomOrder.length > 0) {
             if (firstButtonClickIsDone) {
+                if (debug) {
+                    console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
+                }
+
                 await fillDifferentTypesInputs({ inputText, page });
+                inputTextsIndex++;
             }
 
             if (debug) {

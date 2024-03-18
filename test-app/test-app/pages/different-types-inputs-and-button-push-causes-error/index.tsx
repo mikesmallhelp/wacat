@@ -6,9 +6,6 @@ const IndexComponent = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [inputValue, setInputValue] = React.useState('');
-  const [inputValueWasEmptyWhenSomeButtonWasClickedFirstTime,
-         setInputValueWasEmptyWhenSomeButtonWasClickedFirstTime] = React.useState(false); 
-  const [inputValueIsClicked, setInputValueIsClicked] = React.useState(false);
   const [inputValue2, setInputValue2] = React.useState('');
   const [optionValue, setOptionValue] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
@@ -65,34 +62,17 @@ const IndexComponent = () => {
   };
 
   const handleButtonClick1And2 = async () => {
-    fetchDataFromApi();
+    await fetchData('200', setLoading);
     setCheckbox(false);
   }
 
   const handleButtonClick3 = async () => {
-    fetchDataFromApi();
-
-    if (inputValueWasEmptyWhenSomeButtonWasClickedFirstTime && inputValue && inputValue2 && optionValue && checkbox
-      && radioButtonValue3 && emailValue && passwordValue &&
-      searchValue && urlValue) {
-      setErrorMessage('Error occurred!');
-    }
-  }
-
-  const fetchDataFromApi = async () => {
     await fetchData('200', setLoading);
-    handleFirstButtonClick();
-  }
 
-  const handleFirstButtonClick = async () => {
-    console.log('\nhandleButtonClick3');
-    console.log('inputValueWasEmptyWhenSomeButtonWasClickedFirstTime:', inputValueWasEmptyWhenSomeButtonWasClickedFirstTime);
-
-    if (!inputValueIsClicked && inputValue.length === 0) {
-      console.log('Setting values...');
-
-      setInputValueIsClicked(true);
-      setInputValueWasEmptyWhenSomeButtonWasClickedFirstTime(true);
+    if (!inputValue || (inputValue && inputValue2 && optionValue && checkbox
+      && radioButtonValue3 && emailValue && passwordValue &&
+      searchValue && urlValue)) {
+      setErrorMessage('Error occurred!');
     }
   }
 
