@@ -186,11 +186,15 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 await fillDifferentTypesInputs({ inputText, page });
             }
 
+            if (debug) {
+                console.log('buttonIndexesInRandomOrder before shift:' + buttonIndexesInRandomOrder);
+            }
+
             const buttonIndex = buttonIndexesInRandomOrder.shift();
             const button = buttonsLocator.nth(buttonIndex);
 
-
             if (debug) {
+                console.log('buttonIndexesInRandomOrder after shift:' + buttonIndexesInRandomOrder);
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
             }
 
