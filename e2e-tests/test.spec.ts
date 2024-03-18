@@ -186,7 +186,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
     let movedToDifferentPage = false;
     let firstButtonClickIsDone = false;
-    
+
     for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
         randomInputTextsCharset)]) {
         if (debug) {
@@ -198,25 +198,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
         while (buttonIndexesInRandomOrder.length > 0) {
             if (firstButtonClickIsDone) {
-                await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
-                await selectFromDropDownLists({ page });
-                await fillCheckboxes({ page });
-                await selectFromRadioButtons({ page });
-                await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]' });
-                await fillTextInputs({
-                    inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
-                    selector: 'input[type="password"]'
-                });
-                await fillTextInputs({
-                    inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
-                    inputType: 'search', page,
-                    selector: 'input[type="search"]'
-                });
-                await fillTextInputs({
-                    inputText: generateRandomUrl(),
-                    inputType: 'url', page,
-                    selector: 'input[type="url"]'
-                });
+                await fillDifferentTypesInputs({ inputText, page });
             }
 
             const buttonIndex = buttonIndexesInRandomOrder.shift();
@@ -274,6 +256,28 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     if (movedToDifferentPage) {
         await handlePage({ page });
     }
+}
+
+const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
+    await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
+    await selectFromDropDownLists({ page });
+    await fillCheckboxes({ page });
+    await selectFromRadioButtons({ page });
+    await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]' });
+    await fillTextInputs({
+        inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
+        selector: 'input[type="password"]'
+    });
+    await fillTextInputs({
+        inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
+        inputType: 'search', page,
+        selector: 'input[type="search"]'
+    });
+    await fillTextInputs({
+        inputText: generateRandomUrl(),
+        inputType: 'url', page,
+        selector: 'input[type="url"]'
+    });
 }
 
 const fillTextInputs = async ({ inputText, inputType, page, selector }: {
