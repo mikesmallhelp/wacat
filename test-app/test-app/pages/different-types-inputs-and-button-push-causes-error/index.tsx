@@ -65,19 +65,23 @@ const IndexComponent = () => {
   };
 
   const handleButtonClick1And2 = async () => {
-    await fetchData('200', setLoading);
-    handleFirstButtonClick();
+    fetchDataFromApi();
+    setCheckbox(false);
   }
 
   const handleButtonClick3 = async () => {
-    await fetchData('200', setLoading);
-    handleFirstButtonClick();
+    fetchDataFromApi();
 
     if (inputValueWasEmptyWhenSomeButtonWasClickedFirstTime && inputValue && inputValue2 && optionValue && checkbox
       && radioButtonValue3 && emailValue && passwordValue &&
       searchValue && urlValue) {
       setErrorMessage('Error occurred!');
     }
+  }
+
+  const fetchDataFromApi = async () => {
+    await fetchData('200', setLoading);
+    handleFirstButtonClick();
   }
 
   const handleFirstButtonClick = async () => {
