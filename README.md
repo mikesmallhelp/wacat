@@ -125,7 +125,7 @@ Filling the #1 url input field a value: https://0zzvf8.net
 Push the button #1
   1 passed (54.0s)
 ```
-Note that output contains "1 passed" so wacat didn't find any errors in the application. Please note also that a default wait time for every page is 5000 milliseconds. If you want to change this time use the flag --wait (see later). In the examples below we use a flag --wait 2000, because it is enough for the test applications.
+Note that output contains "1 passed" so wacat didn't find any errors in the application. Please note also that a default wait time for every page is 5000 milliseconds. If you want to change this time use the flag --wait (see later).
 
 ### Detect HTTP errors
 
@@ -138,7 +138,7 @@ wacat can detect HTTP errors between browser and server. For example if the butt
 An example about this is:
 
 ```
-wacat test --wait 2000 https://mikesmallhelp-test-application-http-500-error.vercel.app/
+wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
 ```
 Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app/. Please wait...
@@ -194,7 +194,7 @@ AssertionError: In the page: https://mikesmallhelp-test-application-http-500-err
 If you want to bypass stopping the execution in the HTTP errors use the flag --bypass-http-errors. For example the command
 
 ```
-wacat test --wait 2000 --bypass-http-errors https://mikesmallhelp-test-application-http-500-error.vercel.app/
+wacat test --bypass-http-errors https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
 
 not stop into the HTTP 500 error like in the previous example. wacat prints to the log the HTTP 500 error, but the execution continues.
@@ -215,12 +215,12 @@ We configure in our example that "Error occurred!" is detected by wacat. We want
 The run command (--conf flag is used to pass the JSON file) for Windows is:
 
 ```
-wacat test --wait 2000 --conf example-files\configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
+wacat test --conf example-files\configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
 ```
 The run command for Linux and Mac is:
 
 ```
-wacat test --wait 2000 --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
+wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
 ```
 
 The command output is:
@@ -277,7 +277,7 @@ Here is an example application, which contains an error logging in the browser's
 When an example command
 
 ```
-wacat test --wait 2000 https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
+wacat test https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
 ```
 
 is run the execution stops into the error logging in the browser's console:
@@ -320,7 +320,7 @@ wacat prints the message "Found an error message in the browser's console: Hello
 If you want to bypass this check and stop the execution use the flag --bypass-browser-console-errors. If the command
 
 ```
-wacat test --wait 2000 --bypass-browser-console-errors https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
+wacat test --bypass-browser-console-errors https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
 ```
 is run the execution doesn't stop like in the previous example. wacat logs the error message, but continues the execution.
 
@@ -329,7 +329,7 @@ is run the execution doesn't stop like in the previous example. wacat logs the e
 Normally wacat creates random form inputs. By default the length is something between 1 and 60 characters and a default character set is used. Give the min length with the flag --random-input-texts-min-length and the max length with the flag --random-input-texts-max-length. Give the character set with the flag --random-input-texts-charset. The example command and output is:
 
 ```
-wacat test --wait 2000 --random-input-texts-min-length 1 --random-input-texts-max-length 3 --random-input-texts-charset ®©¥¬¿ https://mikesmallhelp-test-application.vercel.app/
+wacat test --random-input-texts-min-length 1 --random-input-texts-max-length 3 --random-input-texts-charset ®©¥¬¿ https://mikesmallhelp-test-application.vercel.app/
 ```
 
 ```
@@ -377,19 +377,19 @@ ybyb
 wacat uses each input text from the file for the each input field in the target application unless there happens some error or page changes. The run command is for the local file in Windows:
 
 ```
-wacat test --wait 2000 --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
+wacat test --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
 
 and in Linux and Mac:
 
 ```
-wacat test --wait 2000 --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
+wacat test --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
 
 and for the remote file:
 
 ```
-wacat test --wait 2000 --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/
+wacat test --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/
 ```
 
 All commands should output following:
@@ -451,7 +451,7 @@ In the output you can see that values from the input-texts.txt file are used. Yo
 To test only links in the application use a ```--only-links``` flag. Then wacat loads pages and detects HTTP errors, but input fields are not filled etc. An example command and output are:
 
 ```
-wacat test --wait 2000 --only-links https://mikesmallhelp-test-application.vercel.app/
+wacat test --only-links https://mikesmallhelp-test-application.vercel.app/
 ```
 ```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
@@ -494,13 +494,13 @@ Note for example that the application contains "Username" label and this is put 
 The example run command for Windows is:
 
 ```
-wacat test --wait 2000 --conf example-files\configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
+wacat test --conf example-files\configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
 The run command for Linux and Mac is:
 
 ```
-wacat test --wait 2000 --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
+wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
 The command output is:
@@ -508,20 +508,22 @@ The command output is:
 ```
 Testing in url: https://mikesmallhelp-test-application-simple-authentication.vercel.app/. Please wait...
 
+
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:29:1 › test an application
+[chromium] › test.spec.ts:40:1 › test an application
 Filled the username and the password. Pushed the authentication button
 In the page: https://mikesmallhelp-test-application-simple-authentication.vercel.app/
-In the page: https://mikesmallhelp-test-application-simple-authentication.vercel.app/working-page
-Fill the #0 input field a value: 5yzn4z93
-#0 drop-down list. Select the option #1
-Push the button #0
 In the page: https://mikesmallhelp-test-application-simple-authentication.vercel.app/working-page2
-Fill the #0 input field a value: 5zl4fvk4
-#0 drop-down list. Select the option #1
-Push the button #0
-  1 passed (19.4s)
-
+Push the button #1
+Filling the #1 text input field a value: =_e6PF[J{u98&QI`DP
+The #1 drop-down list. Selecting the option #2
+Push the button #1
+In the page: https://mikesmallhelp-test-application-simple-authentication.vercel.app/working-page
+Push the button #1
+Filling the #1 text input field a value: =_e6PF[J{u98&QI`DP
+The #1 drop-down list. Selecting the option #2
+Push the button #1
+  1 passed (24.7s)
 ```
 
 Note in the output the text "Filled the username and the password. Pushed the authentication button", this means that wacat did the authentication.
@@ -566,12 +568,12 @@ The JSON is more complicated than in previous example. Is has "beforeAuthenticat
 The example run command for Windows is:
 
 ```
-wacat test --wait 2000 --conf example-files\configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --conf example-files\configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 The run command for Linux and Mac is:
 
 ```
-wacat test --wait 2000 --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
 The command output is:
@@ -579,20 +581,23 @@ The command output is:
 ```
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
 
+
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:29:1 › test an application
+[chromium] › test.spec.ts:40:1 › test an application
 Filled the username and the password. Pushed the authentication button
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
-In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page
-Fill the #0 input field a value: if324rll
-#0 drop-down list. Select the option #1
-Push the button #0
+Push the button #1
+Filling the #1 text input field a value: Agc-QmUBS,Z]zx,~q*:ZNX*?L
+The #1 drop-down list. Selecting the option #2
+Push the button #1
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page2
-Fill the #0 input field a value: k1fqcdhg
-#0 drop-down list. Select the option #1
-Push the button #0
-  1 passed (24.5s)
+Push the button #1
+Filling the #1 text input field a value: Agc-QmUBS,Z]zx,~q*:ZNX*?L
+The #1 drop-down list. Selecting the option #2
+Push the button #1
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
+  1 passed (28.7s)
 ```
 
 ### Configure pages, which are not visited
@@ -630,13 +635,13 @@ If you don't want to go into the logout page, add the "notVisitLinkUrls" attribu
 The example run command for Windows is:
 
 ```
-wacat test --wait 2000 --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
 The run command for Linux and Mac is:
 
 ```
-wacat test --wait 2000 --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
 The command output is:
@@ -644,19 +649,22 @@ The command output is:
 ```
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
 
+
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:29:1 › test an application
+[chromium] › test.spec.ts:40:1 › test an application
 Filled the username and the password. Pushed the authentication button
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
-In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page
-Fill the #0 input field a value: k825ikgw
-#0 drop-down list. Select the option #1
-Push the button #0
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page2
-Fill the #0 input field a value: 5okrd0c6
-#0 drop-down list. Select the option #1
-Push the button #0
-  1 passed (21.4s)
+Push the button #1
+Filling the #1 text input field a value: R?nSk,UP(UBO*t'm1^a^7HIv
+The #1 drop-down list. Selecting the option #2
+Push the button #1
+In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/working-page
+Push the button #1
+Filling the #1 text input field a value: R?nSk,UP(UBO*t'm1^a^7HIv
+The #1 drop-down list. Selecting the option #2
+Push the button #1
+  1 passed (23.2s)
 ```
 
 Note now there are not the line:
@@ -672,7 +680,7 @@ in the output.
 Use the flag --headless to run with the headless mode (without browser). The example command is:
 
 ```
-wacat test --wait 2000 --headless https://mikesmallhelp-test-application.vercel.app/
+wacat test --headless https://mikesmallhelp-test-application.vercel.app/
 ```
 
 ### Run in CI pipeline
