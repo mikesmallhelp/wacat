@@ -7,28 +7,30 @@ Imagine, you leave your computer for a while and go to pick up a cup of coffee. 
 wacat (walking cat) application for example:
 
 - goes to your web application root url
-- visits every link in your application
+- visits every link in your application in random order
 - adds random inputs to form inputs
-- selects values from dropdown menus
-- selects values from checkboxes
-- clicks on every button
+- selects random values from dropdown menus, checkboxes etc. 
+- clicks on every button in random order
 
 Additionally, wacat
 
 - detects HTTP errors (for example HTTP 500 errors) between browser and server
+- detects errors in the browser console log
 - detects error strings from the web pages
   - you give the error strings in a parameter file
+- supports random form text inputs configuration by a user 
 - can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
 - can test only links, this could for example be used in the smoke testing of your application
 - supports some authentication scenarios
   - you give authentication configuration in a JSON file
+- supports configuring pages, which are not visited
 - supports a headless mode
-- supports a page download wait time and a whole test timeout value
+- supports configuring a page download wait time and a whole test timeout value
 - supports running in the CI pipeline
 
 wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is tested to work with Windows, Linux and Mac.
 
-Please note wacat is still under construction. Please create a new issue, if you find a bug or some particular feature is needed.
+Please create a new issue, if you find a bug or some particular feature is needed.
 
 ## Warnings
 
@@ -51,6 +53,14 @@ npm install && npx playwright install --with-deps && npm run build && npm i -g
 ```
 
 Note: probably your password is asked, when you run previous command, because the Playwright tool is installed globally.
+
+### Updating wacat
+
+To update wacat version run:
+
+```
+git pull && npm install && npx playwright install --with-deps && npm run build && npm i -g
+```
 
 ## Running
 
@@ -79,7 +89,7 @@ First the wacat application opens the Chromium browser and goes to the root URL,
 
 ![](doc/chromium-opened.png)
 
-The root page doesn't contain any input fields, dropdown menus or buttons. wacat simple collects links of the two sub pages and goes to them. In the sub pages wacat fills the form inputs and selects from the dropdown menus. Finally it pushes the buttons in the each sub page. Here is the command, which you can copy, paste and run. Same way you can run all other examples and use my test applications.
+The root page doesn't contain any input fields, dropdown menus etc. wacat simple collects links of the two sub pages and goes to them. In each sub page wacat first pushes the button. The it fills the form input, selects from the dropdown menu etc. Finally it pushes the button again. Here is the command, which you can copy, paste and run. Same way you can run all other examples and please feel free to use my test applications.
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
@@ -89,21 +99,33 @@ Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait.
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:38:1 › test an application
+[chromium] › test.spec.ts:40:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
-Fill the #0 input field a value: ps@7M#m5J8h+8,QHkW'26+!s/:Do;z*:/)3H
-#0 drop-down list. Select the option #1
-Selecting the #0 checkbox
-Push the button #0
+Push the button #1
+Filling the #1 text input field a value: qHre+Ohx;'w_}l<f_cl=n-?U^vtXCm1FZC4||
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #1
+Filling the #1 email input field a value: hfymxkihm.zixurprs@otjhbiech.com
+Filling the #1 password input field a value: B!2#2B!2bbBB22!bB1
+Filling the #1 search input field a value: zOwJMweOnlw
+Filling the #1 url input field a value: https://mx21i.com
+Push the button #1
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
-Fill the #0 input field a value: ,R!Qs|Na28#$M&r+C`%I/>#FO'gk(qN/'v&O/oQ
-#0 drop-down list. Select the option #1
-Selecting the #0 checkbox
-Push the button #0
-  1 passed (20.0s)
+Push the button #1
+Filling the #1 text input field a value: qHre+Ohx;'w_}l<f_cl=n-?U^vtXCm1FZC4||
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #2
+Filling the #1 email input field a value: qgjrtywmerx.kxmiwsdoxjlk@jhcghovbpr.com
+Filling the #1 password input field a value: 1Aa11a#2abb!
+Filling the #1 search input field a value: fwyKERAv
+Filling the #1 url input field a value: https://0zzvf8.net
+Push the button #1
+  1 passed (54.0s)
 ```
-Note that output contains "1 passed" so wacat didn't find any errors in the application.
+Note that output contains "1 passed" so wacat didn't find any errors in the application. Please note also that a default wait time for every page is 5000 milliseconds. If you want to change this time use the flag --wait (see later). In the examples below we use a flag --wait 2000, because it is enough for the test applications.
 
 ### Detect HTTP errors
 
@@ -116,7 +138,7 @@ wacat can detect HTTP errors between browser and server. For example if the butt
 An example about this is:
 
 ```
-wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
+wacat test --wait 2000 https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
 ```
 Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app/. Please wait...
@@ -125,25 +147,24 @@ Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app
  ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-http-500-error.vercel.app/' npx playwright test --project=chromium --headed
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
-     [chromium] › test.spec.ts:38:1 › test an application
+     [chromium] › test.spec.ts:40:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/
      In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/working-page
-     Fill the #0 input field a value: )M]Z>Yv
-     #0 drop-down list. Select the option #1
-     Push the button #0
+     Push the button #1
+     Filling the #1 text input field a value: 4trK*edD
+     The #1 drop-down list. Selecting the option #2
+     Push the button #1
      In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500
-     Fill the #0 input field a value: S|,/9(@4SSLKO4c9.ZIeEmnZ(KNA<X'h~W_4uiX[gFTJ
-     #0 drop-down list. Select the option #1
-     Push the button #0
+     Push the button #1
      In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted
  ›    in status code 500
-     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's console: Failed to load resource: the server responded with a
- ›    status of 500 ()
-     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's console: Error fetching data: Error: Network response was not
- ›    ok
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's console: Failed to load resource: the server responded 
+ ›   with a status of 500 ()
+     In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Found an error message in the browser's console: Error fetching data: Error: Network response was
+ ›    not ok
  ›       at r (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:1402)
  ›       at async n (https://mikesmallhelp-test-application-http-500-error.vercel.app/_next/static/chunks/pages/api-returns-http-500-d6a108dd102494f7.js:1:735)
-       1) [chromium] › test.spec.ts:38:1 › test an application ──────────────────────────────────────────
+       1) [chromium] › test.spec.ts:40:1 › test an application ──────────────────────────────────────────
  ›   
  ›       AssertionError: In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to 
  ›   https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
@@ -159,16 +180,21 @@ Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app
  ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:53:17)
  ›
        1 failed
- ›       [chromium] › test.spec.ts:38:1 › test an application
+ ›       [chromium] › test.spec.ts:40:1 › test an application
 
 ```
 
-So wacat detects HTTP 500 error, prints the error log with the text "1 failed" and stops the execution.
+So wacat detects HTTP 500 error, prints the error log with the text "1 failed" and stops the execution. The specific error message is:
+
+```
+AssertionError: In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to 
+ ›   https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
+```
 
 If you want to bypass stopping the execution in the HTTP errors use the flag --bypass-http-errors. For example the command
 
 ```
-wacat test --bypass-http-errors https://mikesmallhelp-test-application-http-500-error.vercel.app/
+wacat test --wait 2000 --bypass-http-errors https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
 
 not stop into the HTTP 500 error like in the previous example. wacat prints to the log the HTTP 500 error, but the execution continues.
@@ -189,12 +215,12 @@ We configure in our example that "Error occurred!" is detected by wacat. We want
 The run command (--conf flag is used to pass the JSON file) for Windows is:
 
 ```
-wacat test --conf example-files\configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
+wacat test --wait 2000 --conf example-files\configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
 ```
 The run command for Linux and Mac is:
 
 ```
-wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
+wacat test --wait 2000 --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
 ```
 
 The command output is:
@@ -258,7 +284,7 @@ Here is an example application, which contains an error logging in the browser's
 When an example command
 
 ```
-wacat test https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
+wacat test --wait 2000 https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
 ```
 
 is run the execution stops into the error logging in the browser's console:
@@ -296,7 +322,7 @@ wacat prints the message "Found an error message in the browser's console: Hello
 If you want to bypass this check and stop the execution use the flag --bypass-browser-console-errors. If the command
 
 ```
-wacat test --bypass-browser-console-errors https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
+wacat test --wait 2000 --bypass-browser-console-errors https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
 ```
 is run the execution doesn't stop like in the previous example. wacat logs the error message, but continues the execution.
 
@@ -305,7 +331,7 @@ is run the execution doesn't stop like in the previous example. wacat logs the e
 Normally wacat creates random form inputs. By default the length is something between 1 and 60 characters and a default character set is used. Give the min length with the flag --random-input-texts-min-length and the max length with the flag --random-input-texts-max-length. Give the character set with the flag --random-input-texts-charset. The example command and output is:
 
 ```
-wacat test --random-input-texts-min-length 1 --random-input-texts-max-length 3 --random-input-texts-charset ®©¥¬¿ https://mikesmallhelp-test-application.vercel.app/
+wacat test --wait 2000 --random-input-texts-min-length 1 --random-input-texts-max-length 3 --random-input-texts-charset ®©¥¬¿ https://mikesmallhelp-test-application.vercel.app/
 ```
 
 ```
@@ -339,19 +365,19 @@ ybyb
 wacat uses each input text from the file for the each input field in the target application. The run command is for the local file in Windows:
 
 ```
-wacat test --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
+wacat test --wait 2000 --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
 
 and in Linux and Mac:
 
 ```
-wacat test --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
+wacat test --wait 2000 --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
 
 and for the remote file:
 
 ```
-wacat test --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/
+wacat test --wait 2000 --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/
 ```
 
 All commands should output following:
@@ -386,7 +412,7 @@ In the output you can see that values from the input-texts.txt file are used. Yo
 To test only links in the application use a ```--only-links``` flag. Then wacat loads pages and detects HTTP errors, but input fields are not filled etc. An example command and output are:
 
 ```
-wacat test --only-links https://mikesmallhelp-test-application.vercel.app/
+wacat test --wait 2000 --only-links https://mikesmallhelp-test-application.vercel.app/
 ```
 ```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
@@ -429,13 +455,13 @@ Note for example that the application contains "Username" label and this is put 
 The example run command for Windows is:
 
 ```
-wacat test --conf example-files\configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
+wacat test --wait 2000 --conf example-files\configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
 The run command for Linux and Mac is:
 
 ```
-wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
+wacat test --wait 2000 --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
 The command output is:
@@ -501,12 +527,12 @@ The JSON is more complicated than in previous example. Is has "beforeAuthenticat
 The example run command for Windows is:
 
 ```
-wacat test --conf example-files\configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --wait 2000 --conf example-files\configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 The run command for Linux and Mac is:
 
 ```
-wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --wait 2000 --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
 The command output is:
@@ -565,13 +591,13 @@ If you don't want to go into the logout page, add the "notVisitLinkUrls" attribu
 The example run command for Windows is:
 
 ```
-wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --wait 2000 --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
 The run command for Linux and Mac is:
 
 ```
-wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+wacat test --wait 2000 --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
 The command output is:
@@ -607,7 +633,7 @@ in the output.
 Use the flag --headless to run with the headless mode (without browser). The example command is:
 
 ```
-wacat test --headless https://mikesmallhelp-test-application.vercel.app/
+wacat test --wait 2000 --headless https://mikesmallhelp-test-application.vercel.app/
 ```
 
 ### Run in CI pipeline
