@@ -738,6 +738,7 @@ DESCRIPTION
 EXAMPLES
   $ wacat test http://localhost:3000
 ```
+Note that the url can be before the flags or after them.
 
 ## Developing wacat
 
