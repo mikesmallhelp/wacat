@@ -228,49 +228,42 @@ The command output is:
 ```
 Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app. Please wait...
 
- ›   Error: Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json
- ›    npx playwright test --project=chromium
+ ›   Error: 
+ ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json WAIT=2000 npx 
+ ›   playwright test --project=chromium --headed
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
-     [chromium] › test.spec.ts:29:1 › test an application
+     [chromium] › test.spec.ts:40:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
-     Check the page not contain the abc text
-     Check the page not contain the Error occurred! text
-     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/working-page
-     Check the page not contain the abc text
-     Check the page not contain the Error occurred! text
-     Fill the #0 input field a value: 4eqhz14r
-     #0 drop-down list. Select the option #1
-     Push the button #0
      Check the page not contain the abc text
      Check the page not contain the Error occurred! text
      In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/error-text-in-page
      Check the page not contain the abc text
      Check the page not contain the Error occurred! text
-       1) [chromium] › test.spec.ts:29:1 › test an application ──────────────────────────────────────────
+       1) [chromium] › test.spec.ts:40:1 › test an application ──────────────────────────────────────────
  ›   
  ›       Error: expect(received).not.toContain(expected) // indexOf
  ›
  ›       Expected substring: not "Error occurred!"
- ›       Received string:        "Test page - error-text-in-pageError occurred!{\"props\":{\"pageProps\":{}},\"page\":\"/error-text-in-page\",\"query\":{},\"buildId\":\"qQ0wdj-2mwRrndTkG4FBO\",\"nextExp
+ ›       Received string:        "Test page - error-text-in-pageError occurred!{\"props\":{\"pageProps\":{}},\"page\":\"/error-text-in-page\",\"query\":{},\"buildId\":\"MVBwm9bMplVdAQ-ZjLXZ5\",\"nextExp
  ›   ort\":true,\"autoExport\":true,\"isFallback\":false,\"scriptLoader\":[]}"
  ›
- ›          96 |     for (const errorText of configuration.errorTextsInPages) {
- ›          97 |         console.log(`Check the page not contain the ${errorText} text`);
- ›       >  98 |         expect(content).not.toContain(errorText);
+ ›         150 |     for (const errorText of configuration.errorTextsInPages) {
+ ›         151 |         console.log(`Check the page not contain the ${errorText} text`);
+ ›       > 152 |         expect(content).not.toContain(errorText);
  ›             |                             ^
- ›          99 |     }
- ›         100 | }
- ›         101 |
+ ›         153 |     }
+ ›         154 | }
+ ›         155 |
  ›
- ›           at checkPageForErrors (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:98:29)
- ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:84:5)
- ›           at visitLinks (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:154:13)
- ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:86:5)
- ›           at /home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:47:5
+ ›           at checkPageForErrors (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:152:29)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:122:5)
+ ›           at visitLinks (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:398:13)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:132:5)
+ ›           at /home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:73:5
  ›
        1 failed
- ›       [chromium] › test.spec.ts:29:1 › test an application
+ ›       [chromium] › test.spec.ts:40:1 › test an application
 ```
 
 So wacat detects "Error occurred!" text in one sub page, reports error with the "1 failed" text and execution stops.
@@ -293,29 +286,34 @@ is run the execution stops into the error logging in the browser's console:
 Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app. Please wait...
 
  ›   Error: 
- ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-browser-console.vercel.app' npx playwright test --project=chromium --headed
+ ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-browser-console.vercel.app' WAIT=2000 npx playwright test --project=chromium --headed
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
-     [chromium] › test.spec.ts:34:1 › test an application
+     [chromium] › test.spec.ts:40:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/
+     In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/working-page
+     Push the button #1
+     Filling the #1 text input field a value: q52<<r`k`bZzP<Jua#53RAn)cKg0&K14
+     The #1 drop-down list. Selecting the option #2
+     Push the button #1
      In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's console: Hello! Something wrong!
-       1) [chromium] › test.spec.ts:34:1 › test an application ──────────────────────────────────────────
+       1) [chromium] › test.spec.ts:40:1 › test an application ──────────────────────────────────────────
  ›   
- ›       AssertionError: In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's console: Hello! Something 
- ›   wrong!
+ ›       AssertionError: In the page: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app/error-in-browser-console: Found an error message in the browser's console: Hello! 
+ ›   Something wrong!
  ›
- ›         58 |
- ›         59 |             if (!bypassBrowserConsoleErrors && !bypassHttpErrors) {
- ›       > 60 |                 fail(message);
+ ›         62 |
+ ›         63 |             if (!bypassBrowserConsoleErrors && !bypassHttpErrors) {
+ ›       > 64 |                 fail(message);
  ›            |                 ^
- ›         61 |             }
- ›         62 |         }
- ›         63 |     });
+ ›         65 |             }
+ ›         66 |         }
+ ›         67 |     });
  ›
- ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:60:17)
+ ›           at Page.<anonymous> (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:64:17)
  ›
        1 failed
- ›       [chromium] › test.spec.ts:34:1 › test an application
+ ›       [chromium] › test.spec.ts:40:1 › test an application
 ```
 wacat prints the message "Found an error message in the browser's console: Hello! Something wrong!" and stops the execution.
 
@@ -339,30 +337,44 @@ Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait.
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:38:1 › test an application
+[chromium] › test.spec.ts:40:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
-In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
-Fill the #0 input field a value: ¥
-#0 drop-down list. Select the option #1
-Push the button #0
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
-Fill the #0 input field a value: ¥©¬
-#0 drop-down list. Select the option #1
-Push the button #0
-  1 passed (19.0s)
+Push the button #1
+Filling the #1 text input field a value: ¬¥¥
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #3
+Filling the #1 email input field a value: ngqpyhg.rwbgskvsafe@kkhqsvcbjjnv.gov
+Filling the #1 password input field a value: b2Aa!B2bB#aA!BBA#
+Filling the #1 search input field a value: mfIEATvz
+Filling the #1 url input field a value: https://oa9qqowd.org
+Push the button #1
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
+Push the button #1
+Filling the #1 text input field a value: ¬¥¥
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #3
+Filling the #1 email input field a value: hjoalxyuyeg.mossmevc@nejdyg.net
+Filling the #1 password input field a value: Ba2aAAbAAAbaB2!#
+Filling the #1 search input field a value: dXdrIohbOK
+Filling the #1 url input field a value: https://cjre8vux.com
+Push the button #1
+  1 passed (23.6s)
 ```
 
-In this example wacat generates random string ```¥©¬```.
+In this example wacat generates random string ```¬¥¥```.
 
 ### Read input field texts from the file
 
-Normally wacat fills the form input fields with the random strings. It is possible to read input fields from the file, for example from the file example-files/input.texts, which contents are:
+Additionally is possible to read input fields from the file, for example from the file example-files/input.texts, which contents are:
 
 ```
 xaxa
 ybyb
 ```
-wacat uses each input text from the file for the each input field in the target application. The run command is for the local file in Windows:
+wacat uses each input text from the file for the each input field in the target application unless there happens some error or page changes. The run command is for the local file in Windows:
 
 ```
 wacat test --wait 2000 --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
@@ -385,24 +397,51 @@ All commands should output following:
 ```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
+
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:29:1 › test an application
+[chromium] › test.spec.ts:40:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
-Fill the #0 input field a value: xaxa
-#0 drop-down list. Select the option #1
-Push the button #0
-Fill the #0 input field a value: ybyb
-#0 drop-down list. Select the option #1
-Push the button #0
+Push the button #1
+Filling the #1 text input field a value: xaxa
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #3
+Filling the #1 email input field a value: szerftpfo.pvpjmjs@gxikkrhfujq.org
+Filling the #1 password input field a value: BBa1#B!bBBBBA1#2b
+Filling the #1 search input field a value: hgPdrPLH
+Filling the #1 url input field a value: https://oiynqstk.biz
+Push the button #1
+Filling the #1 text input field a value: ybyb
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #3
+Filling the #1 email input field a value: uhxntpbxt.xqdfity@fmctvkv.edu
+Filling the #1 password input field a value: !!212b#BA#2BB1A2
+Filling the #1 search input field a value: gjLzxqdGJwCz
+Filling the #1 url input field a value: https://abvqprj.info
+Push the button #1
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
-Fill the #0 input field a value: xaxa
-#0 drop-down list. Select the option #1
-Push the button #0
-Fill the #0 input field a value: ybyb
-#0 drop-down list. Select the option #1
-Push the button #0
-  1 passed (22.9s)
+Push the button #1
+Filling the #1 text input field a value: xaxa
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #2
+Filling the #1 email input field a value: eojxwnciezo.uhjgqa@ffrbwbtfexz.edu
+Filling the #1 password input field a value: 2A#abb#1B11A!B!#
+Filling the #1 search input field a value: LzrHOISc
+Filling the #1 url input field a value: https://yg37wkpg.org
+Push the button #1
+Filling the #1 text input field a value: ybyb
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #3
+Filling the #1 email input field a value: snobbldzzijr.uiyioqm@ivkmlpbo.net
+Filling the #1 password input field a value: B2b#Ba2!#1B!B2
+Filling the #1 search input field a value: CXJILDabYzCF
+Filling the #1 url input field a value: https://5bvqwcx30i.com
+Push the button #1
+  1 passed (28.9s)
 ```
 
 In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. When you use a big input text file, use --timeout parameter (see below) with enough big value. Tested with 5000 lines input text file against a simple test application.
@@ -419,11 +458,11 @@ Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait.
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:30:1 › test an application
+[chromium] › test.spec.ts:40:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
-  1 passed (14.9s)
+  1 passed (14.7s)
 ```
 
 ## Do authencation
@@ -642,10 +681,10 @@ wacat can be used in the CI pipeline with the --headless flag. The example is ht
 
 ### Configure wait time
 
-By default wacat waits each page download 2000 milliseconds. Configure the page download wait time in milliseconds with --wait flag. The example command with 1000 milliseconds wait is:
+By default wacat waits each page download 5000 milliseconds. Configure the page download wait time in milliseconds with --wait flag. The example command with 2000 milliseconds wait is:
 
 ```
-wacat test --wait 1000 https://mikesmallhelp-test-application.vercel.app/
+wacat test --wait 2000 https://mikesmallhelp-test-application.vercel.app/
 ```
 Note: wacat uses internally the Playwright tool. Normally the Playwright test can wait for some specific text. But wacat doesn't know what text to wait, so wait time is used.
 
@@ -668,23 +707,30 @@ To see all the flags, run the command:
 
 ```
 wacat test --help
+```
+```
 Test any web application, for example: wacat test http://localhost:3000
 
 USAGE
-  $ wacat test URL [--conf <value>] [--debug] [--error-texts <value>] [--headless] [--input-texts <value>] [--only-links] [--timeout <value>] [--wait <value>]
+  $ wacat test URL [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>] [--debug] [--headless] [--input-texts <value>] [--only-links] [--random-input-texts-charset
+    <value>] [--random-input-texts-max-length <value>] [--random-input-texts-min-length <value>] [--timeout <value>] [--wait <value>]
 
 ARGUMENTS
   URL  Application url to test, for example: http://localhost:3000
 
 FLAGS
-  --conf=<value>         Path to the configuration file
-  --debug                Enable debug mode
-  --error-texts=<value>  Path to the error texts file
-  --headless             Headless mode
-  --input-texts=<value>  Path to the input texts file
-  --only-links           Test only links
-  --timeout=<value>      A whole test run timeout in seconds
-  --wait=<value>         A wait in milliseconds to wait a page load etc.
+  --bypass-browser-console-errors          Bypass the browser console's error messages
+  --bypass-http-errors                     Bypass the HTTP errors
+  --conf=<value>                           Path to the configuration file
+  --debug                                  Enable debug mode
+  --headless                               Headless mode
+  --input-texts=<value>                    Path to the input texts file
+  --only-links                             Test only links
+  --random-input-texts-charset=<value>     Random input texts character set
+  --random-input-texts-max-length=<value>  Random input texts max length
+  --random-input-texts-min-length=<value>  Random input texts min length
+  --timeout=<value>                        A whole test run timeout in seconds
+  --wait=<value>                           A wait in milliseconds to wait a page load
 
 DESCRIPTION
   Test any web application, for example: wacat test http://localhost:3000
@@ -712,7 +758,7 @@ In Linux and Mac, do your changes and run
 ```
 npm run test && npm run build && npm install -g && ./run-tests.sh
 ```
-The run-tests.sh script runs all test cases and verifies that wacat works correctly.
+The run-tests.sh script runs all test cases and verifies that wacat works correctly. Or just push your changes to repository and let the GitHub Actions run the tests.
 
 In Windows do your changes and run
 
