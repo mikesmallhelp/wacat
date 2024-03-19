@@ -9,12 +9,10 @@ import {
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
 
-const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 2000;
+const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 5000;
 const timeout: number = process.env.TIMEOUT ? Number(process.env.TIMEOUT) * 1000 : 120_000;
 const visitedUrlsOrNotVisitLinkUrls: string[] = [];
 const rootUrl = process.env.ROOT_URL;
-const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
-    await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [];
 const configuration: Configuration = process.env.CONFIGURATION_FILE_PATH ?
     await readConfiguration({ path: process.env.CONFIGURATION_FILE_PATH }) : null;
 const onlyLinks: boolean = Boolean(process.env.ONLY_LINKS);
@@ -25,6 +23,9 @@ const randomInputTextsMinLength = process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH ? Nu
 const randomInputTextsMaxLength = process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
     ? Number(process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH) : randomInputTextsMinLength + 59;
 const randomInputTextsCharset = process.env.RANDOM_INPUT_TEXTS_CHARSET;
+const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
+    await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
+        randomInputTextsCharset)];
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -37,8 +38,6 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
 }
 
 test('test an application', async ({ page }) => {
-    ifDebugPrintPlaywrightStartSituation();
-
     test.setTimeout(timeout);
     await page.goto(rootUrl);
     await waitForTimeout({ page });
@@ -73,19 +72,6 @@ test('test an application', async ({ page }) => {
 
     await handlePage({ page });
 });
-
-const ifDebugPrintPlaywrightStartSituation = async () => {
-    if (debug) {
-        console.log('  \nPlaywright test starts...\n');
-        console.log('  Parameters:');
-        console.log('  rootUrl:' + rootUrl);
-        console.log('  wait:' + wait);
-        console.log('  timeout:' + timeout);
-        console.log('  inputTexts.length:' + inputTexts.length);
-        console.log('  configuration:' + JSON.stringify(configuration));
-        console.log('  onlyLinks:' + onlyLinks);
-    }
-}
 
 const authenticate = async ({ page }: { page: Page }) => {
     if (debug) {
@@ -173,7 +159,8 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     const currentUrl = page.url();
-    const buttonsLocator = page.locator('button, input[type="submit"], input[type="button"]');
+    const buttonsLocator = 
+       page.locator('button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])');
     const buttonsCount = await buttonsLocator.count();
 
     if (buttonsCount === 0) {
@@ -185,47 +172,40 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     let movedToDifferentPage = false;
-    for (const inputText of inputTexts.length > 0 ? inputTexts : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
-        randomInputTextsCharset)]) {
-        if (debug) {
-            console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
-        }
+    let firstButtonClickIsDone = false;
+    let inputTextsIndex = 0;
 
+    while (inputTextsIndex < inputTexts.length) {
+        const inputText = inputTexts[inputTextsIndex];
         const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
         const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
 
         while (buttonIndexesInRandomOrder.length > 0) {
-            const buttonIndex = buttonIndexesInRandomOrder.shift();
+            if (firstButtonClickIsDone) {
+                if (debug) {
+                    console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
+                }
 
-            if (debug) {
-                console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
+                await fillDifferentTypesInputs({ inputText, page });
+                inputTextsIndex++;
             }
 
-            await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
-            await selectFromDropDownLists({ page });
-            await fillCheckboxes({ page });
-            await selectFromRadioButtons({ page });
-            await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]' });
-            await fillTextInputs({
-                inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
-                selector: 'input[type="password"]'
-            });
-            await fillTextInputs({
-                inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
-                inputType: 'search', page,
-                selector: 'input[type="search"]'
-            });
-            await fillTextInputs({
-                inputText: generateRandomUrl(),
-                inputType: 'url', page,
-                selector: 'input[type="url"]'
-            });
+            if (debug) {
+                console.log('buttonIndexesInRandomOrder before shift:' + buttonIndexesInRandomOrder);
+            }
 
+            const buttonIndex = buttonIndexesInRandomOrder.shift();
             const button = buttonsLocator.nth(buttonIndex);
+
+            if (debug) {
+                console.log('buttonIndexesInRandomOrder after shift:' + buttonIndexesInRandomOrder);
+                console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
+            }
 
             if (await button.isVisible() && await button.isEnabled()) {
                 console.log('Push the button #' + (buttonIndex + 1));
                 await button.click();
+                firstButtonClickIsDone = true;
             }
 
             await waitForTimeout({ page });
@@ -244,6 +224,8 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 movedToDifferentPage = true;
 
                 if (debug) {
+                    console.log('currentUrl:', currentUrl);
+                    console.log('page.url():', page.url());
                     console.log('  break the inner loop');
                 }
 
@@ -267,6 +249,28 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     if (movedToDifferentPage) {
         await handlePage({ page });
     }
+}
+
+const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
+    await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
+    await selectFromDropDownLists({ page });
+    await fillCheckboxes({ page });
+    await selectFromRadioButtons({ page });
+    await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]' });
+    await fillTextInputs({
+        inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
+        selector: 'input[type="password"]'
+    });
+    await fillTextInputs({
+        inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
+        inputType: 'search', page,
+        selector: 'input[type="search"]'
+    });
+    await fillTextInputs({
+        inputText: generateRandomUrl(),
+        inputType: 'url', page,
+        selector: 'input[type="url"]'
+    });
 }
 
 const fillTextInputs = async ({ inputText, inputType, page, selector }: {

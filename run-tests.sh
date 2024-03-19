@@ -103,11 +103,8 @@ run_playwright_tests "index-errors-in-page-and-console.tsx" "--conf example-file
                    "1 failed" "expect(content).not.toContain"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" \
                    "1 failed" "expect(content).not.toContain"
-run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
-        "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt --wait 3000" \
-        "1 failed" "expect(content).not.toContain" "xaxa"
-run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" \
-        "--conf example-files/configuration-error-texts.json --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 3000" "1 failed" "expect(content).not.toContain" "xaxa"
+run_playwright_tests "index-working-page3.tsx" "--input-texts example-files/input-texts.txt --wait 3000" "1 passed" "ybyb"
+run_playwright_tests "index-working-page3.tsx" "--input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 3000" "1 passed" "ybyb"
 run_playwright_tests "index-api-returns-http-500.tsx" "--wait 3000" "1 failed" \
         "http://localhost:3000/api-returns-http-500: Request to" \
         "http://localhost:3000/api/http-500 resulted in status code 500"
@@ -117,8 +114,8 @@ run_playwright_tests "index-errors-in-page-and-console.tsx" "" "1 failed" "Hello
 run_playwright_tests "index-working-page3.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" "1 passed" \
         "Check the page not contain the Error occurred! text"
 run_playwright_tests "index-working-page3.tsx" "" "1 passed" "Push the button"
-run_playwright_tests "index-working-page3.tsx" "--debug" "1 passed" "Went outside of the tested application to the page https://mikesmallhelp-test-application.vercel.app/, returning back to the test application"
-run_playwright_tests "index-working-page3.tsx" "--random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
+run_playwright_tests "index-working-page3.tsx" "--debug --wait 3000" "1 passed" "Went outside of the tested application to the page https://mikesmallhelp-test-application.vercel.app/, returning back to the test application"
+run_playwright_tests "index-working-page3.tsx" "--wait 3000 --random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿" \
                      "1 passed" "¿¿¿¿¿"
 run_playwright_tests "index-working-page3.tsx" "--only-links --wait 3000" "1 passed" \
          "In the page: http://localhost:3000/working-page2" \

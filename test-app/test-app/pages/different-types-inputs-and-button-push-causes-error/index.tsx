@@ -69,8 +69,9 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (inputValue && inputValue2 && optionValue && checkbox && radioButtonValue3 && emailValue && passwordValue &&
-        searchValue && urlValue) {
+    if (!inputValue || (inputValue && inputValue2 && optionValue && checkbox
+      && radioButtonValue3 && emailValue && passwordValue &&
+      searchValue && urlValue)) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -84,7 +85,7 @@ const IndexComponent = () => {
       <input type="text" onChange={handleInputValueChange2} />
 
       <select name="someValues" id="someValues">
-      <option value="">-- Select --</option>
+        <option value="">-- Select --</option>
         <option value="aaa">aaa</option>
         <option value="bbb">bbb</option>
         <option value="ccc">ccc</option>

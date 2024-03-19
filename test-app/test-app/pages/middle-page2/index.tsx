@@ -19,6 +19,7 @@ const IndexComponent = () => {
         <input />
         <input />
 
+        <input disabled type="submit" value="Disabled"/>
         <input type="submit" value="Move to page: Test page - different-types-inputs-and-button-push-causes-error"/>
         
         <a href='/'>Back to main page</a>
