@@ -245,10 +245,6 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     if (movedToDifferentPage) {
         await handlePage({ page });
     }
-
-    if (movedToDifferentPage) {
-        await handlePage({ page });
-    }
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
