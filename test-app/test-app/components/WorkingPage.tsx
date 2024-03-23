@@ -3,7 +3,8 @@ import PageTemplate from './PageTemplate';
 import { fetchData } from '../util/util';
 import Router from "next/router";
 
-const WorkingPage = ({ title, showVercelButton = false }: { title: string; showVercelButton?: boolean }) => {
+const WorkingPage = ({ title, showVercelButton = false, showInfoButton = false }:
+    { title: string, showVercelButton?: boolean, showInfoButton?: boolean }) => {
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState('');
 
@@ -18,11 +19,11 @@ const WorkingPage = ({ title, showVercelButton = false }: { title: string; showV
 
     const handleButtonClickToInfoPage = async () => {
         try {
-          await Router.push("/info-page");
+            await Router.push("/info-page");
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      };
+    };
 
     const handleVercelButtonClick = async () => {
         try {
@@ -53,8 +54,12 @@ const WorkingPage = ({ title, showVercelButton = false }: { title: string; showV
                 <input type="button" value="Move to Vercel app" onClick={handleVercelButtonClick} />
             )}
 
-            <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
-            <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
+            {showInfoButton && (
+                <>
+                    <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
+                    <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
+                </>
+            )}
         </div>
     );
 
