@@ -792,7 +792,7 @@ Please note: If you add a new feature, add a test case for that. Please look `ru
 
 ## Change history
 
-### 1.0.0
+### 1.0.0 23.3.2024
 
 - Windows support
 - support for the most typical html input types like radio, email etc.
