@@ -3,7 +3,8 @@ import PageTemplate from './PageTemplate';
 import { fetchData } from '../util/util';
 import Router from "next/router";
 
-const WorkingPage = ({ title, showVercelButton = false }: { title: string; showVercelButton?: boolean }) => {
+const WorkingPage = ({ title, showVercelButton = false, showInfoButton = false }:
+    { title: string, showVercelButton?: boolean, showInfoButton?: boolean }) => {
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState('');
 
@@ -11,6 +12,14 @@ const WorkingPage = ({ title, showVercelButton = false }: { title: string; showV
         try {
             await fetchData('200', setLoading);
             setResult('Find 3545 rows');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleButtonClickToInfoPage = async () => {
+        try {
+            await Router.push("/info-page");
         } catch (error) {
             console.error(error);
         }
@@ -43,6 +52,13 @@ const WorkingPage = ({ title, showVercelButton = false }: { title: string; showV
             <a href='https://github.com/mikesmallhelp'>Github - don't go there</a>
             {showVercelButton && (
                 <input type="button" value="Move to Vercel app" onClick={handleVercelButtonClick} />
+            )}
+
+            {showInfoButton && (
+                <>
+                    <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
+                    <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
+                </>
             )}
         </div>
     );

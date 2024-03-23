@@ -242,11 +242,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         }
     }
 
-    if (movedToDifferentPage) {
-        await handlePage({ page });
-    }
-
-    if (movedToDifferentPage) {
+    if (movedToDifferentPage && !visitedUrlsOrNotVisitLinkUrls.includes(page.url())) {
         await handlePage({ page });
     }
 }
