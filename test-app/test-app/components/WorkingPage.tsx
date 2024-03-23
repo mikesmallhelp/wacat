@@ -16,6 +16,14 @@ const WorkingPage = ({ title, showVercelButton = false }: { title: string; showV
         }
     };
 
+    const handleButtonClickToInfoPage = async () => {
+        try {
+          await Router.push("/info-page");
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
     const handleVercelButtonClick = async () => {
         try {
             await Router.push('https://mikesmallhelp-test-application.vercel.app/');
@@ -44,6 +52,9 @@ const WorkingPage = ({ title, showVercelButton = false }: { title: string; showV
             {showVercelButton && (
                 <input type="button" value="Move to Vercel app" onClick={handleVercelButtonClick} />
             )}
+
+            <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
+            <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
         </div>
     );
 
