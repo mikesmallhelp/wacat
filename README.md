@@ -32,6 +32,8 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is t
 
 Please create a new issue, if you find a bug or some particular feature is needed.
 
+Current wacat version is 1.0.0. Please look at end of this page to see change history.
+
 ## Warnings
 
 Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be illegal. 
@@ -787,5 +789,15 @@ and verify from the output that everything works correctly.
 Contributions are warmly welcome. Look for the issues page. Please create a new issue, if you find a bug or some particular feature is needed.
 
 Please note: If you add a new feature, add a test case for that. Please look `run-tests.sh` file. Please consider also adding unit tests.
+
+## Change history
+
+### 1.0.0
+
+- Windows support
+- support for the most typical html input types like radio, email etc.
+- more flags like --random-input-texts-charset
+- bug fixes
+- GitHub Actions tests for Mac 
 
 
