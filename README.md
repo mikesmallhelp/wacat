@@ -32,7 +32,7 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is t
 
 Please create a new issue, if you find a bug or some particular feature is needed.
 
-Current wacat version is 1.0.0. Please look at end of this page to see change history.
+Current wacat version is 1.0.1. Please look at end of this page to see change history.
 
 ## Warnings
 
