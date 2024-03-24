@@ -57,7 +57,6 @@ const WorkingPage = ({ title, showVercelButton = false, showInfoButton = false }
             {showInfoButton && (
                 <>
                     <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
-                    <input type="button" value="Move to an info page" onClick={handleButtonClickToInfoPage} />
                 </>
             )}
         </div>
