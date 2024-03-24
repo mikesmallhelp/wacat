@@ -19,6 +19,9 @@ const IndexComponent = () => {
     <div>
       <h1>This is an info page</h1>
 
+      <p>Gift code:</p>
+      <input />      
+
       <p>Email:</p>
       <input type="email" />
 
