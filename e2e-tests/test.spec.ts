@@ -284,7 +284,7 @@ const fillTextInputs = async ({ inputText, inputType, page, selector }: {
         const input = inputsLocator.nth(inputIndex);
 
         if (await input.isVisible()) {
-            inputText = await deriveTextInputFromDifferentPossibilities({ inputText, inputType, inputIndex, page, input });
+            inputText = await deriveTextInputFromDifferentPossibilities({ input, inputText, inputType, page });
             console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + inputText);
             await input.fill(inputText);
         }
@@ -292,18 +292,18 @@ const fillTextInputs = async ({ inputText, inputType, page, selector }: {
 }
 
 type DerivedInputType = {
-    labelText: string;
     derivedInputText: string
+    labelText: string;
 }
 
-const deriveTextInputFromDifferentPossibilities = async ({ inputText, inputType, inputIndex, page, input }:
-    { inputText: string, inputType: string, inputIndex: number, page: Page, input: Locator }): Promise<string> => {
+const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
+    { input: Locator, inputText: string, inputType: string, page: Page }): Promise<string> => {
     if (inputType === 'text') {
-        const derivedInputTypes: DerivedInputType[] = [{ labelText: 'Email', derivedInputText: generateRandomEmail() }];
+        const derivedInputTypes: DerivedInputType[] = [{ derivedInputText: generateRandomEmail(), labelText: 'Email' }];
 
         for (const derivedInputType of derivedInputTypes) {
-            const derivedTextInput = await deriveTextInput({ inputText, inputType, inputIndex, page, input, 
-                                        labelText: derivedInputType.labelText, derivedInputText: derivedInputType.derivedInputText });
+            const derivedTextInput = await deriveTextInput({derivedInputText: derivedInputType.derivedInputText, input, labelText: derivedInputType.labelText, 
+                                                             page});
 
             if (derivedTextInput) {
                 return derivedTextInput;
@@ -314,8 +314,8 @@ const deriveTextInputFromDifferentPossibilities = async ({ inputText, inputType,
     return inputText;
 }
 
-const deriveTextInput = async ({ inputText, inputType, inputIndex, page, input, labelText, derivedInputText }:
-    { inputText: string, inputType: string, inputIndex: number, page: Page, input: Locator, labelText: string, derivedInputText: string }): Promise<string | null> => {
+const deriveTextInput = async ({ derivedInputText, input, labelText, page }:
+    { derivedInputText: string, input: Locator, labelText: string, page: Page }): Promise<null | string> => {
     const label = page.locator(`label[for="${await input.getAttribute('id')}"]`);
     if (await label.count() > 0 && await label.textContent() === labelText) {
         console.log(`The label is ${labelText}, so generating appropriate random content for it.`);
