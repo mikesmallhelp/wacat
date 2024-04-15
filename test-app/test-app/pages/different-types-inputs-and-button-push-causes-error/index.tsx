@@ -7,6 +7,7 @@ const IndexComponent = () => {
   const [errorMessage, setErrorMessage] = React.useState('');
   const [inputValue, setInputValue] = React.useState('');
   const [inputValue2, setInputValue2] = React.useState('');
+  const [textEmail, setTextEmail] = React.useState('');
   const [optionValue, setOptionValue] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
   const [radioButtonValue, setRadioButtonValue] = useState('');
@@ -23,6 +24,10 @@ const IndexComponent = () => {
 
   const handleInputValueChange2 = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue2(event.target.value);
+  };
+
+  const handleTextEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTextEmail(event.target.value);
   };
 
   const handleOptionValueChange = async (event: ChangeEvent<HTMLSelectElement>) => {
@@ -69,7 +74,7 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (!inputValue || (inputValue && inputValue2 && optionValue && checkbox
+    if (!inputValue || (inputValue && inputValue2 && textEmail && optionValue && checkbox
       && radioButtonValue3 && emailValue && passwordValue &&
       searchValue && urlValue)) {
       setErrorMessage('Error occurred!');
@@ -83,6 +88,11 @@ const IndexComponent = () => {
       <input />
       <input onChange={handleInputValueChange} />
       <input type="text" onChange={handleInputValueChange2} />
+
+      <div>
+        <label htmlFor="email">Email</label>
+        <input type="text" id="email" onChange={handleTextEmailChange} />
+      </div>
 
       <select name="someValues" id="someValues">
         <option value="">-- Select --</option>
