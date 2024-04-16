@@ -302,7 +302,13 @@ const randomSeparator = separators[generateRandomIntegerBetween0And2()];
 
 const derivedInputTypes: DerivedInputType[] = [
     { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },
-    { derivedInputText: generateRandomDate(-30, -20, randomSeparator), labelTextPart: 'birth' }
+    { derivedInputText: generateRandomDate(-30, -20, randomSeparator), labelTextPart: 'birth' },
+    { derivedInputText: generateRandomDate(-30, -20, randomSeparator), labelTextPart: 'dob' },
+    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'start' },
+    { derivedInputText: generateRandomDate(1, 1, randomSeparator), labelTextPart: 'end' },
+    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'depart' },
+    { derivedInputText: generateRandomDate(0, 1, randomSeparator), labelTextPart: 'expiration' },
+    { derivedInputText: generateRandomDate(-1, 1, randomSeparator), labelTextPart: 'date' }
 ];
 
 const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
