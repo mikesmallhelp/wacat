@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 
-import { Page, expect, test } from '@playwright/test';
+import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
@@ -159,8 +159,8 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     const currentUrl = page.url();
-    const buttonsLocator = 
-       page.locator('button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])');
+    const buttonsLocator =
+        page.locator('button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])');
     const buttonsCount = await buttonsLocator.count();
 
     if (buttonsCount === 0) {
@@ -284,10 +284,45 @@ const fillTextInputs = async ({ inputText, inputType, page, selector }: {
         const input = inputsLocator.nth(inputIndex);
 
         if (await input.isVisible()) {
+            inputText = await deriveTextInputFromDifferentPossibilities({ input, inputText, inputType, page });
             console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + inputText);
             await input.fill(inputText);
         }
     }
+}
+
+type DerivedInputType = {
+    derivedInputText: string
+    labelText: string;
+}
+
+const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
+    { input: Locator, inputText: string, inputType: string, page: Page }): Promise<string> => {
+    if (inputType === 'text') {
+        const derivedInputTypes: DerivedInputType[] = [{ derivedInputText: generateRandomEmail(), labelText: 'Email' }];
+
+        for (const derivedInputType of derivedInputTypes) {
+            const derivedTextInput = await deriveTextInput({derivedInputText: derivedInputType.derivedInputText, input, labelText: derivedInputType.labelText, 
+                                                             page});
+
+            if (derivedTextInput) {
+                return derivedTextInput;
+            }
+        }
+    }
+
+    return inputText;
+}
+
+const deriveTextInput = async ({ derivedInputText, input, labelText, page }:
+    { derivedInputText: string, input: Locator, labelText: string, page: Page }): Promise<null | string> => {
+    const label = page.locator(`label[for="${await input.getAttribute('id')}"]`);
+    if (await label.count() > 0 && await label.textContent() === labelText) {
+        console.log(`The label is ${labelText}, so generating appropriate random content for it.`);
+        return derivedInputText;
+    }
+
+    return null;
 }
 
 const selectFromDropDownLists = async ({ page }: { page: Page }) => {
