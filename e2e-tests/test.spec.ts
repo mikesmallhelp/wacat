@@ -4,7 +4,8 @@ import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomString, generateRandomUrl,
+    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomIntegerBetween0And2, 
+    generateRandomString, generateRandomUrl,
     hostIsSame,
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
@@ -296,17 +297,22 @@ type DerivedInputType = {
     labelTextPart: string;
 }
 
+const separators = ['-', '/', '.'];
+const randomSeparator = separators[generateRandomIntegerBetween0And2()];
+
+const derivedInputTypes: DerivedInputType[] = [
+    { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },
+    { derivedInputText: generateRandomDate(-30, -20, randomSeparator), labelTextPart: 'birth' }
+];
+
 const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
     { input: Locator, inputText: string, inputType: string, page: Page }): Promise<string> => {
     if (inputType === 'text') {
-        const derivedInputTypes: DerivedInputType[] = [
-                                                       { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },
-                                                       { derivedInputText: generateRandomDate(-30, -20), labelTextPart: 'birth'}
-                                                      ];
-
         for (const derivedInputType of derivedInputTypes) {
-            const derivedTextInput = await deriveTextInput({derivedInputText: derivedInputType.derivedInputText, input, 
-                                               labelText: derivedInputType.labelTextPart, page});
+            const derivedTextInput = await deriveTextInput({
+                derivedInputText: derivedInputType.derivedInputText, input,
+                labelText: derivedInputType.labelTextPart, page
+            });
 
             if (derivedTextInput) {
                 return derivedTextInput;
@@ -323,7 +329,7 @@ const deriveTextInput = async ({ derivedInputText, input, labelText: labelTextPa
     const labelsCount = await labelsLocator.count();
     if (labelsCount > 0) {
         const labelTextContent = await labelsLocator.nth(0).textContent();
-        
+
         if (labelTextContent?.toLowerCase().includes(labelTextPart.toLowerCase())) {
             console.log(`The label is '${labelTextContent}', so generating an appropriate random content for the input field`);
             return derivedInputText;

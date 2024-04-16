@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-    generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomString,
+    generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomIntegerBetween0And2, generateRandomString,
     generateRandomUrl, getHost, hostIsSame, shuffleArray
 } from '../utils/test-utils.js';
 
@@ -160,10 +160,10 @@ describe('generateRandomUrl function', () => {
 
 describe('generateRandomDate Function', () => {
     it('should generate a date between 40 and 50 years ago', () => {
-        const dateStr = generateRandomDate(-50, -40);
+        const dateStr = generateRandomDate(-50, -40, '-');
         console.log(dateStr);
 
-        const date = convertAndCreateDate(dateStr);
+        const date = convertAndCreateDate(dateStr, '-');
         const currentYear = new Date().getFullYear();
         const yearDifference = currentYear - date.getFullYear();
 
@@ -172,20 +172,20 @@ describe('generateRandomDate Function', () => {
     });
 
     it('should generate a date within the current year', () => {
-        const dateStr = generateRandomDate(0, 0);
+        const dateStr = generateRandomDate(0, 0, '/');
         console.log(dateStr);
 
-        const date = convertAndCreateDate(dateStr);
+        const date = convertAndCreateDate(dateStr, '/');
         const currentYear = new Date().getFullYear();
 
         expect(date.getFullYear()).to.equal(currentYear);
     });
 
     it('should generate a date between 20 and 30 years in the future', () => {
-        const dateStr = generateRandomDate(20, 30);
+        const dateStr = generateRandomDate(20, 30, '.');
         console.log(dateStr);
 
-        const date = convertAndCreateDate(dateStr);
+        const date = convertAndCreateDate(dateStr, '.');
         const currentYear = new Date().getFullYear();
         const yearDifference = date.getFullYear() - currentYear;
 
@@ -194,9 +194,18 @@ describe('generateRandomDate Function', () => {
     });
 });
 
-const convertAndCreateDate = (dateStr: string): Date => {
-    const parts = dateStr.split('-');
+const convertAndCreateDate = (dateStr: string, splitSeparator: string): Date => {
+    const parts = dateStr.split(splitSeparator);
     const convertedDateStr = `${parts[2]}-${parts[1]}-${parts[0]}`;
     return new Date(convertedDateStr);
 };
+
+describe('generateRandomIntegerBetween0And2', () => {
+    it('should return a number between 0 and 2', () => {
+        const result = generateRandomIntegerBetween0And2();
+        console.log(result);
+        expect(result).to.be.at.least(0);
+        expect(result).to.be.at.most(2);
+    });
+});
 
