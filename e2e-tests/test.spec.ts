@@ -293,17 +293,17 @@ const fillTextInputs = async ({ inputText, inputType, page, selector }: {
 
 type DerivedInputType = {
     derivedInputText: string
-    labelText: string;
+    labelTextPart: string;
 }
 
 const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
     { input: Locator, inputText: string, inputType: string, page: Page }): Promise<string> => {
     if (inputType === 'text') {
-        const derivedInputTypes: DerivedInputType[] = [{ derivedInputText: generateRandomEmail(), labelText: 'Email' }];
+        const derivedInputTypes: DerivedInputType[] = [{ derivedInputText: generateRandomEmail(), labelTextPart: 'email' }];
 
         for (const derivedInputType of derivedInputTypes) {
-            const derivedTextInput = await deriveTextInput({derivedInputText: derivedInputType.derivedInputText, input, labelText: derivedInputType.labelText, 
-                                                             page});
+            const derivedTextInput = await deriveTextInput({derivedInputText: derivedInputType.derivedInputText, input, 
+                                               labelText: derivedInputType.labelTextPart, page});
 
             if (derivedTextInput) {
                 return derivedTextInput;
@@ -314,12 +314,17 @@ const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inp
     return inputText;
 }
 
-const deriveTextInput = async ({ derivedInputText, input, labelText, page }:
+const deriveTextInput = async ({ derivedInputText, input, labelText: labelTextPart, page }:
     { derivedInputText: string, input: Locator, labelText: string, page: Page }): Promise<null | string> => {
-    const label = page.locator(`label[for="${await input.getAttribute('id')}"]`);
-    if (await label.count() > 0 && await label.textContent() === labelText) {
-        console.log(`The label is ${labelText}, so generating appropriate random content for it.`);
-        return derivedInputText;
+    const labelsLocator = page.locator(`label[for="${await input.getAttribute('id')}"]`);
+    const labelsCount = await labelsLocator.count();
+    if (labelsCount > 0) {
+        const labelTextContent = await labelsLocator.nth(0).textContent();
+        
+        if (labelTextContent?.toLowerCase().includes(labelTextPart.toLowerCase())) {
+            console.log(`The label is '${labelTextContent}', so generating appropriate random ${labelTextPart} for the input field`);
+            return derivedInputText;
+        }
     }
 
     return null;

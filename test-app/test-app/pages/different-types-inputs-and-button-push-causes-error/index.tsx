@@ -90,7 +90,7 @@ const IndexComponent = () => {
       <input type="text" onChange={handleInputValueChange2} />
 
       <div>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Your Email Here</label>
         <input type="text" id="email" onChange={handleTextEmailChange} />
       </div>
 
