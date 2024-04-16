@@ -306,7 +306,8 @@ const derivedInputTypes: DerivedInputType[] = [
     { derivedInputText: generateRandomDate(-30, -20, randomSeparator), labelTextPart: 'dob' },
     { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'start' },
     { derivedInputText: generateRandomDate(1, 1, randomSeparator), labelTextPart: 'end' },
-    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'depart' },
+    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'departure' },
+    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'arrival' },
     { derivedInputText: generateRandomDate(0, 1, randomSeparator), labelTextPart: 'expiration' },
     { derivedInputText: generateRandomDate(-1, 1, randomSeparator), labelTextPart: 'date' }
 ];
