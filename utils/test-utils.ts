@@ -101,3 +101,20 @@ export const generateRandomUrl = (): string => {
     return "https://" + randomDomain + randomSuffix;
 };
 
+export const generateRandomDate = (addYearMin: number, addYearMax: number, separator: string): string => {
+    const currentDate = new Date();
+    const startYear = currentDate.getFullYear() + addYearMin;
+    const endYear = currentDate.getFullYear() + addYearMax;
+
+    const randomYear = startYear + Math.floor(Math.random() * (endYear - startYear + 1));
+    const randomMonth = Math.floor(Math.random() * 12);
+    const daysInMonth = new Date(randomYear, randomMonth + 1, 0).getDate();
+    const randomDay = Math.floor(Math.random() * daysInMonth) + 1;
+
+    const formattedMonth = (randomMonth + 1).toString().padStart(2, '0');
+    const formattedDay = randomDay.toString().padStart(2, '0');
+    return `${formattedDay}${separator}${formattedMonth}${separator}${randomYear}`;
+};
+
+export const generateRandomIntegerBetween0And2 = (): number => Math.floor(Math.random() * 3);
+

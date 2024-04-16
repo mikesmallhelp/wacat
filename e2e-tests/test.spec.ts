@@ -4,7 +4,8 @@ import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, generateRandomUrl,
+    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomIntegerBetween0And2, 
+    generateRandomString, generateRandomUrl,
     hostIsSame,
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
@@ -293,17 +294,32 @@ const fillTextInputs = async ({ inputText, inputType, page, selector }: {
 
 type DerivedInputType = {
     derivedInputText: string
-    labelText: string;
+    labelTextPart: string;
 }
+
+const separators = ['-', '/', '.'];
+const randomSeparator = separators[generateRandomIntegerBetween0And2()];
+
+const derivedInputTypes: DerivedInputType[] = [
+    { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },
+    { derivedInputText: generateRandomDate(-30, -20, randomSeparator), labelTextPart: 'birth' },
+    { derivedInputText: generateRandomDate(-30, -20, randomSeparator), labelTextPart: 'dob' },
+    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'start' },
+    { derivedInputText: generateRandomDate(1, 1, randomSeparator), labelTextPart: 'end' },
+    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'departure' },
+    { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'arrival' },
+    { derivedInputText: generateRandomDate(0, 1, randomSeparator), labelTextPart: 'expiration' },
+    { derivedInputText: generateRandomDate(-1, 1, randomSeparator), labelTextPart: 'date' }
+];
 
 const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
     { input: Locator, inputText: string, inputType: string, page: Page }): Promise<string> => {
     if (inputType === 'text') {
-        const derivedInputTypes: DerivedInputType[] = [{ derivedInputText: generateRandomEmail(), labelText: 'Email' }];
-
         for (const derivedInputType of derivedInputTypes) {
-            const derivedTextInput = await deriveTextInput({derivedInputText: derivedInputType.derivedInputText, input, labelText: derivedInputType.labelText, 
-                                                             page});
+            const derivedTextInput = await deriveTextInput({
+                derivedInputText: derivedInputType.derivedInputText, input,
+                labelText: derivedInputType.labelTextPart, page
+            });
 
             if (derivedTextInput) {
                 return derivedTextInput;
@@ -314,12 +330,17 @@ const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inp
     return inputText;
 }
 
-const deriveTextInput = async ({ derivedInputText, input, labelText, page }:
+const deriveTextInput = async ({ derivedInputText, input, labelText: labelTextPart, page }:
     { derivedInputText: string, input: Locator, labelText: string, page: Page }): Promise<null | string> => {
-    const label = page.locator(`label[for="${await input.getAttribute('id')}"]`);
-    if (await label.count() > 0 && await label.textContent() === labelText) {
-        console.log(`The label is ${labelText}, so generating appropriate random content for it.`);
-        return derivedInputText;
+    const labelsLocator = page.locator(`label[for="${await input.getAttribute('id')}"]`);
+    const labelsCount = await labelsLocator.count();
+    if (labelsCount > 0) {
+        const labelTextContent = await labelsLocator.nth(0).textContent();
+
+        if (labelTextContent?.toLowerCase().includes(labelTextPart.toLowerCase())) {
+            console.log(`The label is '${labelTextContent}', so generating an appropriate random content for the input field`);
+            return derivedInputText;
+        }
     }
 
     return null;
