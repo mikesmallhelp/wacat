@@ -4,7 +4,7 @@ import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, generateRandomUrl,
+    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomString, generateRandomUrl,
     hostIsSame,
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
@@ -299,7 +299,10 @@ type DerivedInputType = {
 const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
     { input: Locator, inputText: string, inputType: string, page: Page }): Promise<string> => {
     if (inputType === 'text') {
-        const derivedInputTypes: DerivedInputType[] = [{ derivedInputText: generateRandomEmail(), labelTextPart: 'email' }];
+        const derivedInputTypes: DerivedInputType[] = [
+                                                       { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },
+                                                       { derivedInputText: generateRandomDate(-30, -20), labelTextPart: 'birth'}
+                                                      ];
 
         for (const derivedInputType of derivedInputTypes) {
             const derivedTextInput = await deriveTextInput({derivedInputText: derivedInputType.derivedInputText, input, 
@@ -322,7 +325,7 @@ const deriveTextInput = async ({ derivedInputText, input, labelText: labelTextPa
         const labelTextContent = await labelsLocator.nth(0).textContent();
         
         if (labelTextContent?.toLowerCase().includes(labelTextPart.toLowerCase())) {
-            console.log(`The label is '${labelTextContent}', so generating appropriate random ${labelTextPart} for the input field`);
+            console.log(`The label is '${labelTextContent}', so generating an appropriate random content for the input field`);
             return derivedInputText;
         }
     }

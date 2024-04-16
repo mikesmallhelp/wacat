@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-    generateNumberArrayFrom0ToMax, generateRandomEmail, generateRandomIndex, generateRandomString, 
+    generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomString,
     generateRandomUrl, getHost, hostIsSame, shuffleArray
 } from '../utils/test-utils.js';
 
@@ -157,4 +157,46 @@ describe('generateRandomUrl function', () => {
         expect(domainName).to.match(/^[\da-z]+$/);
     });
 });
+
+describe('generateRandomDate Function', () => {
+    it('should generate a date between 40 and 50 years ago', () => {
+        const dateStr = generateRandomDate(-50, -40);
+        console.log(dateStr);
+
+        const date = convertAndCreateDate(dateStr);
+        const currentYear = new Date().getFullYear();
+        const yearDifference = currentYear - date.getFullYear();
+
+        expect(yearDifference).to.be.at.least(40);
+        expect(yearDifference).to.be.at.most(50);
+    });
+
+    it('should generate a date within the current year', () => {
+        const dateStr = generateRandomDate(0, 0);
+        console.log(dateStr);
+
+        const date = convertAndCreateDate(dateStr);
+        const currentYear = new Date().getFullYear();
+
+        expect(date.getFullYear()).to.equal(currentYear);
+    });
+
+    it('should generate a date between 20 and 30 years in the future', () => {
+        const dateStr = generateRandomDate(20, 30);
+        console.log(dateStr);
+
+        const date = convertAndCreateDate(dateStr);
+        const currentYear = new Date().getFullYear();
+        const yearDifference = date.getFullYear() - currentYear;
+
+        expect(yearDifference).to.be.at.least(20);
+        expect(yearDifference).to.be.at.most(30);
+    });
+});
+
+const convertAndCreateDate = (dateStr: string): Date => {
+    const parts = dateStr.split('-');
+    const convertedDateStr = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return new Date(convertedDateStr);
+};
 
