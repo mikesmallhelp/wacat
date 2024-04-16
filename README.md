@@ -795,7 +795,7 @@ Please note: If you add a new feature, add a test case for that. Please look `ru
 
 ### 1.1.0 16.4.2024
 
-- can derive text input type from the label and generates an appropriate random content for the input field
+- can derive the text input type from the label and generates an appropriate random content for the input field
   - supports derivation from different email and date labels
 
 ### 1.0.0 23.3.2024
