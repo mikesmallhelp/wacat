@@ -33,7 +33,7 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is t
 
 Please create a new issue, if you find a bug or some particular feature is needed.
 
-Current wacat version is 1.0.1. Please look at end of this page to see change history.
+Current wacat version is 1.1.0. Please look at end of this page to see change history.
 
 ## Warnings
 
@@ -792,6 +792,11 @@ Contributions are warmly welcome. Look for the issues page. Please create a new 
 Please note: If you add a new feature, add a test case for that. Please look `run-tests.sh` file. Please consider also adding unit tests.
 
 ## Change history
+
+### 1.1.0 16.4.2024
+
+- can derive text input type from the label and generates an appropriate random content for the input field
+  - supports derivation from different email and date labels
 
 ### 1.0.0 23.3.2024
 
