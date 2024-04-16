@@ -8,7 +8,7 @@ wacat (walking cat) application for example:
 
 - goes to your web application root url
 - visits every link in your application in random order
-- adds random text inputs to form inputs
+- adds random text inputs into forms
   - uses the html input element's type attribute or the label of the input
 - selects random values from dropdown menus, checkboxes etc. 
 - clicks on every button in random order
