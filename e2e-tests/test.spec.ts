@@ -4,7 +4,7 @@ import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomIntegerBetween0And2, 
+    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger,
     generateRandomString, generateRandomUrl,
     hostIsSame,
     readConfiguration, readFileContent, shuffleArray
@@ -268,6 +268,11 @@ const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string
         inputType: 'url', page,
         selector: 'input[type="url"]'
     });
+    await fillTextInputs({
+        inputText: generateRandomInteger(400_000_000, 600_000_000).toString(),
+        inputType: 'tel', page,
+        selector: 'input[type="tel"]'
+    });
 }
 
 const fillTextInputs = async ({ inputText, inputType, page, selector }: {
@@ -298,7 +303,7 @@ type DerivedInputType = {
 }
 
 const separators = ['-', '/', '.'];
-const randomSeparator = separators[generateRandomIntegerBetween0And2()];
+const randomSeparator = separators[generateRandomIndex(0,2)];
 
 const derivedInputTypes: DerivedInputType[] = [
     { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },
@@ -309,7 +314,16 @@ const derivedInputTypes: DerivedInputType[] = [
     { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'departure' },
     { derivedInputText: generateRandomDate(0, 0, randomSeparator), labelTextPart: 'arrival' },
     { derivedInputText: generateRandomDate(0, 1, randomSeparator), labelTextPart: 'expiration' },
-    { derivedInputText: generateRandomDate(-1, 1, randomSeparator), labelTextPart: 'date' }
+    { derivedInputText: generateRandomDate(-1, 1, randomSeparator), labelTextPart: 'date' },
+    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'first name' },
+    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'given name' },
+    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'forename' },
+    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'last name' },
+    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'family name' },
+    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'surname' },
+    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz') + ' ' + generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), 
+                                           labelTextPart: 'name' },
+    { derivedInputText: generateRandomInteger(100_000, 999_999).toString(), labelTextPart: 'otp' }
 ];
 
 const deriveTextInputFromDifferentPossibilities = async ({ input, inputText, inputType, page }:
