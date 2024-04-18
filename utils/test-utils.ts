@@ -83,8 +83,8 @@ export const readConfiguration = async ({ path }: { path: string }): Promise<Con
 
 export const generateRandomEmail = (): string => {
     const chars = 'abcdefghijklmnopqrstuvwxyz';
-    return generateRandomString(6, 12, chars) + '.' + generateRandomString(6, 12, chars) + '@' + 
-           generateRandomString(6, 12, chars) + '.' + getRandomDomain();
+    return generateRandomString(6, 12, chars) + '.' + generateRandomString(6, 12, chars) + '@' +
+        generateRandomString(6, 12, chars) + '.' + getRandomDomain();
 };
 
 const getRandomDomain = (): string => {
@@ -115,4 +115,6 @@ export const generateRandomDate = (addYearMin: number, addYearMax: number, separ
     const formattedDay = randomDay.toString().padStart(2, '0');
     return `${formattedDay}${separator}${formattedMonth}${separator}${randomYear}`;
 };
+
+export const generateRandomInteger = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
