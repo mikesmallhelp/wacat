@@ -116,5 +116,3 @@ export const generateRandomDate = (addYearMin: number, addYearMax: number, separ
     return `${formattedDay}${separator}${formattedMonth}${separator}${randomYear}`;
 };
 
-export const generateRandomIntegerBetween0And2 = (): number => Math.floor(Math.random() * 3);
-

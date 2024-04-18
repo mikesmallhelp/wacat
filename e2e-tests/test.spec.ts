@@ -4,7 +4,7 @@ import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomIntegerBetween0And2, 
+    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, 
     generateRandomString, generateRandomUrl,
     hostIsSame,
     readConfiguration, readFileContent, shuffleArray
@@ -298,7 +298,7 @@ type DerivedInputType = {
 }
 
 const separators = ['-', '/', '.'];
-const randomSeparator = separators[generateRandomIntegerBetween0And2()];
+const randomSeparator = separators[generateRandomIndex(0,2)];
 
 const derivedInputTypes: DerivedInputType[] = [
     { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },

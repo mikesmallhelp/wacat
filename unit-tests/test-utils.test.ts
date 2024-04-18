@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-    generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomIntegerBetween0And2, generateRandomString,
+    generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomString,
     generateRandomUrl, getHost, hostIsSame, shuffleArray
 } from '../utils/test-utils.js';
 
@@ -200,12 +200,4 @@ const convertAndCreateDate = (dateStr: string, splitSeparator: string): Date => 
     return new Date(convertedDateStr);
 };
 
-describe('generateRandomIntegerBetween0And2', () => {
-    it('should return a number between 0 and 2', () => {
-        const result = generateRandomIntegerBetween0And2();
-        console.log(result);
-        expect(result).to.be.at.least(0);
-        expect(result).to.be.at.most(2);
-    });
-});
 
