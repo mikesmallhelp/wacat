@@ -102,31 +102,35 @@ Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait.
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:40:1 › test an application
+[chromium] › test.spec.ts:41:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
-In the page: https://mikesmallhelp-test-application.vercel.app/working-page
-Push the button #1
-Filling the #1 text input field a value: qHre+Ohx;'w_}l<f_cl=n-?U^vtXCm1FZC4||
-The #1 drop-down list. Selecting the option #2
-Selecting the #1 checkbox
-The #1 radio button group. Selecting the radio button #1
-Filling the #1 email input field a value: hfymxkihm.zixurprs@otjhbiech.com
-Filling the #1 password input field a value: B!2#2B!2bbBB22!bB1
-Filling the #1 search input field a value: zOwJMweOnlw
-Filling the #1 url input field a value: https://mx21i.com
-Push the button #1
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
 Push the button #1
-Filling the #1 text input field a value: qHre+Ohx;'w_}l<f_cl=n-?U^vtXCm1FZC4||
+Filling the #1 text input field a value: _k6AKNU3z"{=myqS.K
+The label is 'Your Date of Birth Here', so generating an appropriate random content for the input field
+Filling the #2 text input field a value: 16/09/2004
+The #1 drop-down list. Selecting the option #2
+Selecting the #1 checkbox
+The #1 radio button group. Selecting the radio button #3
+Filling the #1 email input field a value: pvcgigtju.nwntltbk@uqimkbwwiz.com
+Filling the #1 password input field a value: A#1!!a#!#AaA!A
+Filling the #1 search input field a value: SZOmqATkrV
+Filling the #1 url input field a value: https://nrebn.com
+Push the button #1
+In the page: https://mikesmallhelp-test-application.vercel.app/working-page
+Push the button #1
+Filling the #1 text input field a value: _k6AKNU3z"{=myqS.K
+The label is 'Your Date of Birth Here', so generating an appropriate random content for the input field
+Filling the #2 text input field a value: 16/09/2004
 The #1 drop-down list. Selecting the option #2
 Selecting the #1 checkbox
 The #1 radio button group. Selecting the radio button #2
-Filling the #1 email input field a value: qgjrtywmerx.kxmiwsdoxjlk@jhcghovbpr.com
-Filling the #1 password input field a value: 1Aa11a#2abb!
-Filling the #1 search input field a value: fwyKERAv
-Filling the #1 url input field a value: https://0zzvf8.net
+Filling the #1 email input field a value: uxxdxqcjhq.mhettm@ukyefgvdsk.gov
+Filling the #1 password input field a value: aa2B#1aA!##2A#!AaA
+Filling the #1 search input field a value: lSjsBVOzkhCC
+Filling the #1 url input field a value: https://vpo7ut.net
 Push the button #1
-  1 passed (54.0s)
+  1 passed (24.3s)
 ```
 Note that output contains "1 passed" so wacat didn't find any errors in the application. Please note also that a default wait time for every page is 5000 milliseconds. If you want to change this time use the flag --wait (see later).
 
