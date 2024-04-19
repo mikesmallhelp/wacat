@@ -19,6 +19,7 @@ const IndexComponent = () => {
   const [passwordValue, setPasswordValue] = React.useState('');
   const [searchValue, setSearchValue] = React.useState('');
   const [urlValue, setUrlValue] = React.useState('');
+  const [telValue, setTelValue] = React.useState('');
 
   const handleFullNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFullName(event.target.value);
@@ -76,6 +77,10 @@ const IndexComponent = () => {
     setUrlValue(event.target.value);
   };
 
+  const handleTelValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTelValue(event.target.value);
+  };
+
   const handleButtonClick1And2 = async () => {
     await fetchData('200', setLoading);
     setCheckbox(false);
@@ -86,7 +91,7 @@ const IndexComponent = () => {
 
     if (!fullName || (fullName && inputValue && inputValue2 && textEmail && textDateOfBirth && optionValue && checkbox
       && radioButtonValue3 && emailValue && passwordValue &&
-      searchValue && urlValue)) {
+      searchValue && urlValue && telValue)) {
       setErrorMessage('Error occurred!');
     }
   }
@@ -174,6 +179,11 @@ const IndexComponent = () => {
       <input type="url" />
       <input type="url" />
       <input type="url" onChange={handleUrlValueChange} />
+
+      <div>Tels</div>
+      <input type="tel" />
+      <input type="tel" />
+      <input type="tel" onChange={handleTelValueChange} />
 
       <button onClick={handleButtonClick1And2}>Button1</button>
       <button onClick={handleButtonClick1And2}>Button2</button>
