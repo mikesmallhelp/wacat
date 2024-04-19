@@ -288,11 +288,12 @@ const fillTextInputs = async ({ inputText, inputType, page, selector }: {
 
     for (let inputIndex = 0; inputIndex < inputsCount; inputIndex++) {
         const input = inputsLocator.nth(inputIndex);
+        let tempInputText = inputText;
 
         if (await input.isVisible()) {
-            inputText = await deriveTextInputFromDifferentPossibilities({ input, inputText, inputType, page });
-            console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + inputText);
-            await input.fill(inputText);
+            tempInputText = await deriveTextInputFromDifferentPossibilities({ input, inputText: tempInputText, inputType, page });
+            console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + tempInputText);
+            await input.fill(tempInputText);
         }
     }
 }

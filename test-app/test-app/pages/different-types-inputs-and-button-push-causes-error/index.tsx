@@ -5,6 +5,7 @@ import { fetchData } from '../../util/util';
 const IndexComponent = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [fullName, setFullName] = React.useState('');
   const [inputValue, setInputValue] = React.useState('');
   const [inputValue2, setInputValue2] = React.useState('');
   const [textEmail, setTextEmail] = React.useState('');
@@ -18,6 +19,10 @@ const IndexComponent = () => {
   const [passwordValue, setPasswordValue] = React.useState('');
   const [searchValue, setSearchValue] = React.useState('');
   const [urlValue, setUrlValue] = React.useState('');
+
+  const handleFullNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFullName(event.target.value);
+  };
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -79,7 +84,7 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (!inputValue || (inputValue && inputValue2 && textEmail && textDateOfBirth && optionValue && checkbox
+    if (!fullName || (fullName && inputValue && inputValue2 && textEmail && textDateOfBirth && optionValue && checkbox
       && radioButtonValue3 && emailValue && passwordValue &&
       searchValue && urlValue)) {
       setErrorMessage('Error occurred!');
@@ -89,6 +94,11 @@ const IndexComponent = () => {
   const PageContent = (
     <div>
       <div>{errorMessage}</div>
+
+      <div>
+        <label htmlFor="yourname">Your Name Here</label>
+        <input type="text" id="yourname" onChange={handleFullNameChange}/>
+      </div>
 
       <input />
       <input onChange={handleInputValueChange} />
