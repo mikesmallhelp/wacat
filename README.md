@@ -4,7 +4,7 @@
 
 Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile, your cat walks over your keyboard and causes some chaos. 
 
-wacat (walking cat) application for example:
+wacat (walking cat) application
 
 - goes to your web application root url
 - visits every link in your application in random order
