@@ -249,7 +249,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
-    if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET) {
+    if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
+                                          || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
+    ) {
         await fillTextInputs({
             doDerivation: false, inputText, inputType: 'text',
             page,
