@@ -249,35 +249,46 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
-    await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
+    if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
+                                          || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
+    ) {
+        await fillTextInputs({
+            doDerivation: false, inputText, inputType: 'text',
+            page,
+            selector: 'input:not([type]),input[type="text"],input[type="email"],input[type="password"],input[type="search"],input[type="url"],input[type="tel"]'
+        });
+    } else {
+        await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
+        await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]' });
+        await fillTextInputs({
+            inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
+            selector: 'input[type="password"]'
+        });
+        await fillTextInputs({
+            inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
+            inputType: 'search', page,
+            selector: 'input[type="search"]'
+        });
+        await fillTextInputs({
+            inputText: generateRandomUrl(),
+            inputType: 'url', page,
+            selector: 'input[type="url"]'
+        });
+        await fillTextInputs({
+            inputText: generateRandomInteger(400_000_000, 600_000_000).toString(),
+            inputType: 'tel', page,
+            selector: 'input[type="tel"]'
+        });
+    }
+
     await selectFromDropDownLists({ page });
     await fillCheckboxes({ page });
     await selectFromRadioButtons({ page });
-    await fillTextInputs({ inputText: generateRandomEmail(), inputType: 'email', page, selector: 'input[type="email"]' });
-    await fillTextInputs({
-        inputText: generateRandomString(12, 20, 'abAB12#!'), inputType: 'password', page,
-        selector: 'input[type="password"]'
-    });
-    await fillTextInputs({
-        inputText: generateRandomString(8, 12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'),
-        inputType: 'search', page,
-        selector: 'input[type="search"]'
-    });
-    await fillTextInputs({
-        inputText: generateRandomUrl(),
-        inputType: 'url', page,
-        selector: 'input[type="url"]'
-    });
-    await fillTextInputs({
-        inputText: generateRandomInteger(400_000_000, 600_000_000).toString(),
-        inputType: 'tel', page,
-        selector: 'input[type="tel"]'
-    });
 }
 
-const fillTextInputs = async ({ inputText, inputType, page, selector }: {
-    inputText: string, inputType: string, page: Page
-    selector: string,
+const fillTextInputs = async ({ doDerivation = true, inputText, inputType, page, selector }: {
+    doDerivation?: boolean, inputText: string, inputType: string
+    page: Page, selector: string
 }) => {
     if (debug) {
         console.log('  fillInputs');
@@ -291,7 +302,10 @@ const fillTextInputs = async ({ inputText, inputType, page, selector }: {
         let tempInputText = inputText;
 
         if (await input.isVisible()) {
-            tempInputText = await deriveTextInputFromDifferentPossibilities({ input, inputText: tempInputText, inputType, page });
+            if (doDerivation) {
+                tempInputText = await deriveTextInputFromDifferentPossibilities({ input, inputText: tempInputText, inputType, page });
+            }
+
             console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + tempInputText);
             await input.fill(tempInputText);
         }
@@ -304,7 +318,7 @@ type DerivedInputType = {
 }
 
 const separators = ['-', '/', '.'];
-const randomSeparator = separators[generateRandomIndex(0,2)];
+const randomSeparator = separators[generateRandomIndex(0, 2)];
 
 const derivedInputTypes: DerivedInputType[] = [
     { derivedInputText: generateRandomEmail(), labelTextPart: 'email' },
@@ -322,8 +336,10 @@ const derivedInputTypes: DerivedInputType[] = [
     { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'last name' },
     { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'family name' },
     { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), labelTextPart: 'surname' },
-    { derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz') + ' ' + generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'), 
-                                           labelTextPart: 'name' },
+    {
+        derivedInputText: generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz') + ' ' + generateRandomString(6, 10, 'abcdefghijklmnopqrstuvwxyz'),
+        labelTextPart: 'name'
+    },
     { derivedInputText: generateRandomInteger(100_000, 999_999).toString(), labelTextPart: 'otp' }
 ];
 
