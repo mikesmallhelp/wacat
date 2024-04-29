@@ -103,6 +103,10 @@ run_playwright_tests "index-errors-in-page-and-console.tsx" "--conf example-file
                    "1 failed" "expect(content).not.toContain"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --wait 3000" \
                    "1 failed" "expect(content).not.toContain"
+run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿ --wait 3000" \
+                   "1 failed" "expect(content).not.toContain"
+run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --input-texts example-files/input-texts.txt --wait 3000" \
+                   "1 failed" "expect(content).not.toContain"
 run_playwright_tests "index-working-page3.tsx" "--input-texts example-files/input-texts.txt --wait 3000" "1 passed" "ybyb"
 run_playwright_tests "index-working-page3.tsx" "--input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt --wait 3000" "1 passed" "ybyb"
 run_playwright_tests "index-api-returns-http-500.tsx" "--wait 3000" "1 failed" \
