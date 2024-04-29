@@ -251,9 +251,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
     if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET) {
         await fillTextInputs({
-            inputText, inputType: 'text', page,
-            selector: 'input:not([type]),input[type="text"],input[type="email"],input[type="password"],input[type="search"],input[type="url"],input[type="tel"]',
-            doDerivation: false
+            doDerivation: false, inputText, inputType: 'text',
+            page,
+            selector: 'input:not([type]),input[type="text"],input[type="email"],input[type="password"],input[type="search"],input[type="url"],input[type="tel"]'
         });
     } else {
         await fillTextInputs({ inputText, inputType: 'text', page, selector: 'input:not([type]), input[type="text"]' });
@@ -284,9 +284,9 @@ const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string
     await selectFromRadioButtons({ page });
 }
 
-const fillTextInputs = async ({ inputText, inputType, page, selector, doDerivation = true }: {
-    inputText: string, inputType: string, page: Page
-    selector: string, doDerivation?: boolean
+const fillTextInputs = async ({ doDerivation = true, inputText, inputType, page, selector }: {
+    doDerivation?: boolean, inputText: string, inputType: string
+    page: Page, selector: string
 }) => {
     if (debug) {
         console.log('  fillInputs');
@@ -303,6 +303,7 @@ const fillTextInputs = async ({ inputText, inputType, page, selector, doDerivati
             if (doDerivation) {
                 tempInputText = await deriveTextInputFromDifferentPossibilities({ input, inputText: tempInputText, inputType, page });
             }
+
             console.log('Filling the #' + (inputIndex + 1) + " " + inputType + " input field a value: " + tempInputText);
             await input.fill(tempInputText);
         }
