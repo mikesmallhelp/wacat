@@ -89,9 +89,9 @@ const IndexComponent = () => {
   const handleButtonClick3 = async () => {
     await fetchData('200', setLoading);
 
-    if (fullName && inputValue && inputValue2 && textEmail && textDateOfBirth && optionValue && checkbox
+    if (!fullName || (fullName && inputValue && inputValue2 && textEmail && textDateOfBirth && optionValue && checkbox
       && radioButtonValue3 && emailValue && passwordValue &&
-      searchValue && urlValue && telValue) {
+      searchValue && urlValue && telValue)) {
       setErrorMessage('Error occurred!');
     }
   }
