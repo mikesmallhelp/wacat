@@ -32,7 +32,7 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is t
 
 Please create a new issue, if you find a bug or some particular feature is needed.
 
-Current wacat version is 1.1.1. Please look at end of this page to see change history.
+Current wacat version is 1.1.2. Please look at end of this page to see change history.
 
 ## Warnings
 
@@ -343,34 +343,36 @@ Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait.
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:40:1 › test an application
+[chromium] › test.spec.ts:41:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
 Push the button #1
-Filling the #1 text input field a value: ¬¥¥
+Filling the #1 text input field a value: ®
+Filling the #2 text input field a value: ®
+Filling the #3 text input field a value: ®
+Filling the #4 text input field a value: ®
+Filling the #5 text input field a value: ®
+Filling the #6 text input field a value: ®
 The #1 drop-down list. Selecting the option #2
 Selecting the #1 checkbox
 The #1 radio button group. Selecting the radio button #3
-Filling the #1 email input field a value: ngqpyhg.rwbgskvsafe@kkhqsvcbjjnv.gov
-Filling the #1 password input field a value: b2Aa!B2bB#aA!BBA#
-Filling the #1 search input field a value: mfIEATvz
-Filling the #1 url input field a value: https://oa9qqowd.org
 Push the button #1
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
 Push the button #1
-Filling the #1 text input field a value: ¬¥¥
+Filling the #1 text input field a value: ®
+Filling the #2 text input field a value: ®
+Filling the #3 text input field a value: ®
+Filling the #4 text input field a value: ®
+Filling the #5 text input field a value: ®
+Filling the #6 text input field a value: ®
 The #1 drop-down list. Selecting the option #2
 Selecting the #1 checkbox
-The #1 radio button group. Selecting the radio button #3
-Filling the #1 email input field a value: hjoalxyuyeg.mossmevc@nejdyg.net
-Filling the #1 password input field a value: Ba2aAAbAAAbaB2!#
-Filling the #1 search input field a value: dXdrIohbOK
-Filling the #1 url input field a value: https://cjre8vux.com
+The #1 radio button group. Selecting the radio button #2
 Push the button #1
-  1 passed (23.6s)
+  1 passed (54.0s)
 ```
 
-In this example wacat generates random string ```¬¥¥```.
+In this example wacat generates random string ```®```, which lenght is between 1 and 3 characters and it's from the given character set ```®©¥¬¿```. 
 
 ### Read input field texts from the file
 
@@ -403,51 +405,54 @@ All commands should output following:
 ```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
 
-
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:40:1 › test an application
+[chromium] › test.spec.ts:41:1 › test an application
 In the page: https://mikesmallhelp-test-application.vercel.app/
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page
 Push the button #1
 Filling the #1 text input field a value: xaxa
+Filling the #2 text input field a value: xaxa
+Filling the #3 text input field a value: xaxa
+Filling the #4 text input field a value: xaxa
+Filling the #5 text input field a value: xaxa
+Filling the #6 text input field a value: xaxa
 The #1 drop-down list. Selecting the option #2
 Selecting the #1 checkbox
 The #1 radio button group. Selecting the radio button #3
-Filling the #1 email input field a value: szerftpfo.pvpjmjs@gxikkrhfujq.org
-Filling the #1 password input field a value: BBa1#B!bBBBBA1#2b
-Filling the #1 search input field a value: hgPdrPLH
-Filling the #1 url input field a value: https://oiynqstk.biz
 Push the button #1
 Filling the #1 text input field a value: ybyb
+Filling the #2 text input field a value: ybyb
+Filling the #3 text input field a value: ybyb
+Filling the #4 text input field a value: ybyb
+Filling the #5 text input field a value: ybyb
+Filling the #6 text input field a value: ybyb
 The #1 drop-down list. Selecting the option #2
 Selecting the #1 checkbox
-The #1 radio button group. Selecting the radio button #3
-Filling the #1 email input field a value: uhxntpbxt.xqdfity@fmctvkv.edu
-Filling the #1 password input field a value: !!212b#BA#2BB1A2
-Filling the #1 search input field a value: gjLzxqdGJwCz
-Filling the #1 url input field a value: https://abvqprj.info
+The #1 radio button group. Selecting the radio button #1
 Push the button #1
 In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
 Push the button #1
 Filling the #1 text input field a value: xaxa
+Filling the #2 text input field a value: xaxa
+Filling the #3 text input field a value: xaxa
+Filling the #4 text input field a value: xaxa
+Filling the #5 text input field a value: xaxa
+Filling the #6 text input field a value: xaxa
 The #1 drop-down list. Selecting the option #2
 Selecting the #1 checkbox
-The #1 radio button group. Selecting the radio button #2
-Filling the #1 email input field a value: eojxwnciezo.uhjgqa@ffrbwbtfexz.edu
-Filling the #1 password input field a value: 2A#abb#1B11A!B!#
-Filling the #1 search input field a value: LzrHOISc
-Filling the #1 url input field a value: https://yg37wkpg.org
+The #1 radio button group. Selecting the radio button #1
 Push the button #1
 Filling the #1 text input field a value: ybyb
+Filling the #2 text input field a value: ybyb
+Filling the #3 text input field a value: ybyb
+Filling the #4 text input field a value: ybyb
+Filling the #5 text input field a value: ybyb
+Filling the #6 text input field a value: ybyb
 The #1 drop-down list. Selecting the option #2
 Selecting the #1 checkbox
 The #1 radio button group. Selecting the radio button #3
-Filling the #1 email input field a value: snobbldzzijr.uiyioqm@ivkmlpbo.net
-Filling the #1 password input field a value: B2b#Ba2!#1B!B2
-Filling the #1 search input field a value: CXJILDabYzCF
-Filling the #1 url input field a value: https://5bvqwcx30i.com
 Push the button #1
-  1 passed (28.9s)
+  1 passed (1.1m)
 ```
 
 In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. When you use a big input text file, use --timeout parameter (see below) with enough big value. Tested with 5000 lines input text file against a simple test application.
