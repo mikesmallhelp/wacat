@@ -119,7 +119,7 @@ export const generateRandomDate = (addYearMin: number, addYearMax: number, separ
 
 export const generateRandomInteger = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
-export const checkPageWithAi = async (pageContent: string): Promise<string> => {
+export const aiDetectsError = async (pageContent: string): Promise<boolean> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
@@ -129,17 +129,13 @@ export const checkPageWithAi = async (pageContent: string): Promise<string> => {
         messages: [
             {
                 role: 'user',
-                content: `Analyze the following page content and determine if there is an error message such as "An error occurred. Please contact helpdesk." or similar. Return "ok" if no error is found; otherwise, return the error message:\n\n"${pageContent}"`,
+                content: `${pageContent}\n\nIf the above text is an error message returned by a website, then return only 'true'; if it is content from a webpage without errors, return only 'false.'`
             },
         ],
         max_tokens: 50,
     });
 
-    const openAiResponse =  response.choices[0]?.message?.content?.trim();
+    const openAiResponse =  response.choices[0]?.message?.content?.trim().toLowerCase();
 
-    if (openAiResponse) {
-        return openAiResponse;
-    } else {
-        throw new Error('OpenAI returned empty message');
-    }
+    return new Boolean(openAiResponse === 'true').valueOf(); 
 };

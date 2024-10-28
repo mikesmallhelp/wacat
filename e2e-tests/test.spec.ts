@@ -4,7 +4,7 @@ import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    checkPageWithAi, Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger,
+    aiDetectsError, Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger,
     generateRandomString, generateRandomUrl,
     hostIsSame,
     readConfiguration, readFileContent, shuffleArray
@@ -141,11 +141,8 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
 
     const content = await page.locator('body').textContent();
 
-    if (openAiApiKeyGiven && content) {
-        const openAiResult = await checkPageWithAi(content);
-        if (openAiResult !== 'ok') {
-            fail("The AI detected that current page contains error, the error message is: " + openAiResult);
-        }
+    if (openAiApiKeyGiven && content && await aiDetectsError(content)) {
+        fail("The AI detected that current page contains error, the page contents are: " + content);
     }
 
     if (!configuration || !configuration.errorTextsInPages || configuration.errorTextsInPages.length === 0) {
