@@ -8,7 +8,9 @@
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^3.7.0",
     "axios": "^1.6.2",
+    "dotenv": "^16.4.5",
     "fs-extra": "^11.2.0",
+    "openai": "^4.68.4",
     "sinon": "^17.0.1"
   },
   "description": "The wacat tests any web application",

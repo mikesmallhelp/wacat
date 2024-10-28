@@ -117,4 +117,3 @@ export const generateRandomDate = (addYearMin: number, addYearMax: number, separ
 };
 
 export const generateRandomInteger = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
-

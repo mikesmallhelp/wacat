@@ -2,6 +2,7 @@
 
 import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
+import OpenAI from 'openai';
 
 import {
     Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger,
@@ -27,6 +28,7 @@ const randomInputTextsCharset = process.env.RANDOM_INPUT_TEXTS_CHARSET;
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
         randomInputTextsCharset)];
+const openAiApiKeyGiven = Boolean(process.env.OPENAI_API_KEY);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -138,6 +140,15 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('  checkPageForErrors');
     }
 
+    const content = await page.locator('body').textContent();
+
+    if (openAiApiKeyGiven && content) {
+        const openAiResult = await checkPageWithAi(content);
+        if (openAiResult !== 'ok') {
+            fail("The AI detected that current page contains error, the error message is: " + openAiResult);
+        }
+    }
+
     if (!configuration || !configuration.errorTextsInPages || configuration.errorTextsInPages.length === 0) {
         return;
     }
@@ -145,8 +156,6 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     if (debug) {
         console.log('  checkPageForErrors, errorTextsInPages.length: ' + configuration.errorTextsInPages.length);
     }
-
-    const content = await page.locator('body').textContent();
 
     for (const errorText of configuration.errorTextsInPages) {
         console.log(`Check the page not contain the ${errorText} text`);
@@ -490,3 +499,28 @@ const waitForTimeout = async ({ page }: { page: Page }) => {
 
     await page.waitForTimeout(wait);
 }
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const checkPageWithAi = async (pageContent: string): Promise<string> => {
+    const response = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+            {
+                role: 'user',
+                content: `Analyze the following page content and determine if there is an error message such as "An error occurred. Please contact helpdesk." or similar. Return "ok" if no error is found; otherwise, return the error message:\n\n"${pageContent}"`,
+            },
+        ],
+        max_tokens: 50,
+    });
+
+    const openAiResponse =  response.choices[0]?.message?.content?.trim();
+
+    if (openAiResponse) {
+        return openAiResponse;
+    } else {
+        throw new Error('OpenAI returned empty message');
+    }
+};

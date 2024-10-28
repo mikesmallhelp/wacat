@@ -18,3 +18,4 @@ oclif.manifest.json
 /blob-report/
 /playwright/.cache/
 test-app/test-app/pages/index.tsx
+.env
