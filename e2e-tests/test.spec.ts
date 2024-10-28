@@ -2,10 +2,9 @@
 
 import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
-import OpenAI from 'openai';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger,
+    checkPageWithAi, Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger,
     generateRandomString, generateRandomUrl,
     hostIsSame,
     readConfiguration, readFileContent, shuffleArray
@@ -500,27 +499,4 @@ const waitForTimeout = async ({ page }: { page: Page }) => {
     await page.waitForTimeout(wait);
 }
 
-const checkPageWithAi = async (pageContent: string): Promise<string> => {
-    const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-    });
-    
-    const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: [
-            {
-                role: 'user',
-                content: `Analyze the following page content and determine if there is an error message such as "An error occurred. Please contact helpdesk." or similar. Return "ok" if no error is found; otherwise, return the error message:\n\n"${pageContent}"`,
-            },
-        ],
-        max_tokens: 50,
-    });
 
-    const openAiResponse =  response.choices[0]?.message?.content?.trim();
-
-    if (openAiResponse) {
-        return openAiResponse;
-    } else {
-        throw new Error('OpenAI returned empty message');
-    }
-};
