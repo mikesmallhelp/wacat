@@ -139,7 +139,8 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 
     const rawContent = await page.locator('body').innerText();
-    const content = rawContent.replace(/[\r\n]+/g, ' ');
+    const rawContentWithoutLineBreaks = rawContent.replace(/[\r\n]+/g, ' ');
+    const content = addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
 
     if (debug) {
         console.log('***********content***********');

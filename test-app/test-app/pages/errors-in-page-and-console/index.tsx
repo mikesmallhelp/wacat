@@ -14,7 +14,7 @@ const IndexComponent = () => {
 
   return (
     <>
-      <PageTemplate title={'Test page - errors-in-page-and-console'} content={PageContent} loading={loading} setLoading={setLoading} />
+      <PageTemplate title={'Test page'} content={PageContent} loading={loading} setLoading={setLoading} />
     </>
   );
 };

@@ -129,7 +129,9 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
         messages: [
             {
                 role: 'user',
-                content: `${pageContent}\n\nAbove text contains only a text content from a web page. If it contains an error message, then return only 'true'; otherwise return only 'false.'`
+                content: `${pageContent}\n\nThe text above contains only content from a web page. If it includes a clear programming 
+                          error message, such as 'Something went wrong. Please try again.' or '404 Not Found,' return only 'true.' 
+                          Otherwise, return only 'false.'`
             },
         ],
         max_tokens: 50,
@@ -143,3 +145,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
 
     return new Boolean(openAiResponse === 'true').valueOf(); 
 };
+
+export const addSpacesToCamelCaseText = (text: string): string => {
+    return text.replace(/([a-zA-Z])([0-9])/g, '$1 $2').replace(/([0-9])([a-zA-Z])/g, '$1 $2').replace(/([a-z])([A-Z])/g, '$1 $2');
+}
