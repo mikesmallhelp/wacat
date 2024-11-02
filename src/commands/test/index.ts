@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import {Args, Command, Flags} from '@oclif/core';
 import {exec} from 'node:child_process';
 
@@ -62,7 +60,6 @@ export default class TestCommand extends Command {
     command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
     command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
-    command += process.env.OPENAI_API_KEY ? `${prefix}OPENAI_API_KEY=${process.env.OPENAI_API_KEY}${suffix}` : '';
     command += flags['random-input-texts-charset'] ? `${prefix}RANDOM_INPUT_TEXTS_CHARSET=${flags['random-input-texts-charset']}${suffix}` : '';
     command += flags['random-input-texts-max-length'] ? `${prefix}RANDOM_INPUT_TEXTS_MAX_LENGTH=${flags['random-input-texts-max-length']}${suffix}` : '';
     command += flags['random-input-texts-min-length'] ? `${prefix}RANDOM_INPUT_TEXTS_MIN_LENGTH=${flags['random-input-texts-min-length']}${suffix}` : '';

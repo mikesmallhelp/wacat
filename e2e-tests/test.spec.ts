@@ -2,6 +2,8 @@
 
 import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import {
     Configuration, addSpacesToCamelCaseText, aiDetectsError, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
