@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
 
 import { Locator, Page, expect, test } from '@playwright/test';
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig();
 import { fail } from 'node:assert';
-import dotenv from 'dotenv';
-dotenv.config();
 
 import {
     Configuration, addSpacesToCamelCaseText, aiDetectsError, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
