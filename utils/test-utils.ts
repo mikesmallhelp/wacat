@@ -125,16 +125,16 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     });
     
     const response = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        max_tokens: 50,
         messages: [
             {
-                role: 'user',
                 content: `${pageContent}\n\nThe text above contains only content from a web page. If it includes a clear programming 
                           error message, such as 'Something went wrong. Please try again.' or '404 Not Found,' return only 'true.' 
-                          Otherwise, return only 'false.'`
+                          Otherwise, return only 'false.'`,
+                role: 'user'
             },
         ],
-        max_tokens: 50,
+        model: 'gpt-4o',
     });
 
     const openAiResponse =  response.choices[0]?.message?.content?.trim().toLowerCase();
@@ -146,6 +146,4 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     return new Boolean(openAiResponse === 'true').valueOf(); 
 };
 
-export const addSpacesToCamelCaseText = (text: string): string => {
-    return text.replace(/([a-zA-Z])([0-9])/g, '$1 $2').replace(/([0-9])([a-zA-Z])/g, '$1 $2').replace(/([a-z])([A-Z])/g, '$1 $2');
-}
+export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')

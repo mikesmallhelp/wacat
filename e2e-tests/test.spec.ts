@@ -4,7 +4,7 @@ import { Locator, Page, expect, test } from '@playwright/test';
 import { fail } from 'node:assert';
 
 import {
-    addSpacesToCamelCaseText, aiDetectsError, Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
+    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
     generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame,
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
@@ -139,7 +139,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 
     const rawContent = await page.locator('body').innerText();
-    const rawContentWithoutLineBreaks = rawContent.replace(/[\r\n]+/g, ' ');
+    const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
     const content = addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
 
     if (debug) {
