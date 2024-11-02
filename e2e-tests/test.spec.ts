@@ -152,13 +152,17 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('*******************************');
     }
 
-    if (openAiApiKeyGiven && !ignoreAiInTest && await aiDetectsError(content, debug)) {
-        const errorMessage = "The AI detected that current page contains error, the page contents are: " + content;
+    if (openAiApiKeyGiven && !ignoreAiInTest) {
+        console.log('Verify with the AI that the page is error-free');
 
-        if (bypassAiErrors) {
-            console.log(errorMessage);
-        } else {
-            fail(errorMessage);
+        if (await aiDetectsError(content, debug)) {
+            const errorMessage = "The AI detected that current page contains error, the page contents are: " + content;
+
+            if (bypassAiErrors) {
+                console.log(errorMessage);
+            } else {
+                fail(errorMessage);
+            }
         }
     }
 
