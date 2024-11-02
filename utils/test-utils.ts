@@ -119,17 +119,17 @@ export const generateRandomDate = (addYearMin: number, addYearMax: number, separ
 
 export const generateRandomInteger = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
-export const aiDetectsError = async (pageContent: string): Promise<boolean> => {
+export const aiDetectsError = async (pageContent: string, debug: boolean): Promise<boolean> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
     
     const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         messages: [
             {
                 role: 'user',
-                content: `${pageContent}\n\nIf the above text is an error message returned by a website, then return only 'true'; if it is content from a webpage without errors, return only 'false.'`
+                content: `${pageContent}\n\nAbove text contains only a text content from a web page. If it contains an error message, then return only 'true'; otherwise return only 'false.'`
             },
         ],
         max_tokens: 50,
@@ -137,9 +137,9 @@ export const aiDetectsError = async (pageContent: string): Promise<boolean> => {
 
     const openAiResponse =  response.choices[0]?.message?.content?.trim().toLowerCase();
 
-    return new Boolean(openAiResponse === 'true').valueOf(); 
-};
+    if (debug) {
+        console.log('openAiResponse:', openAiResponse);
+    }
 
-export const addSpacesToCamelCaseText = (text: string): string => {
-    return text.replace(/([a-zA-Z])([0-9])/g, '$1 $2').replace(/([0-9])([a-zA-Z])/g, '$1 $2').replace(/([a-z])([A-Z])/g, '$1 $2');
+    return new Boolean(openAiResponse === 'true').valueOf(); 
 };

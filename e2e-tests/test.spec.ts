@@ -138,19 +138,16 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('  checkPageForErrors');
     }
 
-    const rawContent = await page.locator('body').textContent();
+    const rawContent = await page.locator('body').innerText();
+    const content = rawContent.replace(/[\r\n]+/g, ' ');
 
-    if (!rawContent) {
-        return;
+    if (debug) {
+        console.log('***********content***********');
+        console.log(content);
+        console.log('*******************************');
     }
 
-    const content = addSpacesToCamelCaseText(rawContent);
-
-    console.log('***********content***********');
-    console.log(content);
-    console.log('*******************************');
-
-    if (openAiApiKeyGiven && content && await aiDetectsError(content)) {
+    if (openAiApiKeyGiven && content && await aiDetectsError(content, debug)) {
         fail("The AI detected that current page contains error, the page contents are: " + content);
     }
 
