@@ -139,3 +139,7 @@ export const aiDetectsError = async (pageContent: string): Promise<boolean> => {
 
     return new Boolean(openAiResponse === 'true').valueOf(); 
 };
+
+export const addSpacesToCamelCaseText = (text: string): string => {
+    return text.replace(/([a-zA-Z])([0-9])/g, '$1 $2').replace(/([0-9])([a-zA-Z])/g, '$1 $2').replace(/([a-z])([A-Z])/g, '$1 $2');
+};
