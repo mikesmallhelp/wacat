@@ -29,6 +29,7 @@ const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
         randomInputTextsCharset)];
 const openAiApiKeyGiven = Boolean(process.env.OPENAI_API_KEY);
+const ignoreOpenaiApiKeyInTest = Boolean(process.env.IGNORE_OPENAI_API_KEY_IN_TEST);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -150,7 +151,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('*******************************');
     }
 
-    if (openAiApiKeyGiven && content && await aiDetectsError(content, debug)) {
+    if (openAiApiKeyGiven && !ignoreOpenaiApiKeyInTest && await aiDetectsError(content, debug)) {
         fail("The AI detected that current page contains error, the page contents are: " + content);
     }
 
