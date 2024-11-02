@@ -18,7 +18,7 @@ export default class TestCommand extends Command {
     'conf': Flags.string({description: 'Path to the configuration file'}),
     'debug': Flags.boolean({description: 'Enable debug mode'}),
     'headless': Flags.boolean({description: 'Headless mode'}),
-    'ignore-openai-api-key-in-test': Flags.boolean({description: 'In the automatic tests ignore OpenAI API key'}),
+    'ignore-ai-in-test': Flags.boolean({description: 'In the automatic tests ignore OpenAI API key'}),
     'input-texts': Flags.string({description: 'Path to the input texts file'}),
     'only-links': Flags.boolean({description: 'Test only links'}),
     'random-input-texts-charset': Flags.string({description: 'Random input texts character set'}),
@@ -59,7 +59,7 @@ export default class TestCommand extends Command {
     command += flags.conf ? `${prefix}CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
     command += flags.debug ? `${prefix}DEBUG=true${suffix}` : '';
     command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
-    command += flags['ignore-openai-api-key-in-test'] ? `${prefix}IGNORE_OPENAI_API_KEY_IN_TEST=${flags['ignore-openai-api-key-in-test']}${suffix}` : '';
+    command += flags['ignore-ai-in-test'] ? `${prefix}IGNORE_AI_IN_TEST=${flags['ignore-ai-in-test']}${suffix}` : '';
     command += flags['input-texts'] ? `${prefix}INPUT_TEXTS_FILE_PATH=${flags['input-texts']}${suffix}` : '';
     command += flags['only-links'] ? `${prefix}ONLY_LINKS=true${suffix}` : '';
     command += flags['random-input-texts-charset'] ? `${prefix}RANDOM_INPUT_TEXTS_CHARSET=${flags['random-input-texts-charset']}${suffix}` : '';
