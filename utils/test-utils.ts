@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import fse from 'fs-extra'; // eslint-disable-line import/default
-import OpenAI from 'openai';
+import { OpenAI } from 'openai';
 
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
@@ -125,7 +125,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     });
     
     const response = await openai.chat.completions.create({
-        max_tokens: 50,
+        max_tokens: 50, // eslint-disable-line camelcase
         messages: [
             {
                 content: `${pageContent}\n\nThe text above contains only content from a web page. If it includes a clear programming 
@@ -143,7 +143,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
         console.log('openAiResponse:', openAiResponse);
     }
 
-    return new Boolean(openAiResponse === 'true').valueOf(); 
+    return Boolean(openAiResponse === 'true').valueOf(); 
 };
 
 export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')

@@ -138,7 +138,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('  checkPageForErrors');
     }
 
-    const rawContent = await page.locator('body').innerText();
+    const rawContent = await page.locator('body').innerText(); // eslint-disable-line unicorn/prefer-dom-node-text-content
     const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
     const content = addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
 
