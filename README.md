@@ -18,6 +18,8 @@ Additionally, wacat
 - detects errors in the browser console log
 - detects error strings from the web pages
   - you give the error strings in a parameter file
+- detects error strings from the web pages with the AI
+  - this is an optional feature and requires OpenAI API key
 - supports random form text inputs configuration by a user 
 - can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
 - can test only links, this could for example be used in the smoke testing of your application
@@ -32,7 +34,7 @@ wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is t
 
 Please create a new issue, if you find a bug or some particular feature is needed.
 
-Current wacat version is 1.1.2. Please look at end of this page to see change history.
+Current wacat version is 1.2.0. Please look at end of this page to see change history.
 
 ## Warnings
 
@@ -292,31 +294,31 @@ If you provide OpenAI API key (see above), wacat uses AI detecting errors in the
 The run command is for example
 
 ```
-wacat test http://localhost:3000/
+wacat test https://mikesmallhelp-test-application-error-in-page.vercel.app/
 ```
 
 The command output is 
 
 ```
-Testing in url: http://localhost:3000/. Please wait...
+Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app/. Please wait...
 
  ›   Error: 
- ›   Error occurred: Command failed: ROOT_URL='http://localhost:3000/' npx playwright test --project=chromium --headed
+ ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app/' npx playwright test --project=chromium --headed
  ›    + stderr:  + stdout: 
  ›   Running 1 test using 1 worker
      [chromium] › test.spec.ts:45:1 › test an application
- ›   In the page: http://localhost:3000/
-     Check with the AI that the page does not contain errors.
-     In the page: http://localhost:3000/working-page
-     Check with the AI that the page does not contain errors.
+ ›   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
+     Check with the AI that the page doesn't contain errors.
+     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/working-page
+     Check with the AI that the page doesn't contain errors.
      Push the button #1
-     Check with the AI that the page does not contain errors.
-     Filling the #1 text input field a value: ;bIkZj4Tf/+5|5Rrq8DUH.#4e]mDPL)Q/=P|C3Ob.%BrPKFu"9N
+     Check with the AI that the page doesn't contain errors.
+     Filling the #1 text input field a value: AyXoEJ_Sd$(7+JqeROkD
      The #1 drop-down list. Selecting the option #2
      Push the button #1
-     Check with the AI that the page does not contain errors.
-     In the page: http://localhost:3000/error-text-in-page
-     Check with the AI that the page does not contain errors.
+     Check with the AI that the page doesn't contain errors.
+     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/error-text-in-page
+     Check with the AI that the page doesn't contain errors.
        1) [chromium] › test.spec.ts:45:1 › test an application ──────────────────────────────────────────
  ›   
  ›       AssertionError: The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.
@@ -337,12 +339,13 @@ Testing in url: http://localhost:3000/. Please wait...
  ›
        1 failed
  ›       [chromium] › test.spec.ts:45:1 › test an application ───────────────────────────────────────────
-```
-
-When wacat is using AI it logs "Check with the AI that the page does not contain errors.". If wacat founds some error it logs something like this: "The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.". If you want just log the AI errors use the flag --bypass-ai-errors. So command is like this:
 
 ```
-wacat test --bypass-ai-errors http://localhost:3000/
+
+When wacat is using AI it logs "Check with the AI that the page doesn't contain errors." for every page. If wacat founds some error it logs something like this: "The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.". If you want just log the AI errors use the flag --bypass-ai-errors. So command is like this:
+
+```
+wacat test --bypass-ai-errors https://mikesmallhelp-test-application-error-in-page.vercel.app/
 ```
 
 ### Detect errors in the browser's console
@@ -394,7 +397,7 @@ Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.
 ```
 wacat prints the message "Found an error message in the browser's console: Hello! Something wrong!" and stops the execution.
 
-If you want to bypass this check and stop the execution use the flag --bypass-browser-console-errors. If the command
+If you want to bypass this check and stop the execution, use the flag --bypass-browser-console-errors. If the command
 
 ```
 wacat test --bypass-browser-console-errors https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
@@ -871,6 +874,10 @@ Contributions are warmly welcome. Look for the issues page. Please create a new 
 Please note: If you add a new feature, add a test case for that. Please look `run-tests.sh` file. Please consider also adding unit tests.
 
 ## Change history
+
+### 1.2.0. 3.11.2024
+
+- optional AI support
 
 ### 1.1.0 16.4.2024
 
