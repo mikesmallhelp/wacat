@@ -153,7 +153,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 
     if (openAiApiKeyGiven && !ignoreAiInTest) {
-        console.log('Check with the AI that the page does not contain errors.');
+        console.log(`Check with the AI that the page doesn't contain errors.`);
 
         if (await aiDetectsError(content, debug)) {
             const errorMessage = "The AI detected that current page contains error, the page contents are: " + content;

@@ -116,7 +116,7 @@ run_playwright_tests "index-api-returns-http-500.tsx" "--bypass-http-errors --wa
         "In the page: http://localhost:3000/api-returns-http-500: Request to http://localhost:3000/api/http-500 resulted in status code 500"
 run_playwright_tests "index-errors-in-page-and-console.tsx" "--ignore-ai-in-test" "1 failed" "Hello! Something wrong!"
 run_playwright_tests "index-working-page3.tsx" "--conf example-files/configuration-error-texts.json --wait 3000 --ignore-ai-in-test" "1 passed" \
-        "Check the page not contain the An unexpected error occurred! Please try again after some time. text"
+        "Check that the page doesn't contain the An unexpected error occurred! Please try again after some time. text"
 run_playwright_tests "index-working-page3.tsx" "--ignore-ai-in-test" "1 passed" "Push the button"
 run_playwright_tests "index-working-page3.tsx" "--debug --wait 3000 --ignore-ai-in-test" "1 passed" "Went outside of the tested application to the page https://mikesmallhelp-test-application.vercel.app/, returning back to the test application"
 run_playwright_tests "index-working-page3.tsx" "--wait 3000 --random-input-texts-min-length 5 --random-input-texts-max-length 5 --random-input-texts-charset ¿ --ignore-ai-in-test" \
