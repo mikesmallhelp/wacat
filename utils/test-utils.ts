@@ -140,7 +140,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     const openAiResponse =  response.choices[0]?.message?.content?.trim().toLowerCase();
 
     if (debug) {
-        console.log('openAiResponse:', openAiResponse);
+        console.log('  openAiResponse:', openAiResponse);
     }
 
     return Boolean(openAiResponse === 'true').valueOf(); 

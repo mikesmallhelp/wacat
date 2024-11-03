@@ -147,13 +147,13 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     const content = addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
 
     if (debug) {
-        console.log('***********content***********');
-        console.log(content);
-        console.log('*******************************');
+        console.log('  ***********content***********');
+        console.log('  ' + content);
+        console.log('  *******************************');
     }
 
     if (openAiApiKeyGiven && !ignoreAiInTest) {
-        console.log('Verify with the AI that the page is error-free');
+        console.log('Check with the AI that the page does not contain errors.');
 
         if (await aiDetectsError(content, debug)) {
             const errorMessage = "The AI detected that current page contains error, the page contents are: " + content;
@@ -175,7 +175,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     }
 
     for (const errorText of configuration.errorTextsInPages) {
-        console.log(`Check the page not contain the ${errorText} text`);
+        console.log(`Check that the page doesn't contain the ${errorText} text`);
         expect(content).not.toContain(errorText);
     }
 }
