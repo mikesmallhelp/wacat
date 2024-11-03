@@ -92,7 +92,7 @@ const IndexComponent = () => {
     if (!fullName || (fullName && inputValue && inputValue2 && textEmail && textDateOfBirth && optionValue && checkbox
       && radioButtonValue3 && emailValue && passwordValue &&
       searchValue && urlValue && telValue)) {
-      setErrorMessage('Error occurred!');
+      setErrorMessage('An unexpected error occurred! Please try again after some time.');
     }
   }
 

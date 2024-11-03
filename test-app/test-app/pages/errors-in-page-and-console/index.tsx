@@ -5,7 +5,7 @@ const IndexComponent = () => {
   const [loading, setLoading] = useState(true);
   
   const PageContent = (
-      <div>Error occurred!</div>
+      <div>An unexpected error occurred! Please try again after some time.</div>
   );
 
   useEffect(() => {

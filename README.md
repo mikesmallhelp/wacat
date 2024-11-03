@@ -56,6 +56,17 @@ npm install && npx playwright install --with-deps && npm run build && npm i -g
 
 Note: probably your password is asked, when you run previous command, because the Playwright tool is installed globally.
 
+### Optional: Add OpenAI API key
+
+If you like use the AI in the error detection, add the OpenAI API key and the model to the .env file
+
+```
+OPENAI_API_KEY=<your key here>
+OPENAI_MODEL=<your model here>
+```
+
+Please note that if you provide an OpenAI API key, OpenAI will charge you for using their API. The wacat program has been carefully tested. However, please be aware that due to potential programming errors, a significant number of calls could be made to the OpenAI API.
+
 ### Updating wacat
 
 To update wacat version run:
@@ -207,15 +218,15 @@ not stop into the HTTP 500 error like in the previous example. wacat prints to t
 
 ### Detect error strings from a target application's pages
 
-Here is an example application, which contains in one sub page an error text "Error occurred!":
+Here is an example application, which contains in one sub page an error text "An unexpected error occurred! Please try again after some time.":
 
 ![](doc/error-in-page.png)
 
-We configure in our example that "Error occurred!" is detected by wacat. We want also that the error text "abc" is detected. We configure this in a JSON file like this:
+We configure in our example that "An unexpected error occurred! Please try again after some time." is detected by wacat. We want also that the error text "abc" is detected. We configure this in a JSON file like this:
 
 ```
 {
-    "errorTextsInPages": ["abc", "Error occurred!"]
+    "errorTextsInPages": ["abc", "An unexpected error occurred! Please try again after some time."]
 }
 ```
 The run command (--conf flag is used to pass the JSON file) for Windows is:
@@ -242,16 +253,16 @@ Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app.
      [chromium] › test.spec.ts:40:1 › test an application
  ›   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
      Check the page not contain the abc text
-     Check the page not contain the Error occurred! text
+     Check the page not contain the An unexpected error occurred! Please try again after some time. text
      In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/error-text-in-page
      Check the page not contain the abc text
-     Check the page not contain the Error occurred! text
+     Check the page not contain the An unexpected error occurred! Please try again after some time. text
        1) [chromium] › test.spec.ts:40:1 › test an application ──────────────────────────────────────────
  ›   
  ›       Error: expect(received).not.toContain(expected) // indexOf
  ›
- ›       Expected substring: not "Error occurred!"
- ›       Received string:        "Test page - error-text-in-pageError occurred!{\"props\":{\"pageProps\":{}},\"page\":\"/error-text-in-page\",\"query\":{},\"buildId\":\"MVBwm9bMplVdAQ-ZjLXZ5\",\"nextExp
+ ›       Expected substring: not "An unexpected error occurred! Please try again after some time."
+ ›       Received string:        "Test page - error-text-in-pageAn unexpected error occurred! Please try again after some time.{\"props\":{\"pageProps\":{}},\"page\":\"/error-text-in-page\",\"query\":{},\"buildId\":\"MVBwm9bMplVdAQ-ZjLXZ5\",\"nextExp
  ›   ort\":true,\"autoExport\":true,\"isFallback\":false,\"scriptLoader\":[]}"
  ›
  ›         150 |     for (const errorText of configuration.errorTextsInPages) {
@@ -272,7 +283,67 @@ Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app.
  ›       [chromium] › test.spec.ts:40:1 › test an application
 ```
 
-So wacat detects "Error occurred!" text in one sub page, reports error with the "1 failed" text and execution stops.
+So wacat detects "An unexpected error occurred! Please try again after some time." text in one sub page, reports error with the "1 failed" text and execution stops.
+
+### Optional: Detect errors in the page with the AI
+
+If you provide OpenAI API key (see above), wacat uses AI detecting errors in the page.
+
+The run command is for example
+
+```
+wacat test http://localhost:3000/
+```
+
+The command output is 
+
+```
+Testing in url: http://localhost:3000/. Please wait...
+
+ ›   Error: 
+ ›   Error occurred: Command failed: ROOT_URL='http://localhost:3000/' npx playwright test --project=chromium --headed
+ ›    + stderr:  + stdout: 
+ ›   Running 1 test using 1 worker
+     [chromium] › test.spec.ts:45:1 › test an application
+ ›   In the page: http://localhost:3000/
+     Check with the AI that the page does not contain errors.
+     In the page: http://localhost:3000/working-page
+     Check with the AI that the page does not contain errors.
+     Push the button #1
+     Check with the AI that the page does not contain errors.
+     Filling the #1 text input field a value: ;bIkZj4Tf/+5|5Rrq8DUH.#4e]mDPL)Q/=P|C3Ob.%BrPKFu"9N
+     The #1 drop-down list. Selecting the option #2
+     Push the button #1
+     Check with the AI that the page does not contain errors.
+     In the page: http://localhost:3000/error-text-in-page
+     Check with the AI that the page does not contain errors.
+       1) [chromium] › test.spec.ts:45:1 › test an application ──────────────────────────────────────────
+ ›   
+ ›       AssertionError: The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.
+ ›
+ ›         162 |                 console.log(errorMessage);
+ ›         163 |             } else {
+ ›       > 164 |                 fail(errorMessage);
+ ›             |                 ^
+ ›         165 |             }
+ ›         166 |         }
+ ›         167 |     }
+ ›
+ ›           at checkPageForErrors (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:164:17)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:127:5)
+ ›           at visitLinks (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:507:13)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:137:5)
+ ›           at /home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:78:5
+ ›
+       1 failed
+ ›       [chromium] › test.spec.ts:45:1 › test an application ───────────────────────────────────────────
+```
+
+When wacat is using AI it logs "Check with the AI that the page does not contain errors.". If wacat founds some error it logs something like this: "The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.". If you want just log the AI errors use the flag --bypass-ai-errors. So command is like this:
+
+```
+wacat test --bypass-ai-errors http://localhost:3000/
+```
 
 ### Detect errors in the browser's console
 
