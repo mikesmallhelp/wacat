@@ -99,6 +99,11 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
+run_playwright_tests "index-working-page3.tsx" "--input-texts example-files/input-texts.txt --wait 3000 --timeout 500" "1 passed" "ybyb" "Check with the AI that the page doesn't contain errors."
+run_playwright_tests "index-errors-in-page-and-console.tsx" "--wait 3000 --bypass-browser-console-errors --timeout 500" \
+                   "1 failed" "The AI detected that current page contains error" "Test page An unexpected error occurred!"
+run_playwright_tests "index-errors-in-page-and-console.tsx" "--wait 3000 --bypass-browser-console-errors --timeout 500 --bypass-ai-errors" \
+                   "1 passed" "The AI detected that current page contains error" "Test page An unexpected error occurred!"
 run_playwright_tests "index-errors-in-page-and-console.tsx" "--conf example-files/configuration-error-texts.json --wait 3000 --bypass-browser-console-errors --ignore-ai-in-test" \
                    "1 failed" "expect(content).not.toContain"
 run_playwright_tests "index-different-types-inputs-and-button-push-causes-error.tsx" "--conf example-files/configuration-error-texts.json --wait 3000 --ignore-ai-in-test" \

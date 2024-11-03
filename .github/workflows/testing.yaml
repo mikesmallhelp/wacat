@@ -32,6 +32,9 @@ jobs:
         run: (cd test-app/test-app && npm install)
       - name: Run tests
         run: ./run-tests.sh
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
   run-e2e-tests-mac:
     runs-on: macos-latest
     steps:
@@ -44,3 +47,6 @@ jobs:
         run: (cd test-app/test-app && npm install)
       - name: Run tests
         run: ./run-tests.sh
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
