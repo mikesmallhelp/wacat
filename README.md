@@ -247,42 +247,41 @@ The command output is:
 ```
 Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app. Please wait...
 
- ›   Error: 
- ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app' CONFIGURATION_FILE_PATH=example-files/configuration-error-texts.json WAIT=2000 npx 
- ›   playwright test --project=chromium --headed
- ›    + stderr:  + stdout: 
- ›   Running 1 test using 1 worker
-     [chromium] › test.spec.ts:40:1 › test an application
- ›   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
-     Check the page not contain the abc text
-     Check the page not contain the An unexpected error occurred! Please try again after some time. text
+ »   Error:
+ »   Error occurred: Command failed: set ROOT_URL=https://mikesmallhelp-test-application-error-in-page.vercel.app && set CONFIGURATION_FILE_PATH=example-files\configuration-error-texts.json && npx playwright test --project=chromium
+ »   --headed
+ »    + stderr:  + stdout:
+ »   Running 1 test using 1 worker
+     [chromium] › test.spec.ts:45:1 › test an application
+ »   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
+     Check that the page doesn't contain the abc text
+     Check that the page doesn't contain the An unexpected error occurred! Please try again after some time. text
      In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/error-text-in-page
-     Check the page not contain the abc text
-     Check the page not contain the An unexpected error occurred! Please try again after some time. text
-       1) [chromium] › test.spec.ts:40:1 › test an application ──────────────────────────────────────────
- ›   
- ›       Error: expect(received).not.toContain(expected) // indexOf
- ›
- ›       Expected substring: not "An unexpected error occurred! Please try again after some time."
- ›       Received string:        "Test page - error-text-in-pageAn unexpected error occurred! Please try again after some time.{\"props\":{\"pageProps\":{}},\"page\":\"/error-text-in-page\",\"query\":{},\"buildId\":\"MVBwm9bMplVdAQ-ZjLXZ5\",\"nextExp
- ›   ort\":true,\"autoExport\":true,\"isFallback\":false,\"scriptLoader\":[]}"
- ›
- ›         150 |     for (const errorText of configuration.errorTextsInPages) {
- ›         151 |         console.log(`Check the page not contain the ${errorText} text`);
- ›       > 152 |         expect(content).not.toContain(errorText);
- ›             |                             ^
- ›         153 |     }
- ›         154 | }
- ›         155 |
- ›
- ›           at checkPageForErrors (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:152:29)
- ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:122:5)
- ›           at visitLinks (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:398:13)
- ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:132:5)
- ›           at /home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:73:5
- ›
+     Check that the page doesn't contain the abc text
+     Check that the page doesn't contain the An unexpected error occurred! Please try again after some time. text
+       1) [chromium] › test.spec.ts:45:1 › test an application ──────────────────────────────────────────
+ »
+ »       Error: expect(received).not.toContain(expected) // indexOf
+ »
+ »       Expected substring: not "An unexpected error occurred! Please try again after some time."
+ »       Received string:        "Test page An unexpected error occurred! Please try again after some time."
+ »
+ »         177 |     for (const errorText of configuration.errorTextsInPages) {
+ »         178 |         console.log(`Check that the page doesn't contain the ${errorText} text`);
+ »       > 179 |         expect(content).not.toContain(errorText);
+ »             |                             ^
+ »         180 |     }
+ »         181 | }
+ »         182 |
+ »
+ »           at checkPageForErrors (C:\repot\wacat\e2e-tests\test.spec.ts:179:29)
+ »           at handlePage (C:\repot\wacat\e2e-tests\test.spec.ts:127:5)
+ »           at visitLinks (C:\repot\wacat\e2e-tests\test.spec.ts:507:13)
+ »           at handlePage (C:\repot\wacat\e2e-tests\test.spec.ts:137:5)
+ »           at C:\repot\wacat\e2e-tests\test.spec.ts:78:5
+ »
        1 failed
- ›       [chromium] › test.spec.ts:40:1 › test an application
+ »       [chromium] › test.spec.ts:45:1 › test an application ───────────────────────────────────────────
 ```
 
 So wacat detects "An unexpected error occurred! Please try again after some time." text in one sub page, reports error with the "1 failed" text and execution stops.
