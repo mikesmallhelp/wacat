@@ -9,7 +9,7 @@ const IndexComponent = () => {
   const handleButtonClick = async () => {
       try {
           await fetchData('200', setLoading);
-          setResult('Information is important!');
+          setResult('No results found! Please check the spelling or try searching for something else!');
       } catch (error) {
           console.error(error);
       }

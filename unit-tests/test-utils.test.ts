@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 
 import {
-    generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger, generateRandomString,
-    generateRandomUrl, getHost, hostIsSame, shuffleArray
+    addSpacesToCamelCaseText, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex,
+    generateRandomInteger, generateRandomString, generateRandomUrl, getHost, hostIsSame, shuffleArray
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -202,13 +202,35 @@ const convertAndCreateDate = (dateStr: string, splitSeparator: string): Date => 
 
 describe('Random integer generator', () => {
     it('should generate a random integer between 400000000 and 600000000', () => {
-      const randomNumber = generateRandomInteger(400_000_000, 600_000_000);
-      console.log(randomNumber);
+        const randomNumber = generateRandomInteger(400_000_000, 600_000_000);
+        console.log(randomNumber);
 
-      expect(randomNumber).to.be.a('number');
-      expect(randomNumber).to.be.at.least(400_000_000);
-      expect(randomNumber).to.be.at.most(600_000_000);
-      expect(randomNumber % 1).to.equal(0);
+        expect(randomNumber).to.be.a('number');
+        expect(randomNumber).to.be.at.least(400_000_000);
+        expect(randomNumber).to.be.at.most(600_000_000);
+        expect(randomNumber % 1).to.equal(0);
     });
-  });
+});
 
+describe('addSpacesToCamelCaseText', () => {
+    it('should add spaces between camel case words and between numbers and letters', () => {
+        const input = 'Page2Name:YourDateOfBirthHereMenuSelection:FishMeat';
+        const expectedOutput = 'Page 2 Name:Your Date Of Birth Here Menu Selection:Fish Meat';
+        const result = addSpacesToCamelCaseText(input);
+        expect(result).to.equal(expectedOutput);
+    });
+
+    it('should not alter text that already has spaces', () => {
+        const input = 'Page 2 Name: Your Date Of Birth Here';
+        const expectedOutput = 'Page 2 Name: Your Date Of Birth Here';
+        const result = addSpacesToCamelCaseText(input);
+        expect(result).to.equal(expectedOutput);
+    });
+
+    it('should handle an empty string', () => {
+        const input = '';
+        const expectedOutput = '';
+        const result = addSpacesToCamelCaseText(input);
+        expect(result).to.equal(expectedOutput);
+    });
+});

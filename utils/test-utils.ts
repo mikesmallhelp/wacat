@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import fse from 'fs-extra'; // eslint-disable-line import/default
+import { OpenAI } from 'openai';
 
 export const hostIsSame = ({ rootUrl, url }: { rootUrl: string, url: string }): boolean => getHost({ url: rootUrl }) === getHost({ url });
 
@@ -118,3 +119,54 @@ export const generateRandomDate = (addYearMin: number, addYearMax: number, separ
 
 export const generateRandomInteger = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
+export const aiDetectsError = async (pageContent: string, debug: boolean): Promise<boolean> => {
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+    
+    const openAiModel = process.env.OPENAI_MODEL;
+    if (!openAiModel) {
+        throw new Error('OpenAI model not configured!');
+    }
+
+    const response = await openai.chat.completions.create({
+        max_tokens: 50, // eslint-disable-line camelcase
+        messages: [
+            {
+                content: `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage. This includes both programming-related errors (e.g. "NullPointerException", "SyntaxError", "500 Internal Server Error") and general user-facing error messages (e.g. "An error occurred, please try again later", "Something went wrong"). Messages that simply inform users that data was not found or is unavailable are not considered errors (e.g., "No results found" or "No data available" are not errors in this context).
+
+                          If the content contains an error message, respond with 'true'. If it does not, respond with 'false'.
+
+                          Example 1:
+                          Input: "Registration page An unexpected error occurred! Please try again after some time."
+                          Output: true
+
+                          Example 2:
+                          Input: "Information page An error occurred, please try again later."
+                          Output: true
+
+                          Example 3:
+                          Input: "Registration page Your name Address Phonenumber Food selection Card number Driving license Register now"
+                          Output: false
+
+                          Example 4:
+                          Input: "Vacation search No flights found"
+                          Output: false
+
+                          Content: ${pageContent}`,
+                role: 'user'
+            },
+        ],
+        model: openAiModel,
+    });
+
+    const openAiResponse =  response.choices[0]?.message?.content?.trim().toLowerCase();
+
+    if (debug) {
+        console.log('  openAiResponse:', openAiResponse);
+    }
+
+    return Boolean(openAiResponse === 'true').valueOf(); 
+};
+
+export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')

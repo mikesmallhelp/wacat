@@ -1,12 +1,13 @@
 /* eslint-disable no-await-in-loop */
 
 import { Locator, Page, expect, test } from '@playwright/test';
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig();
 import { fail } from 'node:assert';
 
 import {
-    Configuration, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex, generateRandomInteger,
-    generateRandomString, generateRandomUrl,
-    hostIsSame,
+    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
+    generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame,
     readConfiguration, readFileContent, shuffleArray
 } from '../utils/test-utils';
 
@@ -27,6 +28,9 @@ const randomInputTextsCharset = process.env.RANDOM_INPUT_TEXTS_CHARSET;
 const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
     await readFileContent({ path: process.env.INPUT_TEXTS_FILE_PATH }) : [generateRandomString(randomInputTextsMinLength, randomInputTextsMaxLength,
         randomInputTextsCharset)];
+const openAiApiKeyGiven = Boolean(process.env.OPENAI_API_KEY);
+const ignoreAiInTest = Boolean(process.env.IGNORE_AI_IN_TEST);
+const bypassAiErrors = Boolean(process.env.BYPASS_AI_ERRORS);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -138,6 +142,30 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('  checkPageForErrors');
     }
 
+    const rawContent = await page.locator('body').innerText(); // eslint-disable-line unicorn/prefer-dom-node-text-content
+    const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
+    const content = addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
+
+    if (debug) {
+        console.log('  ***********content***********');
+        console.log('  ' + content);
+        console.log('  *******************************');
+    }
+
+    if (openAiApiKeyGiven && !ignoreAiInTest) {
+        console.log(`Check with the AI that the page doesn't contain errors.`);
+
+        if (await aiDetectsError(content, debug)) {
+            const errorMessage = "The AI detected that current page contains error, the page contents are: " + content;
+
+            if (bypassAiErrors) {
+                console.log(errorMessage);
+            } else {
+                fail(errorMessage);
+            }
+        }
+    }
+
     if (!configuration || !configuration.errorTextsInPages || configuration.errorTextsInPages.length === 0) {
         return;
     }
@@ -146,10 +174,8 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('  checkPageForErrors, errorTextsInPages.length: ' + configuration.errorTextsInPages.length);
     }
 
-    const content = await page.locator('body').textContent();
-
     for (const errorText of configuration.errorTextsInPages) {
-        console.log(`Check the page not contain the ${errorText} text`);
+        console.log(`Check that the page doesn't contain the ${errorText} text`);
         expect(content).not.toContain(errorText);
     }
 }
@@ -490,3 +516,5 @@ const waitForTimeout = async ({ page }: { page: Page }) => {
 
     await page.waitForTimeout(wait);
 }
+
+
