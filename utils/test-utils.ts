@@ -132,30 +132,21 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     const response = await openai.chat.completions.create({
         max_tokens: 50, // eslint-disable-line camelcase
         messages: [
-            {
-                content: `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage. This includes both programming-related errors (e.g. "NullPointerException", "SyntaxError", "500 Internal Server Error") and general user-facing error messages (e.g. "An error occurred, please try again later", "Something went wrong"). Messages that simply inform users that data was not found or is unavailable are not considered errors (e.g., "No results found" or "No data available" are not errors in this context).
-
-                          If the content contains an error message, respond with 'true'. If it does not, respond with 'false'.
-
-                          Example 1:
-                          Input: "Registration page An unexpected error occurred! Please try again after some time."
-                          Output: true
-
-                          Example 2:
-                          Input: "Information page An error occurred, please try again later."
-                          Output: true
-
-                          Example 3:
-                          Input: "Registration page Your name Address Phonenumber Food selection Card number Driving license Register now"
-                          Output: false
-
-                          Example 4:
-                          Input: "Vacation search No flights found"
-                          Output: false
-
-                          Content: ${pageContent}`,
-                role: 'user'
-            },
+            {"content": `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage.
+                         This includes both programming-related errors (e.g. "NullPointerException", "SyntaxError", "500 Internal Server Error") and 
+                         general user-facing error messages (e.g. "Server error: Unable to process your request at this time.", "Something went wrong"). 
+                         Messages that simply inform users that data was not found or is unavailable are not considered errors 
+                         (e.g., "No results found" or "No data available" are not errors in this context). If the content contains an error message, 
+                         respond with 'true'. If it does not, respond with 'false'.`, "role": "system"},
+            {"content": "Registration page Error 404 Page not found. The page you are looking for might have been removed or is temporarily unavailable.", "name":"example_user", "role": "system"},
+            {"content": "true", "name":"example_assistant", "role": "system"},
+            {"content": "Information page An error occurred, please try again later.", "name":"example_user", "role": "system"},
+            {"content": "true", "name":"example_assistant", "role": "system"},
+            {"content": "Registration page Your name Address Phonenumber Food selection Card number Driving license Register now", "name":"example_user", "role": "system"},
+            {"content": "false", "name":"example_assistant", "role": "system"},
+            {"content": "Vacation search No flights found", "name":"example_user", "role": "system"},
+            {"content": "false", "name":"example_assistant", "role": "system"},
+            {"content": `${pageContent}`, "role": "user"},
         ],
         model: openAiModel,
     });
