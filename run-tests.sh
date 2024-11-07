@@ -99,10 +99,10 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests "index-working-page3.tsx" "--wait 3000 --timeout 500" "1 passed" "Check with the AI that the page doesn't contain errors." "In the page: http://localhost:3000/working-page"
-run_playwright_tests "index-errors-in-page-and-console.tsx" "--wait 3000 --bypass-browser-console-errors --timeout 500" \
+run_playwright_tests "index-working-page3.tsx" "--wait 10000 --timeout 500" "1 passed" "Check with the AI that the page doesn't contain errors." "In the page: http://localhost:3000/working-page"
+run_playwright_tests "index-errors-in-page-and-console.tsx" "--wait 10000 --bypass-browser-console-errors --timeout 500" \
                    "1 failed" "The AI detected that current page contains error" "Test page An unexpected error occurred!"
-run_playwright_tests "index-errors-in-page-and-console.tsx" "--wait 3000 --bypass-browser-console-errors --timeout 500 --bypass-ai-errors" \
+run_playwright_tests "index-errors-in-page-and-console.tsx" "--wait 10000 --bypass-browser-console-errors --timeout 500 --bypass-ai-errors" \
                    "1 passed" "The AI detected that current page contains error" "Test page An unexpected error occurred!"
 run_playwright_tests "index-errors-in-page-and-console.tsx" "--conf example-files/configuration-error-texts.json --wait 3000 --bypass-browser-console-errors --ignore-ai-in-test" \
                    "1 failed" "expect(content).not.toContain"
