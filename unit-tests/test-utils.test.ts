@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import {
     addSpacesToCamelCaseText, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex,
-    generateRandomInteger, generateRandomString, generateRandomUrl, getHost, hostIsSame, shuffleArray
+    generateRandomInteger, generateRandomString, generateRandomUrl, getHost, hostIsSame, shuffleArray, truncateString
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -232,5 +232,32 @@ describe('addSpacesToCamelCaseText', () => {
         const expectedOutput = '';
         const result = addSpacesToCamelCaseText(input);
         expect(result).to.equal(expectedOutput);
+    });
+});
+
+describe('truncateString', () => {
+    it('should truncate the string to the specified length', () => {
+        const longText = 'a'.repeat(350);
+        const truncated = truncateString(longText);
+        expect(truncated).to.have.lengthOf(303);
+        expect(truncated.endsWith('...')).to.be.true;
+    });
+
+    it('should return the original string if it is shorter than the max length', () => {
+        const shortText = 'This is a short string.';
+        const truncated = truncateString(shortText);
+        expect(truncated).to.equal(shortText);
+    });
+
+    it('should handle an empty string', () => {
+        const emptyText = '';
+        const truncated = truncateString(emptyText);
+        expect(truncated).to.equal("");
+    });
+
+    it('should truncate exactly to max length', () => {
+        const exactText = 'a'.repeat(300);
+        const truncated = truncateString(exactText);
+        expect(truncated).to.equal(exactText);
     });
 });

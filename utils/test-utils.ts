@@ -123,40 +123,53 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
-    
+
     const openAiModel = process.env.OPENAI_MODEL;
     if (!openAiModel) {
         throw new Error('OpenAI model not configured!');
     }
 
+    if (debug) {
+        console.log('  ***********pageContent***********');
+        console.log('  ' + pageContent);
+        console.log('  *******************************');
+    }
+
     const response = await openai.chat.completions.create({
         messages: [
-            {"content": `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage.
+            {
+                "content": `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage.
                          This includes both programming-related errors (e.g. "NullPointerException", "SyntaxError", "500 Internal Server Error") and 
                          general user-facing error messages (e.g. "Server error: Unable to process your request at this time.", "Something went wrong"). 
                          Messages that simply inform users that data was not found or is unavailable are not considered errors 
                          (e.g., "No results found" or "No data available" are not errors in this context). If the content contains an error message, 
-                         respond with 'true'. If it does not, respond with 'false'.`, "role": "system"},
-            {"content": "Registration page Error 404 Page not found. The page you are looking for might have been removed or is temporarily unavailable.", "name":"example_user", "role": "system"},
-            {"content": "true", "name":"example_assistant", "role": "system"},
-            {"content": "Information page An error occurred, please try again later.", "name":"example_user", "role": "system"},
-            {"content": "true", "name":"example_assistant", "role": "system"},
-            {"content": "Registration page Your name Address Phonenumber Food selection Card number Driving license Register now", "name":"example_user", "role": "system"},
-            {"content": "false", "name":"example_assistant", "role": "system"},
-            {"content": "Vacation search No flights found", "name":"example_user", "role": "system"},
-            {"content": "false", "name":"example_assistant", "role": "system"},
-            {"content": `${pageContent}`, "role": "user"},
+                         respond with 'true'. If it does not, respond with 'false'.`, "role": "system"
+            },
+            { "content": "Registration page Error 404 Page not found. The page you are looking for might have been removed or is temporarily unavailable.", "name": "example_user", "role": "system" },
+            { "content": "true", "name": "example_assistant", "role": "system" },
+            { "content": "Information page An error occurred, please try again later.", "name": "example_user", "role": "system" },
+            { "content": "true", "name": "example_assistant", "role": "system" },
+            { "content": "Registration page Your name Address Phonenumber Food selection Card number Driving license Register now", "name": "example_user", "role": "system" },
+            { "content": "false", "name": "example_assistant", "role": "system" },
+            { "content": "Vacation search No flights found", "name": "example_user", "role": "system" },
+            { "content": "false", "name": "example_assistant", "role": "system" },
+            { "content": `${pageContent}`, "role": "user" },
         ],
         model: openAiModel,
     });
 
-    const openAiResponse =  response.choices[0]?.message?.content?.trim().toLowerCase();
+    const openAiResponse = response.choices[0]?.message?.content?.trim().toLowerCase();
 
     if (debug) {
         console.log('  openAiResponse:', openAiResponse);
     }
 
-    return Boolean(openAiResponse === 'true').valueOf(); 
+    return Boolean(openAiResponse === 'true').valueOf();
 };
 
 export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')
+
+export const truncateString = (str: string): string => {
+    const MAX_LENGTH = 300;
+    return str.length > MAX_LENGTH ? str.slice(0, MAX_LENGTH) + "..." : str;
+};

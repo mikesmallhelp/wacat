@@ -8,7 +8,7 @@ import { fail } from 'node:assert';
 import {
     Configuration, addSpacesToCamelCaseText, aiDetectsError, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
     generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame,
-    readConfiguration, readFileContent, shuffleArray
+    readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
 
 const wait: number = process.env.WAIT ? Number(process.env.WAIT) : 5000;
@@ -155,7 +155,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     if (openAiApiKeyGiven && !ignoreAiInTest) {
         console.log(`Check with the AI that the page doesn't contain errors.`);
 
-        if (await aiDetectsError(content, debug)) {
+        if (await aiDetectsError(truncateString(content), debug)) {
             const errorMessage = "The AI detected that current page contains error, the page contents are: " + content;
 
             if (bypassAiErrors) {
