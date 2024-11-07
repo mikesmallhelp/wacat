@@ -130,7 +130,6 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     }
 
     const response = await openai.chat.completions.create({
-        max_tokens: 50, // eslint-disable-line camelcase
         messages: [
             {"content": `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage.
                          This includes both programming-related errors (e.g. "NullPointerException", "SyntaxError", "500 Internal Server Error") and 
