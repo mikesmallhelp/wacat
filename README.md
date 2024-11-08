@@ -347,6 +347,23 @@ When wacat is using AI it logs "Check with the AI that the page doesn't contain 
 wacat test --bypass-ai-errors https://mikesmallhelp-test-application-error-in-page.vercel.app/
 ```
 
+The OpenAI API has limits depending on your organization's rate limits. If you encounter an error like this:
+
+```
+Error: 429 Rate limit reached for *** in organization 
+ ›   ************ on requests per min (RPM): Limit 3, Used 3, 
+ ›   Requested 1. Please try again in 20s.
+```
+use the --wait parameter (see below) to slow down wacat. You may also need to adjust the test’s timeout with the --timeout parameter (see below). For some OpenAI API errors you can't do anything else but just wait a while. For example if you encounter an error like this:
+
+```
+Error: 429 Rate limit reached for *** in organization 
+ ›   ************ on requests per day (RPD): Limit 200, Used 
+ ›   200, Requested 1. Please try again in 7m12s.
+```
+
+just wait some time and run wacat again.
+
 ### Detect errors in the browser's console
 
 Here is an example application, which contains an error logging in the browser's console
