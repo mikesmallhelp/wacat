@@ -31,6 +31,7 @@ const inputTexts: string[] = process.env.INPUT_TEXTS_FILE_PATH ?
 const openAiApiKeyGiven = Boolean(process.env.OPENAI_API_KEY);
 const ignoreAiInTest = Boolean(process.env.IGNORE_AI_IN_TEST);
 const bypassAiErrors = Boolean(process.env.BYPASS_AI_ERRORS);
+const maxPageContentChars = process.env.MAX_PAGE_CONTENT_CHARS ? Number(process.env.MAX_PAGE_CONTENT_CHARS) : 3000;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -155,7 +156,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
     if (openAiApiKeyGiven && !ignoreAiInTest) {
         console.log(`Check with the AI that the page doesn't contain errors.`);
 
-        if (await aiDetectsError(truncateString(content), debug)) {
+        if (await aiDetectsError(truncateString(content, maxPageContentChars), debug)) {
             const errorMessage = "The AI detected that current page contains error, the page contents are: " + content;
 
             if (bypassAiErrors) {

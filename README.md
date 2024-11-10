@@ -64,7 +64,7 @@ If you like use the AI in the error detection, add the OpenAI API key and the mo
 
 ```
 OPENAI_API_KEY=<your key here>
-OPENAI_MODEL=<your model here>
+OPENAI_API_MODEL=<your model here>
 ```
 
 Please note that if you provide an OpenAI API key, OpenAI will charge you for using their API. The wacat program has been carefully tested. However, please be aware that due to potential programming errors, a significant number of calls could be made to the OpenAI API.
