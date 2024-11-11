@@ -237,27 +237,25 @@ describe('addSpacesToCamelCaseText', () => {
 
 describe('truncateString', () => {
     it('should truncate the string to the specified length', () => {
-        const longText = 'a'.repeat(350);
-        const truncated = truncateString(longText);
-        expect(truncated).to.have.lengthOf(303);
-        expect(truncated.endsWith('...')).to.be.true;
+        const truncated = truncateString('abcdeabcdexx', 10);
+        expect(truncated).equal('abcdeabcde');
     });
 
     it('should return the original string if it is shorter than the max length', () => {
-        const shortText = 'This is a short string.';
-        const truncated = truncateString(shortText);
-        expect(truncated).to.equal(shortText);
+        const text = 'abcde';
+        const truncated = truncateString(text, 10);
+        expect(truncated).to.equal(text);
     });
 
     it('should handle an empty string', () => {
-        const emptyText = '';
-        const truncated = truncateString(emptyText);
-        expect(truncated).to.equal("");
+        const emptyString = '';
+        const truncated = truncateString(emptyString, 10);
+        expect(truncated).to.equal(emptyString);
     });
 
-    it('should truncate exactly to max length', () => {
-        const exactText = 'a'.repeat(300);
-        const truncated = truncateString(exactText);
-        expect(truncated).to.equal(exactText);
+    it('should handle string exactly 10 characters', () => {
+        const text = 'abcdeabcde';
+        const truncated = truncateString(text, 10);
+        expect(truncated).to.equal(text);
     });
 });

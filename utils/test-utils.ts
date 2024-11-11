@@ -124,7 +124,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
         apiKey: process.env.OPENAI_API_KEY,
     });
 
-    const openAiModel = process.env.OPENAI_MODEL;
+    const openAiModel = process.env.OPENAI_API_MODEL;
     if (!openAiModel) {
         throw new Error('OpenAI model not configured!');
     }
@@ -136,6 +136,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
     }
 
     const response = await openai.chat.completions.create({
+        max_completion_tokens: 1, // eslint-disable-line camelcase
         messages: [
             {
                 "content": `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage.
@@ -155,7 +156,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
             { "content": "false", "name": "example_assistant", "role": "system" },
             { "content": `${pageContent}`, "role": "user" },
         ],
-        model: openAiModel,
+        model: openAiModel
     });
 
     const openAiResponse = response.choices[0]?.message?.content?.trim().toLowerCase();
@@ -169,7 +170,4 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
 
 export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')
 
-export const truncateString = (str: string): string => {
-    const MAX_LENGTH = 300;
-    return str.length > MAX_LENGTH ? str.slice(0, MAX_LENGTH) + "..." : str;
-};
+export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;

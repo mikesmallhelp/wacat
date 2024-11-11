@@ -60,14 +60,23 @@ Note: probably your password is asked, when you run previous command, because th
 
 ### Optional: Add OpenAI API key
 
-If you like use the AI in the error detection, add the OpenAI API key and the model to the .env file
+If you like use the AI in the error detection (see below), add the OpenAI API key and the model to the .env file
 
 ```
 OPENAI_API_KEY=<your key here>
-OPENAI_MODEL=<your model here>
+OPENAI_API_MODEL=<your model here>
 ```
 
 Please note that if you provide an OpenAI API key, OpenAI will charge you for using their API. The wacat program has been carefully tested. However, please be aware that due to potential programming errors, a significant number of calls could be made to the OpenAI API.
+
+You can also add the OpenAI API related environment variable
+
+```
+MAX_PAGE_CONTENT_CHARS=<your value here>
+```
+
+to the .env file. If you are using the AI detection this value is optional, the default value is 3000. Please see below for more information. 
+
 
 ### Updating wacat
 
@@ -363,6 +372,8 @@ Error: 429 Rate limit reached for *** in organization
 ```
 
 just wait some time and run wacat again.
+
+It's possible that your queries to the OpenAI API exceed the tokens-per-minute limit. To manage this, you can use the MAX_PAGE_CONTENT_CHARS variable, which controls the number of characters per page that wacat sends to the API for analysis. The base prompt contains around 1600 characters. So, if you set MAX_PAGE_CONTENT_CHARS to 400, the total prompt size will be about 2000 characters, or approximately 500 tokens (since 1 token is roughly 4 characters in English; see https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them). The response will always be just one token, so you primarily need to manage the prompt size. 
 
 ### Detect errors in the browser's console
 
