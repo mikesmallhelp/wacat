@@ -72,7 +72,7 @@ Please note that if you provide an OpenAI API key, OpenAI will charge you for us
 You can also add the OpenAI API related environment variable
 
 ```
-MAX_PAGE_CONTENT_CHARS
+MAX_PAGE_CONTENT_CHARS=<your value here>
 ```
 
 to the .env file. If you are using the AI detection this value is optional, the default value is 3000. Please see below for more information. 
