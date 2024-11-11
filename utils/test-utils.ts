@@ -170,4 +170,4 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
 
 export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')
 
-export const truncateString = (str: string, maxLenght: number): string => str.length > maxLenght ? str.slice(0, maxLenght) : str;
+export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
