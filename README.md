@@ -892,33 +892,40 @@ This confirms that wacat successfully excluded the specified page from the test.
 
 ### Run in headless mode
 
-Use the flag --headless to run with the headless mode (without browser). The example command is:
+To run wacat in headless mode (without displaying the browser), use the --headless flag.
+
+An example command is:
 
 ```
 wacat test --headless https://mikesmallhelp-test-application.vercel.app/
 ```
 
-### Run in CI pipeline
+### Run in a CI pipeline
 
-wacat can be used in the CI pipeline with the --headless flag. The example is https://github.com/mikesmallhelp/mikesmallhelp-test-passing-run/blob/main/.github/workflows/testing.yaml.
+wacat can be integrated into a CI pipeline using the --headless flag. For an example configuration, see https://github.com/mikesmallhelp/mikesmallhelp-test-passing-run/blob/main/.github/workflows/testing.yaml.
 
 ### Configure wait time
 
-By default wacat waits each page download 5000 milliseconds. Configure the page download wait time in milliseconds with --wait flag. The example command with 2000 milliseconds wait is:
+By default, wacat waits 5000 milliseconds for each page to download. You can configure the wait time in milliseconds using the --wait flag.
+
+Here is an example command with a 2000-millisecond wait time:
 
 ```
 wacat test --wait 2000 https://mikesmallhelp-test-application.vercel.app/
 ```
-Note: wacat uses internally the Playwright tool. Normally the Playwright test can wait for some specific text. But wacat doesn't know what text to wait, so wait time is used.
 
-### Configure whole test timeout
+Note: wacat uses the Playwright tool internally. While Playwright tests can typically wait for specific text on a page, wacat does not know what text to wait for, so it relies on a configurable wait time instead.
 
-By default whole test command timeout is 120 seconds. Configure the whole test timeout in seconds with --timeout flag. The timeout value is at least 1 seconds. The example command with 50 seconds timeout is:
+### Configure total test timeout
+
+By default, the total timeout for the test command is 120 seconds. You can configure the timeout in seconds using the --timeout flag. The minimum timeout value is 1 second.
+
+Here is an example command with a 50-second timeout:
 
 ```
 wacat test --timeout 50 https://mikesmallhelp-test-application.vercel.app/
 ```
-Note: Playwright uses internally milliseconds. So if the timeout in this example happens the output is something like:
+Note: Playwright internally uses milliseconds for timeouts. If the timeout occurs in this example, the output will resemble:
 
 ```
 Test timeout of 50000ms exceeded.
