@@ -20,6 +20,7 @@ Additionally, wacat:
 - Detects errors in the browser's console log
 - Detects user-defined error messages on web pages
   - These error messages are specified in a parameter file
+  - Use this if AI is not enabled
 - Supports user-defined configurations for random form text inputs
 - Can read form inputs from external files (e.g., resources like [Combined-Wordlists](<https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)>))
 - Can focus exclusively on testing links, which is useful for smoke testing your application
@@ -269,7 +270,8 @@ Error: 429 Rate limit reached for *** in organization
 wait for the limit to reset, and then rerun wacat.
 
 #### Managing OpenAI token usage
-If your queries exceed the API's tokens-per-minute limit, you can use the MAX_PAGE_CONTENT_CHARS variable to control the number of characters wacat sends per page to the API for analysis.
+
+If your queries exceed the API's tokens-per-minute limit, you can use the MAX_PAGE_CONTENT_CHARS .env variable (see before) to control the number of characters wacat sends per page to the API for analysis.
 
 The base prompt contains approximately 1600 characters. For example, if you set MAX_PAGE_CONTENT_CHARS to 400, the total prompt size will be around 2000 characters, or roughly 500 tokens (1 token is approximately 4 characters in English). The response will always consist of a single token, so primarily manage the prompt size.
 
@@ -350,7 +352,7 @@ wacat test --bypass-http-errors https://mikesmallhelp-test-application-http-500-
 
 In this case, wacat logs the HTTP 500 error but continues the test execution without stopping.
 
-### Detect error strings from a target application's pages
+### Detect user-defined error strings (if AI is not enabled)
 
 Here is an example application where one subpage contains the error text: 
 
