@@ -632,9 +632,11 @@ You can test using different input text files, such as those available at https:
 
 When using a large input text file, set an appropriately high value for the --timeout parameter to ensure smooth execution. wacat has been successfully tested with a file containing 5000 lines against a simple test application.
 
-### Test only links
+### Test links only
 
-To test only links in the application use a ```--only-links``` flag. Then wacat loads pages and detects HTTP errors, but input fields are not filled etc. An example command and output are:
+To test only the links in an application, use the --only-links flag. With this option, wacat loads the pages and detects errors but does not fill input fields or interact with other elements.
+
+Here is an example command and its output:
 
 ```
 wacat test --only-links https://mikesmallhelp-test-application.vercel.app/
