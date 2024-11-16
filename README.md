@@ -94,20 +94,20 @@ git pull && npm install && npx playwright install --with-deps && npm run build &
 
 ## Running
 
-### Basic running
+### Basic usage
 
-Run the command in the wacat folder:
+Run the following command in the wacat folder:
 
 ```
 wacat test <your url>
 ```
 
-For example a command:
+For example, the command:
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
 ```
-tests a simple application in the url https://mikesmallhelp-test-application.vercel.app/. The application have pages:
+tests a simple application at the URL https://mikesmallhelp-test-application.vercel.app/. The application includes the following pages:
 
 ![](doc/test-application-picture-1.png)
 
@@ -115,11 +115,17 @@ tests a simple application in the url https://mikesmallhelp-test-application.ver
 
 ![](doc/test-application-picture-3.png)
 
-First the wacat application opens the Chromium browser and goes to the root URL, which was given for the command: 
+First, the wacat application opens the Chromium browser and navigates to the root URL provided in the command: 
 
 ![](doc/chromium-opened.png)
 
-The root page doesn't contain any input fields, dropdown menus etc. wacat simple collects links of the two sub pages and goes to them. In each sub page wacat first pushes the button. The it fills the form input, selects from the dropdown menu etc. Finally it pushes the button again. Here is the command, which you can copy, paste and run. Same way you can run all other examples and please feel free to use my test applications.
+The root page does not contain any input fields, dropdown menus, or similar elements. wacat simply collects links to the two subpages and visits them. On each subpage, wacat performs the following actions:
+
+1. Presses the button
+2. Fills the form fields, selects options from dropdown menus, etc.
+3. Presses the button again
+
+Here is the command for you to copy, paste, and run. You can follow the same process to run all other examples. Feel free to experiment with the provided test applications.
 
 ```
 wacat test https://mikesmallhelp-test-application.vercel.app/
@@ -159,7 +165,7 @@ Filling the #1 url input field a value: https://vpo7ut.net
 Push the button #1
   1 passed (24.3s)
 ```
-Note that output contains "1 passed" so wacat didn't find any errors in the application. Please note also that a default wait time for every page is 5000 milliseconds. If you want to change this time use the flag --wait (see later).
+Note: The default wait time for each page is 5000 milliseconds. To adjust this wait time, use the --wait flag (see details later).
 
 ### Detect HTTP errors
 
