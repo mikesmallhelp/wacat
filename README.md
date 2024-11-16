@@ -277,17 +277,18 @@ For more details, refer to https://help.openai.com/en/articles/4936856-what-are-
 
 ### Detect HTTP errors
 
-wacat can detect HTTP errors between browser and server. For example if the button in the example application below is pushed the HTTP 500 error occurs.
+wacat can detect HTTP errors occurring between the browser and the server. For example, in the application shown below, clicking the button triggers an HTTP 500 error:
 
 ![](doc/http-500-picture-1.png)
 
 ![](doc/http-500-picture-2.png)
 
-An example about this is:
+You can test this scenario with the following command:
 
 ```
 wacat test https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
+The command output might look like this:
 ```
 Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app/. Please wait...
 
@@ -332,20 +333,22 @@ Testing in url: https://mikesmallhelp-test-application-http-500-error.vercel.app
 
 ```
 
-So wacat detects HTTP 500 error, prints the error log with the text "1 failed" and stops the execution. The specific error message is:
+In this example, wacat detects the HTTP 500 error, logs it with "1 failed," and stops execution. The specific error message is:
 
 ```
 AssertionError: In the page: https://mikesmallhelp-test-application-http-500-error.vercel.app/api-returns-http-500: Request to 
  ›   https://mikesmallhelp-test-application-http-500-error.vercel.app/api/http-500 resulted in status code 500
 ```
 
-If you want to bypass stopping the execution in the HTTP errors use the flag --bypass-http-errors. For example the command
+#### Continuing execution despite HTTP errors
+
+To prevent wacat from stopping execution on HTTP errors, use the --bypass-http-errors flag. For example:
 
 ```
 wacat test --bypass-http-errors https://mikesmallhelp-test-application-http-500-error.vercel.app/
 ```
 
-not stop into the HTTP 500 error like in the previous example. wacat prints to the log the HTTP 500 error, but the execution continues.
+In this case, wacat logs the HTTP 500 error but continues the test execution without stopping.
 
 ### Detect error strings from a target application's pages
 
