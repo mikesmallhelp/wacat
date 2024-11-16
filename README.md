@@ -57,37 +57,36 @@ Additionally, if your application requires authentication and your wacat authent
 
 ### Clone wacat and install it
 
-Clone the wacat repository, go to the wacat folder and run:
+Clone the wacat repository, navigate to the wacat folder, and run the following command:
 
 ```
 npm install && npx playwright install --with-deps && npm run build && npm i -g
 ```
 
-Note: probably your password is asked, when you run previous command, because the Playwright tool is installed globally.
+Note: You may be prompted for your password when running the above command, as the Playwright tool is installed globally.
 
-### Optional: Add OpenAI API key
+### Optional: Add OpenAI API Key
 
-If you like use the AI in the error detection (see below), add the OpenAI API key and the model to the .env file
+If you want to use AI for error detection (see details below), add your OpenAI API key and model to a .env file:
 
 ```
 OPENAI_API_KEY=<your key here>
 OPENAI_API_MODEL=<your model here>
 ```
 
-Please note that if you provide an OpenAI API key, OpenAI will charge you for using their API. The wacat program has been carefully tested. However, please be aware that due to potential programming errors, a significant number of calls could be made to the OpenAI API.
+Important: Providing an OpenAI API key will result in charges from OpenAI for API usage. While wacat has been thoroughly tested, please be aware that programming errors could lead to a higher-than-expected number of calls to the OpenAI API.
 
-You can also add the OpenAI API related environment variable
+You can also add the following optional environment variable to the .env file:
 
 ```
 MAX_PAGE_CONTENT_CHARS=<your value here>
 ```
 
-to the .env file. If you are using the AI detection this value is optional, the default value is 3000. Please see below for more information. 
-
+This value sets the maximum number of characters sent to the OpenAI API for error detection. The default is 3000 if not specified. See additional details below.
 
 ### Updating wacat
 
-To update wacat version run:
+To update wacat to the latest version, run:
 
 ```
 git pull && npm install && npx playwright install --with-deps && npm run build && npm i -g
