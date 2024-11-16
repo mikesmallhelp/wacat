@@ -352,23 +352,30 @@ In this case, wacat logs the HTTP 500 error but continues the test execution wit
 
 ### Detect error strings from a target application's pages
 
-Here is an example application, which contains in one sub page an error text "An unexpected error occurred! Please try again after some time.":
+Here is an example application where one subpage contains the error text: 
+
+```
+An unexpected error occurred! Please try again after some time.
+```
 
 ![](doc/error-in-page.png)
 
-We configure in our example that "An unexpected error occurred! Please try again after some time." is detected by wacat. We want also that the error text "abc" is detected. We configure this in a JSON file like this:
+In this example, we configure wacat to detect the error text "An unexpected error occurred! Please try again after some time." We also want wacat to detect the error text "abc". This configuration is added to a JSON file as follows:
 
 ```
 {
     "errorTextsInPages": ["abc", "An unexpected error occurred! Please try again after some time."]
 }
 ```
-The run command (--conf flag is used to pass the JSON file) for Windows is:
+The run command to use this JSON configuration file (via the --conf flag) is as follows:
+
+#### For Windows:
 
 ```
 wacat test --conf example-files\configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
 ```
-The run command for Linux and Mac is:
+
+#### For Linux and Mac:
 
 ```
 wacat test --conf example-files/configuration-error-texts.json https://mikesmallhelp-test-application-error-in-page.vercel.app
@@ -416,7 +423,7 @@ Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app.
  »       [chromium] › test.spec.ts:45:1 › test an application ───────────────────────────────────────────
 ```
 
-So wacat detects "An unexpected error occurred! Please try again after some time." text in one sub page, reports error with the "1 failed" text and execution stops.
+In this scenario, wacat detects the error text "An unexpected error occurred! Please try again after some time." on one subpage. It reports the error with the message "1 failed" and halts execution.
 
 ### Detect errors in the browser's console
 
