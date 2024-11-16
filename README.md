@@ -1,46 +1,53 @@
 ![](doc/wacat-logo.png)
 
-# wacat - Tests your web application against cat chaos!
+# wacat - Challenge Your Web App with AI-Driven Cat Chaos!
 
 Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile, your cat walks over your keyboard and causes some chaos. 
 
 wacat (walking cat) application
 
-- goes to your web application root url
-- visits every link in your application in random order
-- adds random text inputs into forms
-- selects random values from dropdown menus, checkboxes etc. 
-- clicks on every button in random order
+- Navigates to the root URL of your web application
+- Visits every link in your application in a random order
+- Inputs random text into forms
+- Selects random values from dropdown menus, checkboxes, etc
+- Clicks every button in a random order
 
-Additionally, wacat
+Additionally, wacat:
 
-- detects HTTP errors (for example HTTP 500 errors) between browser and server
-- detects errors in the browser console log
-- detects error strings from the web pages
-  - you give the error strings in a parameter file
-- detects error strings from the web pages with the AI
-  - this is an optional feature and requires OpenAI API key
-- supports random form text inputs configuration by a user 
-- can read form inputs from external files (for example from resources like https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)
-- can test only links, this could for example be used in the smoke testing of your application
-- supports some authentication scenarios
-  - you give authentication configuration in a JSON file
-- supports configuring pages, which are not visited
-- supports a headless mode
-- supports configuring a page download wait time and a whole test timeout value
-- supports running in the CI pipeline
+- Detects error messages on web pages using AI
+  - This is an optional feature and requires an OpenAI API key
+- Detects HTTP errors (e.g., HTTP 500 errors) between the browser and server
+- Detects errors in the browser's console log
+- Detects user-defined error messages on web pages
+  - These error messages are specified in a parameter file
+- Supports user-defined configurations for random form text inputs
+- Can read form inputs from external files (e.g., resources like [Combined-Wordlists](<https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file)>))
+- Can focus exclusively on testing links, which is useful for smoke testing your application
+- Supports some authentication scenarios
+  - Authentication configurations are provided in a JSON file
+- Allows configuration of pages that should not be visited
+- Supports a headless mode
+- Allows configuration of page download wait times and overall test timeout values
+- Supports running in CI pipelines
 
-wacat uses the [Playwright](https://playwright.dev/) tool internally. wacat is tested to work with Windows, Linux and Mac.
+## Technical details
 
-Please create a new issue, if you find a bug or some particular feature is needed.
+wacat uses the Playwright tool internally. It is tested to work on Windows, Linux, and Mac.
 
-Current wacat version is 1.2.0. Please look at end of this page to see change history.
+## Reporting bugs and requesting features
+
+If you encounter a bug or need a specific feature, please create a new issue.
+
+## Current Version
+
+The current version of wacat is 1.2.0. Please refer to the end of this page for the change history.
 
 ## Warnings
+Please ensure you only test your own web application or have explicit permission to test someone else’s application. Testing the vulnerabilities of an application without authorization could be illegal.
 
-Please test only your own web application or have a permit for testing someone else's application. Testing someone else's application's vulnerabilites without permit could be illegal. 
+The application is designed to stay within the host you are testing. However, as this is a hobby project, unexpected behavior is possible. It's important to monitor wacat's actions and use Ctrl + C to stop the process if it navigates to an unintended page.
 
-Application is designed not to go outside of the host you are testing. But as this is my hobby project everything is possible and it's good to follow what the wacat application is doing and use ctrl + c if it goes to wrong page. Please also note that if your application uses authentication and your wacat authentication configuration is not correct or wacat is not working for your case, then your account could be locked or something like that. Also wacat could mess your applications's database etc. So it's good to test only in the test environment.
+Additionally, if your application requires authentication and your wacat authentication configuration is incorrect or incompatible, it could lead to issues such as account lockouts. wacat could also potentially disrupt your application's database or other components. For these reasons, it is strongly recommended to use wacat only in a testing environment.
 
 ## Installation
 
