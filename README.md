@@ -810,17 +810,19 @@ In the page: https://mikesmallhelp-test-application-more-complicated-authenticat
   1 passed (28.7s)
 ```
 
-### Configure pages, which are not visited
+### Configure pages to exclude from visits
 
-wacat is designed so that it should not go outside of the host you are testing. You can also configure more page urls, which are not visited.
+wacat is designed to remain within the host you are testing. Additionally, you can configure specific page URLs that should not be visited during the test.
 
-Look in the previous example
+For example, consider the following output from a previous test:
 
 ```
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
 ```
 
-If you don't want to go into the logout page, add the "notVisitLinkUrls" attribute into the JSON. It contains the urls, which are not visited. An example JSON is:
+If you want to prevent wacat from visiting the logout page, you can use the "notVisitLinkUrls" attribute in the JSON configuration. This attribute lists the URLs that wacat should avoid.
+
+Here is an example JSON configuration:
 
 ```
 {
@@ -841,20 +843,21 @@ If you don't want to go into the logout page, add the "notVisitLinkUrls" attribu
     ]
 }
 ```
+#### Example Run Commands
 
-The example run command for Windows is:
-
-```
-wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
-```
-
-The run command for Linux and Mac is:
+##### For Windows:
 
 ```
 wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
-The command output is:
+##### For Linux and Mac:
+
+```
+wacat test --conf example-files/configuration-complicated-authentication-with-not-visit-link-urls-remote.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
+```
+
+#### Command Output
 
 ```
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
@@ -877,13 +880,15 @@ Push the button #1
   1 passed (23.2s)
 ```
 
-Note now there are not the line:
+#### Confirmation
+
+In the output, you can see that the following line is no longer present:
 
 ```
 In the page: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/logout
 ```
 
-in the output.
+This confirms that wacat successfully excluded the specified page from the test.
 
 ### Run in headless mode
 
