@@ -653,15 +653,15 @@ In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
   1 passed (14.7s)
 ```
 
-### Do authencation
+### Perform authentication
 
-Here is an application with a simple authentication
+Here is an example of an application with simple authentication:
 
 ![](doc/simple-auth-picture-1.png)
 
 ![](doc/simple-auth-picture-2.png)
 
-wacat can do authentication to this application with the following JSON file:
+wacat can perform authentication for this application using the following JSON configuration file:
 
 ```
 
@@ -677,21 +677,28 @@ wacat can do authentication to this application with the following JSON file:
 
 ```
 
-Note for example that the application contains "Username" label and this is put into the "usernameLabel" attribute's value in the JSON. The username value is "Mike", which is put into the "usernameValue" attribute's value in the JSON. And same logic applies for the password input field. The application has a button named "Login", which is put into the "loginButtonLabel" attribute's value in the JSON.
+In this JSON file:
 
-The example run command for Windows is:
+- The application has a label "Username," which is assigned to the "usernameLabel" attribute.
+- The value for the username, "Mike," is assigned to the "usernameValue" attribute.
+- Similarly, the label "Password" is assigned to "passwordLabel," and the value "Smallhelp" to "passwordValue."
+- The login button is labeled "Login," and its label is assigned to the "loginButtonLabel" attribute.
+
+#### Example run commands
+
+##### For Windows
 
 ```
 wacat test --conf example-files\configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
-The run command for Linux and Mac is:
+##### For Linux and Mac:
 
 ```
 wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
-The command output is:
+##### Command output
 
 ```
 Testing in url: https://mikesmallhelp-test-application-simple-authentication.vercel.app/. Please wait...
@@ -714,7 +721,15 @@ Push the button #1
   1 passed (24.7s)
 ```
 
-Note in the output the text "Filled the username and the password. Pushed the authentication button", this means that wacat did the authentication.
+##### Authentication Confirmation
+
+In the output, the line:
+
+```
+Filled the username and the password. Pushed the authentication button
+```
+
+indicates that wacat successfully completed the authentication process.
 
 ### Do more complicated authentication
 
