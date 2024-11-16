@@ -698,7 +698,7 @@ wacat test --conf example-files\configuration-authentication.json https://mikesm
 wacat test --conf example-files/configuration-authentication.json https://mikesmallhelp-test-application-simple-authentication.vercel.app/
 ```
 
-##### Command output
+#### Command output
 
 ```
 Testing in url: https://mikesmallhelp-test-application-simple-authentication.vercel.app/. Please wait...
@@ -786,7 +786,7 @@ wacat test --conf example-files\configuration-complicated-authentication.json ht
 wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
-##### Command output
+#### Command output
 
 ```
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
@@ -931,9 +931,9 @@ Note: Playwright internally uses milliseconds for timeouts. If the timeout occur
 Test timeout of 50000ms exceeded.
 ```
 
-### Help command
+### Help Command
 
-To see all the flags, run the command:
+To view all available flags, run the following command:
 
 ```
 wacat test --help
@@ -942,8 +942,8 @@ wacat test --help
 Test any web application, for example: wacat test http://localhost:3000
 
 USAGE
-  $ wacat test URL [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>] [--debug] [--headless] [--input-texts <value>] [--only-links] [--random-input-texts-charset
-    <value>] [--random-input-texts-max-length <value>] [--random-input-texts-min-length <value>] [--timeout <value>] [--wait <value>]
+  $ wacat test URL [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>] [--debug] [--headless] [--ignore-ai-in-] [--input-texts <value>] [--only-links]
+    [--random-input-texts-charset <value>] [--random-input-texts-max-length <value>] [--random-input-texts-min-length <value>] [--timeout <value>] [--wait <value>]
 
 ARGUMENTS
   URL  Application url to test, for example: http://localhost:3000
@@ -954,6 +954,7 @@ FLAGS
   --conf=<value>                           Path to the configuration file
   --debug                                  Enable debug mode
   --headless                               Headless mode
+  --ignore-ai-in-test                      In the automatic tests ignore OpenAI API key
   --input-texts=<value>                    Path to the input texts file
   --only-links                             Test only links
   --random-input-texts-charset=<value>     Random input texts character set
@@ -968,65 +969,72 @@ DESCRIPTION
 EXAMPLES
   $ wacat test http://localhost:3000
 ```
-Note that the url can be before the flags or after them.
+Note: The URL can be placed before or after the flags.
 
 ## Developing wacat
 
-### Technologies
+### Technology Stack
 
-wacat technology stack is simple:
+The technology stack for wacat is straightforward:
 
-- Typescript
-- Bash script
-- oclif, The Open CLI Framework
+- TypeScript
+- Bash Scripts
+- oclif - The Open CLI Framework
 - Playwright
-- Next.js for the test applications
+- Next.js - Used for test applications
 
-### Developing
+### Development Instructions
 
-In Linux and Mac, do your changes and run
+#### For Linux and Mac:
+
+Make your changes, then run:
 
 ```
 npm run test && npm run build && npm install -g && ./run-tests.sh
 ```
-The run-tests.sh script runs all test cases and verifies that wacat works correctly. Or just push your changes to repository and let the GitHub Actions run the tests.
 
-In Windows do your changes and run
+The run-tests.sh script runs all test cases to verify that wacat works correctly. Alternatively, push your changes to the repository and let GitHub Actions execute the tests.
+
+#### For Windows:
+
+Make your changes, then run:
 
 ```
 npm run test && npm run build && npm install -g
 ```
-For Windows there isn't yet the automatic test script like ./run-tests.sh. Run
+There is currently no automated test script like run-tests.sh for Windows. Instead, run:
 
 ```
 run-manual-tests.bat
 ```
 
-and verify from the output that everything works correctly.
+Review the output to ensure everything is working correctly.
 
 ## Contributions
 
-Contributions are warmly welcome. Look for the issues page. Please create a new issue, if you find a bug or some particular feature is needed.
+Contributions are warmly welcomed! Check the issues page for tasks. If you encounter a bug or need a specific feature, please create a new issue.
 
-Please note: If you add a new feature, add a test case for that. Please look `run-tests.sh` file. Please consider also adding unit tests.
+### Guidelines for Contributions:
 
-## Change history
+If adding a new feature, ensure a test case is included. Check the run-tests.sh file for integration test examples.
+Consider adding unit tests to improve code reliability.
 
-### 1.2.0. 3.11.2024
+## Change History
 
-- optional AI support
+### 1.2.0 (November 3, 2024)
 
-### 1.1.0 16.4.2024
+- Added optional AI support
 
-- can derive the text input type from the label and generates an appropriate random content for the input field
-  - supports derivation from different email and date labels
+### 1.1.0 (April 16, 2024)
 
-### 1.0.0 23.3.2024
+- Derives input type from the label and generates appropriate random content
 
-- Windows support
-- support for the most typical html input types like radio, email etc.
-- more flags like --random-input-texts-charset
-- bug fixes
+### 1.0.0 (March 23, 2024)
+
+- Added Windows support
+- Support for common HTML input types like radio, email, etc.
+- Introduced additional flags, such as --random-input-texts-charset
+- Bug fixes
 - GitHub Actions tests for Mac 
 
 
