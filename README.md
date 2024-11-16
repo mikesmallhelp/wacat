@@ -490,9 +490,15 @@ wacat test --bypass-browser-console-errors https://mikesmallhelp-test-applicatio
 
 In this case, wacat logs the error message but does not stop execution, continuing the test instead.
 
-### Configure the random form inputs
+### Configure random form inputs
 
-Normally wacat creates random form inputs. By default the length is something between 1 and 60 characters and a default character set is used. Give the min length with the flag --random-input-texts-min-length and the max length with the flag --random-input-texts-max-length. Give the character set with the flag --random-input-texts-charset. The example command and output is:
+By default, wacat generates random form inputs with lengths ranging between 1 and 60 characters, using a default character set. You can customize these settings as follows:
+
+- Use the flag --random-input-texts-min-length to set the minimum length of the random input
+- Use the flag --random-input-texts-max-length to set the maximum length of the random input
+- Use the flag --random-input-texts-charset to specify the character set for the random input
+
+Here is an example command and its output:
 
 ```
 wacat test --random-input-texts-min-length 1 --random-input-texts-max-length 3 --random-input-texts-charset ®©¥¬¿ https://mikesmallhelp-test-application.vercel.app/
@@ -532,7 +538,7 @@ Push the button #1
   1 passed (54.0s)
 ```
 
-In this example wacat generates random string ```®```, which lenght is between 1 and 3 characters and it's from the given character set ```®©¥¬¿```. 
+In this example, wacat generates random strings using the character set ```®©¥¬¿```. The generated strings have lengths between 1 and 3 characters. 
 
 ### Read input field texts from the file
 
