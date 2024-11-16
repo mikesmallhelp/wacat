@@ -427,17 +427,17 @@ In this scenario, wacat detects the error text "An unexpected error occurred! Pl
 
 ### Detect errors in the browser's console
 
-Here is an example application, which contains an error logging in the browser's console
+Here is an example application that logs an error in the browser's console:
 
 ![](doc/console-error.png)
 
-When an example command
+When the following command is run:
 
 ```
 wacat test https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
 ```
 
-is run the execution stops into the error logging in the browser's console:
+the execution stops when an error is detected in the browser's console:
 
 ```
 Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.vercel.app. Please wait...
@@ -472,14 +472,23 @@ Testing in url: https://mikesmallhelp-test-application-error-in-browser-console.
        1 failed
  ›       [chromium] › test.spec.ts:40:1 › test an application
 ```
-wacat prints the message "Found an error message in the browser's console: Hello! Something wrong!" and stops the execution.
+In this example, wacat logs the message: 
 
-If you want to bypass this check and stop the execution, use the flag --bypass-browser-console-errors. If the command
+```
+Found an error message in the browser's console: Hello! Something wrong!
+```
+
+and stops execution.
+
+#### Bypassing browser console error checks
+
+If you want wacat to bypass this check and continue execution despite browser console errors, use the --bypass-browser-console-errors flag. For example:
 
 ```
 wacat test --bypass-browser-console-errors https://mikesmallhelp-test-application-error-in-browser-console.vercel.app
 ```
-is run the execution doesn't stop like in the previous example. wacat logs the error message, but continues the execution.
+
+In this case, wacat logs the error message but does not stop execution, continuing the test instead.
 
 ### Configure the random form inputs
 
