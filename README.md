@@ -167,6 +167,114 @@ Push the button #1
 ```
 Note: The default wait time for each page is 5000 milliseconds. To adjust this wait time, use the --wait flag (see details later).
 
+### Optional: Detect errors on the page with AI
+
+Here is an example application that contains an error message, "An unexpected error occurred! Please try again after some time," on one of its subpages:
+
+![](doc/error-in-page.png)
+
+If you provide an OpenAI API key (see above), wacat can use AI to detect error messages like this on the page.
+
+For example, run the command:
+
+```
+wacat test https://mikesmallhelp-test-application-error-in-page.vercel.app/
+```
+
+The command output might look like this:
+
+```
+Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app/. Please wait...
+
+ ›   Error: 
+ ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app/' npx playwright test --project=chromium --headed
+ ›    + stderr:  + stdout: 
+ ›   Running 1 test using 1 worker
+     [chromium] › test.spec.ts:45:1 › test an application
+ ›   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
+     Check with the AI that the page doesn't contain errors.
+     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/working-page
+     Check with the AI that the page doesn't contain errors.
+     Push the button #1
+     Check with the AI that the page doesn't contain errors.
+     Filling the #1 text input field a value: AyXoEJ_Sd$(7+JqeROkD
+     The #1 drop-down list. Selecting the option #2
+     Push the button #1
+     Check with the AI that the page doesn't contain errors.
+     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/error-text-in-page
+     Check with the AI that the page doesn't contain errors.
+       1) [chromium] › test.spec.ts:45:1 › test an application ──────────────────────────────────────────
+ ›   
+ ›       AssertionError: The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.
+ ›
+ ›         162 |                 console.log(errorMessage);
+ ›         163 |             } else {
+ ›       > 164 |                 fail(errorMessage);
+ ›             |                 ^
+ ›         165 |             }
+ ›         166 |         }
+ ›         167 |     }
+ ›
+ ›           at checkPageForErrors (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:164:17)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:127:5)
+ ›           at visitLinks (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:507:13)
+ ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:137:5)
+ ›           at /home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:78:5
+ ›
+       1 failed
+ ›       [chromium] › test.spec.ts:45:1 › test an application ───────────────────────────────────────────
+
+```
+
+When wacat uses AI, it logs the message:
+
+```
+Check with the AI that the page doesn't contain errors.
+``` 
+
+for every page.
+
+If the AI detects an error, wacat logs a message like:
+
+```
+The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.
+```
+
+To log AI errors without halting the test, use the --bypass-ai-errors flag. For example:
+
+```
+wacat test --bypass-ai-errors https://mikesmallhelp-test-application-error-in-page.vercel.app/
+```
+
+#### Handling OpenAI API rate limits
+
+The OpenAI API has rate limits based on your organization's subscription. For example, if you see an error like this:
+
+```
+Error: 429 Rate limit reached for *** in organization 
+ ›   ************ on requests per min (RPM): Limit 3, Used 3, 
+ ›   Requested 1. Please try again in 20s.
+```
+
+use the --wait parameter (as explained below) to slow down wacat's requests. You may also need to adjust the test timeout using the --timeout parameter (as explained below).
+
+For daily request limits, such as:
+
+```
+Error: 429 Rate limit reached for *** in organization 
+ ›   ************ on requests per day (RPD): Limit 200, Used 
+ ›   200, Requested 1. Please try again in 7m12s.
+```
+
+wait for the limit to reset, and then rerun wacat.
+
+#### Managing OpenAI token usage
+If your queries exceed the API's tokens-per-minute limit, you can use the MAX_PAGE_CONTENT_CHARS variable to control the number of characters wacat sends per page to the API for analysis.
+
+The base prompt contains approximately 1600 characters. For example, if you set MAX_PAGE_CONTENT_CHARS to 400, the total prompt size will be around 2000 characters, or roughly 500 tokens (1 token is approximately 4 characters in English). The response will always consist of a single token, so primarily manage the prompt size.
+
+For more details, refer to https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them.
+
 ### Detect HTTP errors
 
 wacat can detect HTTP errors between browser and server. For example if the button in the example application below is pushed the HTTP 500 error occurs.
@@ -306,86 +414,6 @@ Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app.
 ```
 
 So wacat detects "An unexpected error occurred! Please try again after some time." text in one sub page, reports error with the "1 failed" text and execution stops.
-
-### Optional: Detect errors in the page with the AI
-
-If you provide OpenAI API key (see above), wacat uses AI detecting errors in the page.
-
-The run command is for example
-
-```
-wacat test https://mikesmallhelp-test-application-error-in-page.vercel.app/
-```
-
-The command output is 
-
-```
-Testing in url: https://mikesmallhelp-test-application-error-in-page.vercel.app/. Please wait...
-
- ›   Error: 
- ›   Error occurred: Command failed: ROOT_URL='https://mikesmallhelp-test-application-error-in-page.vercel.app/' npx playwright test --project=chromium --headed
- ›    + stderr:  + stdout: 
- ›   Running 1 test using 1 worker
-     [chromium] › test.spec.ts:45:1 › test an application
- ›   In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/
-     Check with the AI that the page doesn't contain errors.
-     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/working-page
-     Check with the AI that the page doesn't contain errors.
-     Push the button #1
-     Check with the AI that the page doesn't contain errors.
-     Filling the #1 text input field a value: AyXoEJ_Sd$(7+JqeROkD
-     The #1 drop-down list. Selecting the option #2
-     Push the button #1
-     Check with the AI that the page doesn't contain errors.
-     In the page: https://mikesmallhelp-test-application-error-in-page.vercel.app/error-text-in-page
-     Check with the AI that the page doesn't contain errors.
-       1) [chromium] › test.spec.ts:45:1 › test an application ──────────────────────────────────────────
- ›   
- ›       AssertionError: The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.
- ›
- ›         162 |                 console.log(errorMessage);
- ›         163 |             } else {
- ›       > 164 |                 fail(errorMessage);
- ›             |                 ^
- ›         165 |             }
- ›         166 |         }
- ›         167 |     }
- ›
- ›           at checkPageForErrors (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:164:17)
- ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:127:5)
- ›           at visitLinks (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:507:13)
- ›           at handlePage (/home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:137:5)
- ›           at /home/lenovo/projektit/wacat/e2e-tests/test.spec.ts:78:5
- ›
-       1 failed
- ›       [chromium] › test.spec.ts:45:1 › test an application ───────────────────────────────────────────
-
-```
-
-When wacat is using AI it logs "Check with the AI that the page doesn't contain errors." for every page. If wacat founds some error it logs something like this: "The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.". If you want just log the AI errors use the flag --bypass-ai-errors. So command is like this:
-
-```
-wacat test --bypass-ai-errors https://mikesmallhelp-test-application-error-in-page.vercel.app/
-```
-
-The OpenAI API has limits depending on your organization's rate limits. If you encounter an error like this:
-
-```
-Error: 429 Rate limit reached for *** in organization 
- ›   ************ on requests per min (RPM): Limit 3, Used 3, 
- ›   Requested 1. Please try again in 20s.
-```
-use the --wait parameter (see below) to slow down wacat. You may also need to adjust the test’s timeout with the --timeout parameter (see below). For some OpenAI API errors you can't do anything else but just wait a while. For example if you encounter an error like this:
-
-```
-Error: 429 Rate limit reached for *** in organization 
- ›   ************ on requests per day (RPD): Limit 200, Used 
- ›   200, Requested 1. Please try again in 7m12s.
-```
-
-just wait some time and run wacat again.
-
-It's possible that your queries to the OpenAI API exceed the tokens-per-minute limit. To manage this, you can use the MAX_PAGE_CONTENT_CHARS variable, which controls the number of characters per page that wacat sends to the API for analysis. The base prompt contains around 1600 characters. So, if you set MAX_PAGE_CONTENT_CHARS to 400, the total prompt size will be about 2000 characters, or approximately 500 tokens (since 1 token is roughly 4 characters in English; see https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them). The response will always be just one token, so you primarily need to manage the prompt size. 
 
 ### Detect errors in the browser's console
 
