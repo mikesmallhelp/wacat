@@ -540,33 +540,36 @@ Push the button #1
 
 In this example, wacat generates random strings using the character set ```®©¥¬¿```. The generated strings have lengths between 1 and 3 characters. 
 
-### Read input field texts from the file
+### Read input field texts from a file
 
-Additionally is possible to read input fields from the file, for example from the file example-files/input.texts, which contents are:
+It is also possible to configure wacat to read input field texts from a file. For example, consider the file example-files/input-texts.txt with the following contents:
 
 ```
 xaxa
 ybyb
 ```
-wacat uses each input text from the file for the each input field in the target application unless there happens some error or page changes. The run command is for the local file in Windows:
+
+wacat uses each line from the file as input for the fields in the target application, unless an error occurs or the page changes.
+
+The command to run this with a local file on Windows is:
 
 ```
 wacat test --input-texts example-files\input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
 
-and in Linux and Mac:
+On Linux and Mac, the command is:
 
 ```
 wacat test --input-texts example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/ 
 ```
 
-and for the remote file:
+To use a remote file, the command is:
 
 ```
 wacat test --input-texts https://raw.githubusercontent.com/mikesmallhelp/wacat/main/example-files/input-texts.txt https://mikesmallhelp-test-application.vercel.app/
 ```
 
-All commands should output following:
+All these commands produce the following output:
 
 ```
 Testing in url: https://mikesmallhelp-test-application.vercel.app/. Please wait...
@@ -621,9 +624,15 @@ Push the button #1
   1 passed (1.1m)
 ```
 
-In the output you can see that values from the input-texts.txt file are used. You can use for the testing different input text files, for example from the page https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file. When you use a big input text file, use --timeout parameter (see below) with enough big value. Tested with 5000 lines input text file against a simple test application.
+As shown in the output, the values from the file input-texts.txt (xaxa and ybyb) are used as inputs.
 
-## Test only links
+You can test using different input text files, such as those available at https://github.com/0xspade/Combined-Wordlists?tab=readme-ov-file.
+
+#### Important 
+
+When using a large input text file, set an appropriately high value for the --timeout parameter to ensure smooth execution. wacat has been successfully tested with a file containing 5000 lines against a simple test application.
+
+### Test only links
 
 To test only links in the application use a ```--only-links``` flag. Then wacat loads pages and detects HTTP errors, but input fields are not filled etc. An example command and output are:
 
@@ -642,7 +651,7 @@ In the page: https://mikesmallhelp-test-application.vercel.app/working-page2
   1 passed (14.7s)
 ```
 
-## Do authencation
+### Do authencation
 
 Here is an application with a simple authentication
 
