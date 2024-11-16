@@ -731,9 +731,9 @@ Filled the username and the password. Pushed the authentication button
 
 indicates that wacat successfully completed the authentication process.
 
-### Do more complicated authentication
+### Perform more complicated authentication
 
-Here is an application with a more complicated authentication
+Here is an example of an application with a more complex authentication process:
 
 ![](doc/more-complicated-auth-picture-1.png)
 
@@ -745,7 +745,7 @@ Here is an application with a more complicated authentication
 
 ![](doc/more-complicated-auth-picture-5.png)
 
-wacat can do authentication to this application with the following JSON file:
+wacat can perform authentication for this application using the following JSON configuration file:
 
 ```
 
@@ -766,20 +766,27 @@ wacat can do authentication to this application with the following JSON file:
 
 ```
 
-The JSON is more complicated than in previous example. Is has "beforeAuthenticationLinkTexts" attribute, which contains the link texts "Please go to an application" and "Please login", which are in the pages before the authentication page. The application has button "Next" in the page where username is given. The "Next" value is given into the "usernameButtonLabel" JSON attribute's value.
+#### Explanation of the JSON
 
-The example run command for Windows is:
+This JSON file is more complex than the one in the previous example:
+
+- The "beforeAuthenticationLinkTexts" attribute lists link texts ("Please go to an application" and "Please login") found on the pages preceding the authentication page.
+- The page where the username is entered contains a button labeled "Next," which is assigned to the "usernameButtonLabel" attribute in the JSON.
+
+#### Example Run Commands
+
+##### For Windows
 
 ```
 wacat test --conf example-files\configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
-The run command for Linux and Mac is:
+##### For Linux and Mac
 
 ```
 wacat test --conf example-files/configuration-complicated-authentication.json https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/
 ```
 
-The command output is:
+##### Command output
 
 ```
 Testing in url: https://mikesmallhelp-test-application-more-complicated-authentication.vercel.app/. Please wait...
