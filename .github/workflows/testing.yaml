@@ -7,7 +7,15 @@ jobs:
   run-unit-tests-ubuntu:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+  run-unit-tests-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: npm install
       - name: Run tests
@@ -15,7 +23,23 @@ jobs:
   run-e2e-tests-ubuntu:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Install Playwright
+        run: npm install && npx playwright install --with-deps
+      - name: Build and install wacat command
+        run: npm run build && npm install -g
+      - name: Install test-app dependencies
+        run: (cd test-app/test-app && npm install)
+      - name: Run tests
+        run: ./run-tests.sh
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_MODEL: ${{ vars.OPENAI_API_MODEL }}
+  run-e2e-tests-mac:
+    runs-on: macos-latest
+    needs: run-e2e-tests-ubuntu
+    steps:
+      - uses: actions/checkout@v3
       - name: Install Playwright
         run: npm install && npx playwright install --with-deps
       - name: Build and install wacat command

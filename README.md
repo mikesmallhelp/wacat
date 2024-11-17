@@ -61,7 +61,7 @@ Additionally, if your application requires authentication and your wacat authent
 Clone the wacat repository, navigate to the wacat folder, and run the following command:
 
 ```
-npm install && npx playwright install --with-deps && npm run build && npm i -g
+npm install && npx playwright install --with-deps && npm run build && npm install -g
 ```
 
 Note: You may be prompted for your password when running the above command, as the Playwright tool is installed globally.
