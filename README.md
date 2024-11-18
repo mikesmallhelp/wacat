@@ -271,7 +271,7 @@ wait for the limit to reset, and then rerun wacat.
 
 #### Managing OpenAI token usage
 
-If your queries exceed the API's tokens-per-minute limit, you can use the MAX_PAGE_CONTENT_CHARS .env variable (see before) to control the number of characters wacat sends per page to the API for analysis.
+If your queries exceed the API's tokens-per-minute limit, you can use the MAX_PAGE_CONTENT_CHARS .env variable (see above) to control the number of characters wacat sends per page to the API for analysis.
 
 The base prompt contains approximately 1600 characters. For example, if you set MAX_PAGE_CONTENT_CHARS to 400, the total prompt size will be around 2000 characters, or roughly 500 tokens (1 token is approximately 4 characters in English). The response will always consist of a single token, so primarily manage the prompt size.
 
