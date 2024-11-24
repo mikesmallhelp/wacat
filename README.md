@@ -1,6 +1,6 @@
 ![](doc/wacat-logo.png)
 
-# wacat - Challenge Your Web App with AI-Driven Cat Chaos!
+# wacat - Challenge Your Web App with Cat Chaos and AI-Powered Error Detection!
 
 Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile, your cat walks over your keyboard and causes some chaos. 
 
@@ -170,7 +170,7 @@ Note: The default wait time for each page is 5000 milliseconds. To adjust this w
 
 ### Optional: Detect errors on the page with AI
 
-Here is an example application that contains an error message, "An unexpected error occurred! Please try again after some time," on one of its subpages:
+Here is an example application that contains an error message, "An unexpected error occurred! Please try again after some time.", on one of its subpages:
 
 ![](doc/error-in-page.png)
 
@@ -235,7 +235,7 @@ Check with the AI that the page doesn't contain errors.
 
 for every page.
 
-If the AI detects an error, wacat logs a message like:
+If the AI detects an error, wacat logs a message like this (see the error message above):
 
 ```
 The AI detected that current page contains error, the page contents are: Test page An unexpected error occurred! Please try again after some time.
