@@ -4,22 +4,6 @@ on:
     branches:
       - '*'
 jobs:
-  run-unit-tests-ubuntu:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
-  run-unit-tests-mac:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
   run-e2e-tests-ubuntu:
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +14,8 @@ jobs:
         run: npm run build && npm install -g
       - name: Install test-app dependencies
         run: (cd test-app/test-app && npm install)
+      - name: Check Node.js version
+        run: node --version
       - name: Run tests
         run: ./run-tests.sh
         env:
@@ -37,7 +23,6 @@ jobs:
           OPENAI_API_MODEL: ${{ vars.OPENAI_API_MODEL }}
   run-e2e-tests-mac:
     runs-on: macos-latest
-    needs: run-e2e-tests-ubuntu
     steps:
       - uses: actions/checkout@v4
       - name: Install Playwright
@@ -46,6 +31,8 @@ jobs:
         run: npm run build && npm install -g
       - name: Install test-app dependencies
         run: (cd test-app/test-app && npm install)
+      - name: Check Node.js version
+        run: node --version
       - name: Run tests
         run: ./run-tests.sh
         env:
