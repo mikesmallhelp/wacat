@@ -54,7 +54,7 @@ Additionally, if your application requires authentication and your wacat authent
 
 ### Install Node.js
 
-[Install Node.js from here](https://nodejs.org/en)
+[Install Node.js from here](https://nodejs.org/en). wacat has been tested and verified to work with Node.js version 20 on Linux, Mac, and Windows.
 
 ### Clone wacat and install it
 
