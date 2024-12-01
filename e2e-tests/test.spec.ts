@@ -278,7 +278,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
     if (aiGeneratedInputTexts) {
-        fillInputWithAi({page});
+        fillInputsWithAi({page});
     } else if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
                                           || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
     ) {
@@ -316,7 +316,7 @@ const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string
     await selectFromRadioButtons({ page });
 }
 
-const fillInputWithAi = async ({ page }: { page: Page }) => {
+const fillInputsWithAi = async ({ page }: { page: Page }) => {
     const inputs = page.locator('input:not([type="checkbox"]):not([type="radio"])');
 
     const count = await inputs.count();
