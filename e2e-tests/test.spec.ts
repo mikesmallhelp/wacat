@@ -32,6 +32,7 @@ const openAiApiKeyGiven = Boolean(process.env.OPENAI_API_KEY);
 const ignoreAiInTest = Boolean(process.env.IGNORE_AI_IN_TEST);
 const bypassAiErrors = Boolean(process.env.BYPASS_AI_ERRORS);
 const maxPageContentChars = process.env.MAX_PAGE_CONTENT_CHARS ? Number(process.env.MAX_PAGE_CONTENT_CHARS) : 3000;
+const aiGeneratedInputTexts = process.env.AI_GENERATED_INPUT_TEXTS === 'true';
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -276,7 +277,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
-    if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
+    if (aiGeneratedInputTexts) {
+        fillInputWithAi({page});
+    } else if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
                                           || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
     ) {
         await fillTextInputs({
@@ -311,6 +314,40 @@ const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string
     await selectFromDropDownLists({ page });
     await fillCheckboxes({ page });
     await selectFromRadioButtons({ page });
+}
+
+const fillInputWithAi = async ({ page }: { page: Page }) => {
+    const inputs = page.locator('input:not([type="checkbox"]):not([type="radio"])');
+
+    const count = await inputs.count();
+    for (let i = 0; i < count; i++) {
+        const element = inputs.nth(i);
+
+        const tagName = await element.evaluate(el => el.tagName);
+        const type = await element.evaluate(el => el.getAttribute('type'));
+        const name = await element.evaluate(el => el.getAttribute('name'));
+        const id = await element.evaluate(el => el.id);
+        const value = await element.evaluate(el => (el as HTMLInputElement).value);
+
+        const labelText = await element.evaluate((el) => {
+            const id = el.id;
+            if (id) {
+                const label = document.querySelector(`label[for="${id}"]`);
+                if (label) {
+                    return label.textContent?.trim();
+                }
+            }
+
+            const parentLabel = el.closest('label');
+            if (parentLabel) {
+                return parentLabel.textContent?.trim();
+            }
+
+            return null;
+        });
+
+        console.log({ tagName, type, name, id, value, label: labelText || 'No label' });
+    }
 }
 
 const fillTextInputs = async ({ doDerivation = true, inputText, inputType, page, selector }: {
