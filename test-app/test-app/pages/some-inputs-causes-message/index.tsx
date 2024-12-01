@@ -4,7 +4,7 @@ import { fetchData } from '../../util/util';
 
 const IndexComponent = () => {
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [message, setMessage] = React.useState('');
   const [textEmail, setTextEmail] = React.useState('');
   const [textBirthDate, setTextBirthDate] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
@@ -27,13 +27,13 @@ const IndexComponent = () => {
     await fetchData('200', setLoading);
 
     if (buttonClickCount === 1 && textEmail && textBirthDate && checkbox) {
-      setErrorMessage('Have a nice day!');
+      setMessage('Have a nice day!');
     }
   }
 
   const PageContent = (
     <div>
-      <div>{errorMessage}</div>
+      <div>{message}</div>
 
       <div>
         <label htmlFor="email">Email</label>
