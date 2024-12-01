@@ -348,8 +348,10 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
 
         input.fill('');
         if (await input.isVisible()) {
-            const generatedValue = await generateInputContentWithAi(await getPageTextContents({page}), type || 'no type', labelText || 'no label', debug);
-            console.log('Filling the #' + (i + 1) + " type: " + type + " label :" + labelText + "input field a value: " + generatedValue);
+            const typeParameter = type || 'no type';
+            const labelParameter = labelText || 'no label';
+            const generatedValue = await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
+            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", label :" + labelParameter + ", the generated value: " + generatedValue);
             await input.fill(generatedValue);
         }
     }

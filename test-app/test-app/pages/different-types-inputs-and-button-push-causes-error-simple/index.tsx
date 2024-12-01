@@ -6,21 +6,28 @@ const IndexComponent = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [textEmail, setTextEmail] = React.useState('');
-  const [optionValue, setOptionValue] = React.useState('');
+  const [textBirthDate, setTextBirthDate] = React.useState('');
+  const [checkbox, setCheckbox] = useState(false);
+  let [buttonClickCount, setButtonClickCount] = useState(0);
 
   const handleTextEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTextEmail(event.target.value);
   };
 
-  const handleOptionValueChange = async (event: ChangeEvent<HTMLSelectElement>) => {
-    setOptionValue(event.target.value);
+  const handleTextBirthDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTextBirthDate(event.target.value);
   };
 
-  const handleButtonClick3 = async () => {
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCheckbox(event.target.checked);
+  };
+
+  const handleButtonClick = async () => {
+    setButtonClickCount(buttonClickCount++);
     await fetchData('200', setLoading);
 
-    if (!textEmail || (textEmail &&  optionValue)) {
-      setErrorMessage('An unexpected error occurred! Please try again after some time.');
+    if (buttonClickCount === 1 && textEmail && textBirthDate && checkbox) {
+      setErrorMessage('Have a nice day!');
     }
   }
 
@@ -33,14 +40,14 @@ const IndexComponent = () => {
         <input type="text" id="email" onChange={handleTextEmailChange} />
       </div>
 
-      <select onChange={handleOptionValueChange} name="someValues3" id="someValues3">
-        <option value="">-- Select --</option>
-        <option value="aaa">aaa</option>
-        <option value="bbb">bbb</option>
-        <option value="ccc">ccc</option>
-      </select>
+      <div>
+        <label htmlFor="birthDate">Date of birth</label>
+        <input type="text" id="birthDate" onChange={handleTextBirthDateChange} />
+      </div>
 
-      <button onClick={handleButtonClick3}>Button3</button>
+      <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />
+
+      <button onClick={handleButtonClick}>Button</button>
 
       <a href='/'>Back to main page</a>
     </div>
@@ -48,7 +55,7 @@ const IndexComponent = () => {
 
   return (
     <>
-      <PageTemplate title={'Test page - different-types-inputs-and-button-push-causes-error'} content={PageContent} loading={loading} setLoading={setLoading} />
+      <PageTemplate title={'Test page'} content={PageContent} loading={loading} setLoading={setLoading} />
     </>
   );
 };
