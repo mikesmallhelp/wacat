@@ -223,7 +223,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                 "name": "example_user", 
                 "role": "system" 
             },
-            { "content": "11.11.2020", "name": "example_assistant", "role": "system" },
+            { "content": "05.11.2020", "name": "example_assistant", "role": "system" },
             { 
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
                            "inputType: email" +
