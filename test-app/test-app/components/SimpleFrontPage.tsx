@@ -6,7 +6,7 @@ const SimpleFrontPage = () => {
 
     const content = (
         <div>
-            <a href='/different-types-inputs-and-button-push-causes-error-simple'>Link for a testing page</a>
+            <a href='/some-inputs-causes-message'>Link for a testing page</a>
         </div>
     );
 

@@ -33,6 +33,7 @@ const ignoreAiInTest = Boolean(process.env.IGNORE_AI_IN_TEST);
 const bypassAiErrors = Boolean(process.env.BYPASS_AI_ERRORS);
 const maxPageContentChars = process.env.MAX_PAGE_CONTENT_CHARS ? Number(process.env.MAX_PAGE_CONTENT_CHARS) : 3000;
 const aiGeneratedInputTexts = process.env.AI_GENERATED_INPUT_TEXTS === 'true';
+const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERATED_INPUT_TEXTS_IN_TEST);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -281,7 +282,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
-    if (aiGeneratedInputTexts) {
+    if (openAiApiKeyGiven && aiGeneratedInputTexts && ignoreAiGeneratedInputTextsInTests) {
         fillInputsWithAi({page});
     } else if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
                                           || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
