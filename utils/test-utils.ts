@@ -172,7 +172,7 @@ export const addSpacesToCamelCaseText = (text: string): string => text.replaceAl
 
 export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
 
-export const aiGeneratesInputContent = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean): 
+export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean): 
                       Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -194,29 +194,52 @@ export const aiGeneratesInputContent = async (pageContent: string, inputType: st
     const response = await openai.chat.completions.create({
         messages: [
             {
-                "content": `Analyze the HTML page contents (pageContent), input element's type (inputType) and label (inputLabel) and generate only appropriate fake input for that input element. Consider 
-                different languages and different formats for different input types. For example date formats, addresses, names are different in the different areas.
-                Note that sometimes inputType and inputLabel could be missing, but generate still some appropriate fake content.`, "role": "system"
+                "content": `You are a system that generates realistic and contextually appropriate fake input values for HTML input fields based on the given page content (pageContent), input element type (inputType), and label (inputLabel). 
+                
+                Consider the following:
+                1. Generate inputs that match the cultural and linguistic context of the provided page content. For instance, if the page is in French, use French names, addresses, and date formats.
+                2. Match the format and data type of the input field. For example:
+                    - For "date" fields, follow regional date formats like DD/MM/YYYY or MM/DD/YYYY.
+                    - For "email" fields, generate realistic email addresses with common domain names.
+                    - For "text" fields with labels like "Name", generate realistic names for the region implied by the content.
+                3. If inputType or inputLabel is missing, infer the most appropriate data type and content from the context of the pageContent.
+                4. Prioritize realism and consistency with the page's context and intended audience.
+                
+                Output only the generated fake input value.`, 
+                "role": "system"
             },
-            { "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
-                         "inputType: text" +
-                         "inputLabel: Date of birth", 
-                         "name": "example_user", "role": "system" },
+            { 
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                           "inputType: text" +
+                           "inputLabel: Date of birth", 
+                "name": "example_user", 
+                "role": "system" 
+            },
             { "content": "25/12/2000", "name": "example_assistant", "role": "system" },
-            { "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
-                "inputType: text" +
-                "inputLabel: Syntymäaika", 
-                "name": "example_user", "role": "system" },
+            { 
+                "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
+                           "inputType: text" +
+                           "inputLabel: Syntymäaika", 
+                "name": "example_user", 
+                "role": "system" 
+            },
             { "content": "25.12.2020", "name": "example_assistant", "role": "system" },
-            { "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
-                "inputType: email" +
-                "inputLabel: no label", 
-                "name": "example_user", "role": "system" },
+            { 
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                           "inputType: email" +
+                           "inputLabel: no label", 
+                "name": "example_user", 
+                "role": "system" 
+            },
             { "content": "mike.harrison@gmail.com", "name": "example_assistant", "role": "system" },
-            { "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel ${inputLabel}`, "role": "user" },
+            { 
+                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`, 
+                "role": "user" 
+            }
         ],
         model: openAiModel
     });
+    
 
     const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
 

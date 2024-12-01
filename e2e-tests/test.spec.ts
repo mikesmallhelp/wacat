@@ -6,7 +6,7 @@ dotenvConfig();
 import { fail } from 'node:assert';
 
 import {
-    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
+    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
     generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame,
     readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
@@ -139,14 +139,18 @@ const handlePage = async ({ page }: { page: Page }) => {
     await visitLinks({ page });
 }
 
+const getPageTextContents = async ({ page }: { page: Page }): Promise<string> => {
+    const rawContent = await page.locator('body').innerText(); // eslint-disable-line unicorn/prefer-dom-node-text-content
+    const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
+    return addSpacesToCamelCaseText(rawContentWithoutLineBreaks);  
+}
+
 const checkPageForErrors = async ({ page }: { page: Page }) => {
     if (debug) {
         console.log('  checkPageForErrors');
     }
 
-    const rawContent = await page.locator('body').innerText(); // eslint-disable-line unicorn/prefer-dom-node-text-content
-    const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
-    const content = addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
+    const content = await getPageTextContents({page});
 
     if (debug) {
         console.log('  ***********content***********');
@@ -321,11 +325,11 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
 
     const count = await inputs.count();
     for (let i = 0; i < count; i++) {
-        const element = inputs.nth(i);
+        const input = inputs.nth(i);
 
-        const type = await element.evaluate(el => el.getAttribute('type'));
+        const type = await input.evaluate(el => el.getAttribute('type'));
 
-        const labelText = await element.evaluate((el) => {
+        const labelText = await input.evaluate((el) => {
             const id = el.id;
             if (id) {
                 const label = document.querySelector(`label[for="${id}"]`);
@@ -342,7 +346,12 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
             return null;
         });
 
-        console.log({ type, label: labelText || 'No label' });
+        input.fill('');
+        if (await input.isVisible()) {
+            const generatedValue = await generateInputContentWithAi(await getPageTextContents({page}), type || 'no type', labelText || 'no label', debug);
+            console.log('Filling the #' + (i + 1) + " type: " + type + " label :" + labelText + "input field a value: " + generatedValue);
+            await input.fill(generatedValue);
+        }
     }
 }
 
