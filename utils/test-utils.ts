@@ -171,3 +171,60 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
 export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')
 
 export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
+
+export const aiGeneratesInputContent = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean): 
+                      Promise<string> => {
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+
+    const openAiModel = process.env.OPENAI_API_MODEL;
+    if (!openAiModel) {
+        throw new Error('OpenAI model not configured!');
+    }
+
+    if (debug) {
+        console.log('  ***********aiGeneratesInputContent***********');
+        console.log('  pageContent:' + pageContent);
+        console.log('  inputType:' + inputType);
+        console.log('  inputLabel:' + inputLabel);
+        console.log('  *******************************');
+    }
+
+    const response = await openai.chat.completions.create({
+        messages: [
+            {
+                "content": `Analyze the HTML page contents (pageContent), input element's type (inputType) and label (inputLabel) and generate only appropriate fake input for that input element. Consider 
+                different languages and different formats for different input types. For example date formats, addresses, names are different in the different areas.
+                Note that sometimes inputType and inputLabel could be missing, but generate still some appropriate fake content.`, "role": "system"
+            },
+            { "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                         "inputType: text" +
+                         "inputLabel: Date of birth", 
+                         "name": "example_user", "role": "system" },
+            { "content": "25/12/2000", "name": "example_assistant", "role": "system" },
+            { "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
+                "inputType: text" +
+                "inputLabel: Syntymäaika", 
+                "name": "example_user", "role": "system" },
+            { "content": "25.12.2020", "name": "example_assistant", "role": "system" },
+            { "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                "inputType: email" +
+                "inputLabel: no label", 
+                "name": "example_user", "role": "system" },
+            { "content": "mike.harrison@gmail.com", "name": "example_assistant", "role": "system" },
+            { "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel ${inputLabel}`, "role": "user" },
+        ],
+        model: openAiModel
+    });
+
+    const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
+
+    if (debug) {
+        console.log('  ***********aiGeneratesInputContent***********');
+        console.log('  generatedInputValue:' + generatedInputValue);
+        console.log('  *******************************');
+    }
+
+    return generatedInputValue;
+};

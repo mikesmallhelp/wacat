@@ -323,11 +323,7 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
     for (let i = 0; i < count; i++) {
         const element = inputs.nth(i);
 
-        const tagName = await element.evaluate(el => el.tagName);
         const type = await element.evaluate(el => el.getAttribute('type'));
-        const name = await element.evaluate(el => el.getAttribute('name'));
-        const id = await element.evaluate(el => el.id);
-        const value = await element.evaluate(el => (el as HTMLInputElement).value);
 
         const labelText = await element.evaluate((el) => {
             const id = el.id;
@@ -346,7 +342,7 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
             return null;
         });
 
-        console.log({ tagName, type, name, id, value, label: labelText || 'No label' });
+        console.log({ type, label: labelText || 'No label' });
     }
 }
 
