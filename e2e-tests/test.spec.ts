@@ -282,7 +282,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
-    if (openAiApiKeyGiven && aiGeneratedInputTexts && !ignoreAiGeneratedInputTextsInTests) {
+    if (openAiApiKeyGiven && aiGeneratedInputTexts && !ignoreAiInTest && !ignoreAiGeneratedInputTextsInTests) {
         await fillInputsWithAi({page});
     } else if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
                                           || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
@@ -322,7 +322,7 @@ const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string
 }
 
 const fillInputsWithAi = async ({ page }: { page: Page }) => {
-    const inputs = page.locator('input:not([type="checkbox"]):not([type="radio"])');
+    const inputs = page.locator('input:not([type="radio"]):not([type="checkbox"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="hidden"])');
 
     const count = await inputs.count();
     for (let i = 0; i < count; i++) {
