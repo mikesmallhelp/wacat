@@ -41,7 +41,7 @@ If you encounter a bug or need a specific feature, please create a new issue.
 
 ## Current Version
 
-The current version of wacat is 1.2.0. Please refer to the end of this page for the change history.
+The current version of wacat is 1.3.0. Please refer to the end of this page for the change history.
 
 ## Warnings
 Please ensure you only test your own web application or have explicit permission to test someone else’s application. Testing the vulnerabilities of an application without authorization could be illegal.
@@ -84,6 +84,14 @@ MAX_PAGE_CONTENT_CHARS=<your value here>
 ```
 
 This value sets the maximum number of characters sent to the OpenAI API for error detection. The default is 3000 if not specified. See additional details below.
+
+You can optionally use the following environment variable:
+
+```
+AI_GENERATED_INPUT_TEXTS=true
+```
+
+When set to true, the OpenAI API will generate values for all input fields on each page. By default, this value is set to false. Please note that enabling this option can result in significant API usage. Therefore, it is recommended to have at least a Tier 1 usage plan, as it allows for a higher number of requests per minute compared to the Free tier.
 
 ### Updating wacat
 
@@ -276,6 +284,50 @@ If your queries exceed the API's tokens-per-minute limit, you can use the MAX_PA
 The base prompt contains approximately 1600 characters. For example, if you set MAX_PAGE_CONTENT_CHARS to 400, the total prompt size will be around 2000 characters, or roughly 500 tokens (1 token is approximately 4 characters in English). The response will always consist of a single token, so primarily manage the prompt size.
 
 For more details, refer to https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them.
+
+### Optional: AI-Generated Input Field Content
+AI-generated content for input fields on any page can be enabled through the OpenAI API by setting the ```AI_GENERATED_INPUT_TEXTS``` environment variable (refer to the details above).
+
+Here’s an example of an application page:
+
+![](doc/simple-page.png)
+
+If you run the following command:
+
+```
+wacat test --wait 2000 https://mikesmallhelp-test-application-simple.vercel.app/
+```
+
+The output might look like this:
+
+```
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:48:1 › test an application
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+Check with the AI that the page doesn't contain errors.
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+Check with the AI that the page doesn't contain errors.
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+Filling the #1 input field with the AI, type: text, label: Email, the generated value: lucas.dubois@example.com
+Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 03/03/1990
+Selecting the #1 checkbox
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+  1 passed (1.3m)
+```
+
+In the lines:
+
+```
+Filling the #1 input field with the AI, type: text, label: Email, the generated value: lucas.dubois@example.com
+Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 03/03/1990
+```
+
+you can see that the AI automatically generated the content for the input fields based on their type and label.
 
 ### Detect HTTP errors
 
@@ -1022,6 +1074,10 @@ If adding a new feature, ensure a test case is included. Check the run-tests.sh 
 Consider adding unit tests to improve code reliability.
 
 ## Change History
+
+### 1.3.0 (December 1, 2024)
+
+- Added optional AI support to generate input field content
 
 ### 1.2.0 (November 3, 2024)
 

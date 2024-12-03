@@ -171,3 +171,83 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
 export const addSpacesToCamelCaseText = (text: string): string => text.replaceAll(/([A-Za-z])(\d)/g, '$1 $2').replaceAll(/(\d)([A-Za-z])/g, '$1 $2').replaceAll(/([a-z])([A-Z])/g, '$1 $2')
 
 export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
+
+export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean): 
+                      Promise<string> => {
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+
+    const openAiModel = process.env.OPENAI_API_MODEL;
+    if (!openAiModel) {
+        throw new Error('OpenAI model not configured!');
+    }
+
+    if (debug) {
+        console.log('  ***********aiGeneratesInputContent***********');
+        console.log('  pageContent:' + pageContent);
+        console.log('  inputType:' + inputType);
+        console.log('  inputLabel:' + inputLabel);
+        console.log('  *******************************');
+    }
+
+    const response = await openai.chat.completions.create({
+        messages: [
+            {
+                "content": `You are a system that generates realistic and contextually appropriate fake input values for HTML input fields based on the given page content (pageContent), input element type (inputType), and label (inputLabel). 
+                
+                Consider the following:
+                1. Generate inputs that match the cultural and linguistic context of the provided page content. For instance, if the page is in French, use French names, addresses, and date formats.
+                2. Match the format and data type of the input field. For example:
+                    - For "date" fields, follow regional date formats like DD/MM/YYYY or MM/DD/YYYY.
+                    - For "email" fields, generate realistic email addresses with common domain names.
+                    - For "text" fields with labels like "Name", generate realistic names for the region implied by the content.
+                3. If inputType or inputLabel is missing, infer the most appropriate data type and content from the context of the pageContent.
+                4. Prioritize realism and consistency with the page's context and intended audience.
+                
+                Output only the generated fake input value.`, 
+                "role": "system"
+            },
+            { 
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                           "inputType: text" +
+                           "inputLabel: Date of birth", 
+                "name": "example_user", 
+                "role": "system" 
+            },
+            { "content": "25/12/2000", "name": "example_assistant", "role": "system" },
+            { 
+                "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
+                           "inputType: text" +
+                           "inputLabel: Syntymäaika", 
+                "name": "example_user", 
+                "role": "system" 
+            },
+            { "content": "05.11.2020", "name": "example_assistant", "role": "system" },
+            { 
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                           "inputType: email" +
+                           "inputLabel: no label", 
+                "name": "example_user", 
+                "role": "system" 
+            },
+            { "content": "mike.harrison@gmail.com", "name": "example_assistant", "role": "system" },
+            { 
+                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`, 
+                "role": "user" 
+            }
+        ],
+        model: openAiModel
+    });
+    
+
+    const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
+
+    if (debug) {
+        console.log('  ***********aiGeneratesInputContent***********');
+        console.log('  generatedInputValue:' + generatedInputValue);
+        console.log('  *******************************');
+    }
+
+    return generatedInputValue;
+};

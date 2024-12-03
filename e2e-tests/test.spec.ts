@@ -6,7 +6,7 @@ dotenvConfig();
 import { fail } from 'node:assert';
 
 import {
-    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
+    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
     generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame,
     readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
@@ -32,6 +32,8 @@ const openAiApiKeyGiven = Boolean(process.env.OPENAI_API_KEY);
 const ignoreAiInTest = Boolean(process.env.IGNORE_AI_IN_TEST);
 const bypassAiErrors = Boolean(process.env.BYPASS_AI_ERRORS);
 const maxPageContentChars = process.env.MAX_PAGE_CONTENT_CHARS ? Number(process.env.MAX_PAGE_CONTENT_CHARS) : 3000;
+const aiGeneratedInputTexts = process.env.AI_GENERATED_INPUT_TEXTS === 'true';
+const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERATED_INPUT_TEXTS_IN_TEST);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -138,14 +140,18 @@ const handlePage = async ({ page }: { page: Page }) => {
     await visitLinks({ page });
 }
 
+const getPageTextContents = async ({ page }: { page: Page }): Promise<string> => {
+    const rawContent = await page.locator('body').innerText(); // eslint-disable-line unicorn/prefer-dom-node-text-content
+    const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
+    return addSpacesToCamelCaseText(rawContentWithoutLineBreaks);  
+}
+
 const checkPageForErrors = async ({ page }: { page: Page }) => {
     if (debug) {
         console.log('  checkPageForErrors');
     }
 
-    const rawContent = await page.locator('body').innerText(); // eslint-disable-line unicorn/prefer-dom-node-text-content
-    const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
-    const content = addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
+    const content = await getPageTextContents({page});
 
     if (debug) {
         console.log('  ***********content***********');
@@ -276,7 +282,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
-    if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
+    if (openAiApiKeyGiven && aiGeneratedInputTexts && !ignoreAiInTest && !ignoreAiGeneratedInputTextsInTests) {
+        await fillInputsWithAi({page});
+    } else if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
                                           || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
     ) {
         await fillTextInputs({
@@ -311,6 +319,42 @@ const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string
     await selectFromDropDownLists({ page });
     await fillCheckboxes({ page });
     await selectFromRadioButtons({ page });
+}
+
+const fillInputsWithAi = async ({ page }: { page: Page }) => {
+    const inputs = page.locator('input:not([type="radio"]):not([type="checkbox"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="hidden"])');
+
+    const count = await inputs.count();
+    for (let i = 0; i < count; i++) {
+        const input = inputs.nth(i);
+
+        const type = await input.evaluate(el => el.getAttribute('type'));
+
+        const labelText = await input.evaluate((el) => {
+            const {id} = el;
+            if (id) {
+                const label = document.querySelector(`label[for="${id}"]`);
+                if (label) {
+                    return label.textContent?.trim();
+                }
+            }
+
+            const parentLabel = el.closest('label');
+            if (parentLabel) {
+                return parentLabel.textContent?.trim();
+            }
+
+            return null;
+        });
+
+        if (await input.isVisible()) {
+            const typeParameter = type || 'no type';
+            const labelParameter = labelText || 'no label';
+            const generatedValue = await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
+            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", label: " + labelParameter + ", the generated value: " + generatedValue);
+            await input.fill(generatedValue);
+        }
+    }
 }
 
 const fillTextInputs = async ({ doDerivation = true, inputText, inputType, page, selector }: {
