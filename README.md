@@ -16,6 +16,8 @@ Additionally, wacat:
 
 - Detects error messages on web pages using AI
   - This is an optional feature and requires an OpenAI API key
+- Generates AI-driven content for input fields based on their type and label
+  - This is an optional feature and requires an OpenAI API key
 - Detects HTTP errors (e.g., HTTP 500 errors) between the browser and server
 - Detects errors in the browser's console log
 - Detects user-defined error messages on web pages
@@ -1075,7 +1077,7 @@ Consider adding unit tests to improve code reliability.
 
 ## Change History
 
-### 1.3.0 (December 1, 2024)
+### 1.3.0 (December 3, 2024)
 
 - Added optional AI support to generate input field content
 
