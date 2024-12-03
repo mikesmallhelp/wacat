@@ -140,11 +140,15 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
         messages: [
             {
                 "content": `Analyze the provided text content and determine if it includes any error message that could indicate a technical issue on a webpage.
-                         This includes both programming-related errors (e.g. "NullPointerException", "SyntaxError", "500 Internal Server Error") and 
-                         general user-facing error messages (e.g. "Server error: Unable to process your request at this time.", "Something went wrong"). 
-                         Messages that simply inform users that data was not found or is unavailable are not considered errors 
-                         (e.g., "No results found" or "No data available" are not errors in this context). If the content contains an error message, 
-                         respond with 'true'. If it does not, respond with 'false'.`, "role": "system"
+                             This includes programming-related errors (e.g., "NullPointerException", "SyntaxError", "500 Internal Server Error") and
+                             general user-facing error messages (e.g., "Server error: Unable to process your request at this time.", "Something went wrong"). 
+                             Messages that simply inform users that data was not found or is unavailable (e.g., "No results found" or "No data available") 
+                             are not considered errors in this context. Additionally, any validation errors related to user input, such as missing, 
+                             incorrect, invalid, or otherwise unacceptable input data (e.g., "Validation error: Address is missing", 
+                             "Validation error: Credit card number wrong format", "Validation error: Input exceeds maximum length"), 
+                             are not considered errors and should return 'false'. If the content contains an error message indicating a technical issue, 
+                             respond with 'true'. Otherwise, respond with 'false'.`, 
+                "role": "system"
             },
             { "content": "Registration page Error 404 Page not found. The page you are looking for might have been removed or is temporarily unavailable.", "name": "example_user", "role": "system" },
             { "content": "true", "name": "example_assistant", "role": "system" },
@@ -154,10 +158,14 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
             { "content": "false", "name": "example_assistant", "role": "system" },
             { "content": "Vacation search No flights found", "name": "example_user", "role": "system" },
             { "content": "false", "name": "example_assistant", "role": "system" },
+            { "content": "Test page Registration page Name Address Phonenumber Credit card number Validation error: Address is missing Validation error: Credit card number wrong format.", "name": "example_user", "role": "system" },
+            { "content": "false", "name": "example_assistant", "role": "system" },
+            { "content": "Test page Name Phonenumber Validation error: Input exceeds maximum length.", "name": "example_user", "role": "system" },
+            { "content": "false", "name": "example_assistant", "role": "system" },
             { "content": `${pageContent}`, "role": "user" },
         ],
         model: openAiModel
-    });
+    });        
 
     const openAiResponse = response.choices[0]?.message?.content?.trim().toLowerCase();
 
