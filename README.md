@@ -79,6 +79,8 @@ OPENAI_API_MODEL=<your model here>
 
 Important: Providing an OpenAI API key will result in charges from OpenAI for API usage. While wacat has been thoroughly tested, please be aware that programming errors could lead to a higher-than-expected number of calls to the OpenAI API.
 
+Additionally, please note that if your website contains sensitive material, the contents of your pages will be sent to the OpenAI API, and you must ensure that this aligns with your intended use. For example, it is possible that the content you send may be used as training data.
+
 You can also add the following optional environment variable to the .env file:
 
 ```
