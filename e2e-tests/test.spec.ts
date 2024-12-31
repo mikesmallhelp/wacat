@@ -34,6 +34,7 @@ const bypassAiErrors = Boolean(process.env.BYPASS_AI_ERRORS);
 const maxPageContentChars = process.env.MAX_PAGE_CONTENT_CHARS ? Number(process.env.MAX_PAGE_CONTENT_CHARS) : 3000;
 const aiGeneratedInputTexts = process.env.AI_GENERATED_INPUT_TEXTS === 'true';
 const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERATED_INPUT_TEXTS_IN_TEST);
+const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
@@ -350,7 +351,8 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
         if (await input.isVisible()) {
             const typeParameter = type || 'no type';
             const labelParameter = labelText || 'no label';
-            const generatedValue = await generateBrokenInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
+            const generatedValue = brokenInputValues ? await generateBrokenInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug) :
+                                                       await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
             console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", label: " + labelParameter + ", the generated value: " + generatedValue);
             await input.fill(generatedValue);
         }

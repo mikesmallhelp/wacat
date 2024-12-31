@@ -16,6 +16,7 @@ export default class TestCommand extends Command {
     'bypass-ai-errors': Flags.boolean({description: 'Bypass the AI errors'}),
     'bypass-browser-console-errors': Flags.boolean({description: 'Bypass the browser console\'s errors'}),
     'bypass-http-errors': Flags.boolean({description: 'Bypass the HTTP errors'}),
+    'broken-input-values': Flags.boolean({description: 'Enable the use of invalid or broken input values'}),
     'conf': Flags.string({description: 'Path to the configuration file'}),
     'debug': Flags.boolean({description: 'Enable debug mode'}),
     'headless': Flags.boolean({description: 'Headless mode'}),
@@ -59,6 +60,7 @@ export default class TestCommand extends Command {
     command += flags['bypass-ai-errors'] ? `${prefix}BYPASS_AI_ERRORS=true${suffix}` : '';
     command += flags['bypass-browser-console-errors'] ? `${prefix}BYPASS_BROWSER_CONSOLE_ERRORS=true${suffix}` : '';
     command += flags['bypass-http-errors'] ? `${prefix}BYPASS_HTTP_ERRORS=true${suffix}` : '';
+    command += flags['broken-input-values'] ? `${prefix}BROKEN_INPUT_VALUES=true${suffix}` : '';
     command += flags.conf ? `${prefix}CONFIGURATION_FILE_PATH=${flags.conf}${suffix}` : '';
     command += flags.debug ? `${prefix}DEBUG=true${suffix}` : '';
     command += flags['error-texts'] ? `${prefix}PAGE_ERROR_TEXTS_FILE_PATH=${flags['error-texts']}${suffix}` : '';
