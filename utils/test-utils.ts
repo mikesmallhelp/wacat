@@ -192,7 +192,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
     }
 
     if (debug) {
-        console.log('  ***********aiGeneratesInputContent***********');
+        console.log('  ***********generateInputContentWithAi***********');
         console.log('  pageContent:' + pageContent);
         console.log('  inputType:' + inputType);
         console.log('  inputLabel:' + inputLabel);
@@ -252,7 +252,93 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
     const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
 
     if (debug) {
-        console.log('  ***********aiGeneratesInputContent***********');
+        console.log('  ***********generateInputContentWithAi***********');
+        console.log('  generatedInputValue:' + generatedInputValue);
+        console.log('  *******************************');
+    }
+
+    return generatedInputValue;
+};
+
+export const generateBrokenInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean): 
+                      Promise<string> => {
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+
+    const openAiModel = process.env.OPENAI_API_MODEL;
+    if (!openAiModel) {
+        throw new Error('OpenAI model not configured!');
+    }
+
+    if (debug) {
+        console.log('  ***********generateBrokenInputContentWithAi***********');
+        console.log('  pageContent:' + pageContent);
+        console.log('  inputType:' + inputType);
+        console.log('  inputLabel:' + inputLabel);
+        console.log('  *******************************');
+    }
+
+    const response = await openai.chat.completions.create({
+        messages: [
+            {
+                "content": `You are a system that generates slightly broken or invalid fake input values for HTML input fields. 
+                Your goal is to create input values that are likely to cause errors or unexpected behavior in the systems processing them. 
+                Before introducing errors, recognize the cultural and regional context based on the page content (pageContent) 
+                and use appropriate formats for the region.
+    
+                Example Guidelines:
+                1. Recognize regional formats based on the language and context. Examples include:
+                    - For Finland, use date format DD.MM.YYYY (e.g., 25.11.2024).
+                    - For the USA, use date format MM/DD/YYYY (e.g., 11/25/2024).
+                    These are only examples. The possibilities are numerous, and the formats should adapt to the regional and 
+                    cultural context implied by the pageContent.
+                2. Introduce **only one** error per input value that is likely to disrupt parsing or validation:
+                    - Dates: Introduce characters or formatting errors that break typical patterns, such as "25..11.2024" or "2#11.2024".
+                    - Emails: Insert invalid characters or break syntax rules, such as "matti.mäkinen@¥gmail,com" or "user@@example.com".
+                    - Text fields: Replace characters with symbols or invalid Unicode characters, such as "J¥hn Reynolds" or "Märi€ Curie".
+                    - Addresses: Add completely inappropriate characters, such as "123 Mai¥n St" or "AB^DE".
+                3. Errors should be subtle yet plausible, ensuring they mimic real user inputs while introducing anomalies that could disrupt a system.
+                4. Focus on generating outputs likely to cause errors during parsing or validation, rather than simple typos or human mistakes.
+                5. Output only the generated broken input value. Do not provide explanations.`, 
+                "role": "system"
+            },
+            { 
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                           "inputType: text" +
+                           "inputLabel: Date of birth", 
+                "name": "example_user", 
+                "role": "system" 
+            },
+            { "content": "2#11.2024", "name": "example_assistant", "role": "system" },
+            { 
+                "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
+                           "inputType: text" +
+                           "inputLabel: Syntymäaika", 
+                "name": "example_user", 
+                "role": "system" 
+            },
+            { "content": "25.11.2.24", "name": "example_assistant", "role": "system" },
+            { 
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                           "inputType: email" +
+                           "inputLabel: no label", 
+                "name": "example_user", 
+                "role": "system" 
+            },
+            { "content": "mark.roberts@gmail,com", "name": "example_assistant", "role": "system" },
+            { 
+                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`, 
+                "role": "user" 
+            }
+        ],
+        model: openAiModel
+    });    
+        
+    const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
+
+    if (debug) {
+        console.log('  ***********generateBrokenInputContentWithAi***********');
         console.log('  generatedInputValue:' + generatedInputValue);
         console.log('  *******************************');
     }

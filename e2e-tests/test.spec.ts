@@ -6,7 +6,7 @@ dotenvConfig();
 import { fail } from 'node:assert';
 
 import {
-    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
+    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateBrokenInputContentWithAi, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
     generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame,
     readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
@@ -350,7 +350,7 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
         if (await input.isVisible()) {
             const typeParameter = type || 'no type';
             const labelParameter = labelText || 'no label';
-            const generatedValue = await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
+            const generatedValue = await generateBrokenInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
             console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", label: " + labelParameter + ", the generated value: " + generatedValue);
             await input.fill(generatedValue);
         }
