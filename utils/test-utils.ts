@@ -247,7 +247,6 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
         ],
         model: openAiModel
     });
-    
 
     const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
 
