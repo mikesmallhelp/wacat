@@ -294,7 +294,7 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
                     cultural context implied by the pageContent.
                 2. Introduce **only one** error per input value that is likely to disrupt parsing or validation:
                     - Dates: Introduce characters or formatting errors that break typical patterns, such as "25..11.2024" or "2#11.2024".
-                    - Emails: Insert invalid characters or break syntax rules, such as "matti.mäkinen@¥gmail,com" or "user@@example.com".
+                    - Emails: Insert invalid characters or break syntax rules, such as "matti.mäkinen@gmail,com" or "user@@example.com".
                     - Text fields: Replace characters with symbols or invalid Unicode characters, such as "J¥hn Reynolds" or "Märi€ Curie".
                     - Addresses: Add completely inappropriate characters, such as "123 Mai¥n St" or "AB^DE".
                 3. Errors should be subtle yet plausible, ensuring they mimic real user inputs while introducing anomalies that could disrupt a system.
