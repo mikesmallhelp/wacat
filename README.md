@@ -290,6 +290,7 @@ The base prompt contains approximately 1600 characters. For example, if you set 
 For more details, refer to https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them.
 
 ### Optional: AI-Generated Input Field Content
+
 AI-generated content for input fields on any page can be enabled through the OpenAI API by setting the ```AI_GENERATED_INPUT_TEXTS``` environment variable (refer to the details above).
 
 Here’s an example of an application page:
@@ -299,7 +300,7 @@ Here’s an example of an application page:
 If you run the following command:
 
 ```
-wacat test --wait 2000 https://mikesmallhelp-test-application-simple.vercel.app/
+wacat test https://mikesmallhelp-test-application-simple.vercel.app/
 ```
 
 The output might look like this:
@@ -332,6 +333,84 @@ Filling the #2 input field with the AI, type: text, label: Date of birth, the ge
 ```
 
 you can see that the AI automatically generated the content for the input fields based on their type and label.
+
+### Invalid or broken input values
+
+wacat can generate invalid or broken input values for testing purposes. If the ```AI_GENERATED_INPUT_TEXTS``` environment variable is set to true, AI is used to generate input texts. Otherwise, wacat generates invalid or broken input values without relying on AI.
+
+Example of a simple application page:
+
+![](doc/simple-page.png)
+
+The following commands are identical in syntax, regardless of whether AI is used. For example, if AI is enabled and the following command is executed:
+
+```
+wacat test --broken-input-values https://mikesmallhelp-test-application-simple.vercel.app/
+```
+
+The output might look like this:
+
+```
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:50:1 › test an application
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+Check with the AI that the page doesn't contain errors.
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+Check with the AI that the page doesn't contain errors.
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+Filling the #1 input field with the AI, type: text, label: Email, the generated value: user@@example.com (the broken input value used)
+Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 2/30/19.89 (the broken input value used)
+Selecting the #1 checkbox
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+  1 passed (1.4m)
+```
+
+In this example, the broken input values are clearly indicated in the output with the text ```(the broken input value used)```. Examples include:
+
+- A broken email address: ```user@@example.com```
+- A broken date: ```2/30/19.89```
+
+#### Using the ```--broken-input-values-percentage``` flag
+
+If you want only a portion of the input values to be broken, you can use the ```--broken-input-values-percentage``` flag. This flag allows you to specify a percentage (0-100) of inputs to be intentionally broken or invalid. For instance, setting this flag to 50 means approximately 50% of inputs will be invalid.
+
+For example:
+
+```
+wacat test --broken-input-values --broken-input-values-percentage 50 https://mikesmallhelp-test-application-simple.vercel.app/
+```
+
+This command might produce the following output:
+
+```
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:50:1 › test an application
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+Check with the AI that the page doesn't contain errors.
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+Check with the AI that the page doesn't contain errors.
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+Filling the #1 input field with the AI, type: text, label: Email, the generated value: john.smith@example.com
+Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 11//23/1989 (the broken input value used)
+Selecting the #1 checkbox
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+  1 passed (1.4m)
+
+```
+
+In this case, only the value ```11//23/1989``` is broken, while the other input ```john.smith@example.com``` remains valid. This demonstrates how the ```--broken-input-values-percentage``` flag controls the proportion of invalid inputs.
+
+By fine-tuning this parameter, you can simulate real-world scenarios where some user inputs may be erroneous or malformed.
 
 ### Detect HTTP errors
 
