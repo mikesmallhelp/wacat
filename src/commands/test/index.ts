@@ -14,6 +14,10 @@ export default class TestCommand extends Command {
 
   static flags = {
     'broken-input-values': Flags.boolean({description: 'Enable the use of invalid or broken input values'}),
+    'broken-input-values-percentage': Flags.integer({description: `Specify the percentage (0-100) of broken or invalid input values to use when the 
+                                                                   --broken-input-values flag is enabled. For example, a value of 50 means that approximately 50% of 
+                                                                   the inputs will be intentionally broken or invalid. The default value is 100%, meaning all 
+                                                                   inputs will be broken or invalid unless a specific percentage is provided.`, max: 100, min: 0}),
     'bypass-ai-errors': Flags.boolean({description: 'Bypass the AI errors'}),
     'bypass-browser-console-errors': Flags.boolean({description: 'Bypass the browser console\'s errors'}),
     'bypass-http-errors': Flags.boolean({description: 'Bypass the HTTP errors'}),
@@ -58,6 +62,7 @@ export default class TestCommand extends Command {
     let command = isWindows ? `${prefix}ROOT_URL=${args.url}${suffix}` : `${prefix}ROOT_URL='${args.url}'${suffix}`;
 
     command += flags['broken-input-values'] ? `${prefix}BROKEN_INPUT_VALUES=true${suffix}` : '';
+    command += flags['broken-input-values-percentage'] ? `${prefix}BROKEN_INPUT_VALUES_PERCENTAGE=${flags['broken-input-values-percentage']}${suffix}` : '';
     command += flags['bypass-ai-errors'] ? `${prefix}BYPASS_AI_ERRORS=true${suffix}` : '';
     command += flags['bypass-browser-console-errors'] ? `${prefix}BYPASS_BROWSER_CONSOLE_ERRORS=true${suffix}` : '';
     command += flags['bypass-http-errors'] ? `${prefix}BYPASS_HTTP_ERRORS=true${suffix}` : '';

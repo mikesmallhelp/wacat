@@ -344,3 +344,11 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
 
     return generatedInputValue;
 };
+
+export const probabilityCheck = (probability: number): boolean => {
+    if (probability < 0 || probability > 100) {
+        throw new Error("Probability must be between 0 and 100.");
+    }
+    
+    return Math.random() * 100 < probability;
+};

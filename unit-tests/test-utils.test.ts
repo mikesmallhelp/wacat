@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import {
     addSpacesToCamelCaseText, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex,
-    generateRandomInteger, generateRandomString, generateRandomUrl, getHost, hostIsSame, shuffleArray, truncateString
+    generateRandomInteger, generateRandomString, generateRandomUrl, getHost, hostIsSame, probabilityCheck, shuffleArray, truncateString
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -257,5 +257,42 @@ describe('truncateString', () => {
         const text = 'abcdeabcde';
         const truncated = truncateString(text, 10);
         expect(truncated).to.equal(text);
+    });
+});
+
+describe('probabilityCheck', () => {
+    it('should return true approximately 50% of the time for a 50% probability', () => {
+        const probability = 50;
+        let trueCount = 0;
+        const iterations = 10_000;
+
+        for (let i = 0; i < iterations; i++) {
+            if (probabilityCheck(probability)) {
+                trueCount++;
+            }
+        }
+
+        const actualProbability = (trueCount / iterations) * 100;
+        expect(actualProbability).to.be.closeTo(50, 5);
+    });
+
+    it('should always return true for 100% probability', () => {
+        for (let i = 0; i < 1000; i++) {
+            expect(probabilityCheck(100)).to.be.true;
+        }
+    });
+
+    it('should always return false for 0% probability', () => {
+        for (let i = 0; i < 1000; i++) {
+            expect(probabilityCheck(0)).to.be.false;
+        }
+    });
+
+    it('should throw an error for probability less than 0', () => {
+        expect(() => probabilityCheck(-1)).to.throw("Probability must be between 0 and 100.");
+    });
+
+    it('should throw an error for probability greater than 100', () => {
+        expect(() => probabilityCheck(101)).to.throw("Probability must be between 0 and 100.");
     });
 });
