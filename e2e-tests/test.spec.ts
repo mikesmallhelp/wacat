@@ -352,10 +352,15 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
         if (await input.isVisible()) {
             const typeParameter = type || 'no type';
             const labelParameter = labelText || 'no label';
-            const generatedValue = brokenInputValues && probabilityCheck(brokenInputValuesPercentage) ? 
+            const isBrokenInputValue = brokenInputValues && probabilityCheck(brokenInputValuesPercentage);
+
+            const generatedValue = isBrokenInputValue ? 
                                                 await generateBrokenInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug) :
                                                 await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
-            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", label: " + labelParameter + ", the generated value: " + generatedValue);
+
+            const brokenInputValueText = isBrokenInputValue ? ' (the broken input value used)' : '';
+            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", label: " + labelParameter + ", the generated value: " 
+                                                        + generatedValue + brokenInputValueText);
             await input.fill(generatedValue);
         }
     }
