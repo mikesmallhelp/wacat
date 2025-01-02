@@ -336,7 +336,7 @@ you can see that the AI automatically generated the content for the input fields
 
 ### Invalid or broken input values
 
-wacat can generate invalid or broken input values for testing purposes. If the ```AI_GENERATED_INPUT_TEXTS``` environment variable is set to true, AI is used to generate input texts. Otherwise, wacat generates invalid or broken input values without relying on AI.
+wacat can generate input values that are broken in various ways and to varying degrees for testing purposes. The level of brokenness can range from inputs with only minor errors to deliberately highly broken inputs that may contain multiple inconsistencies or severe issues. If the ```AI_GENERATED_INPUT_TEXTS``` environment variable is set to true (refer to the details above), AI is used to generate input texts. Otherwise, wacat generates invalid or broken input values without relying on AI.
 
 Example of a simple application page:
 
@@ -362,18 +362,19 @@ In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-Filling the #1 input field with the AI, type: text, label: Email, the generated value: user@@example.com (the broken input value used)
-Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 2/30/19.89 (the broken input value used)
+Filling the #1 input field with the AI, type: text, label: Email, the generated value: contact@@example.co@@@@mplllllllllllllllllllllll (the broken input value used)
+Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 12/25#2023 (the broken input value used)
 Selecting the #1 checkbox
 Push the button #1
 Check with the AI that the page doesn't contain errors.
   1 passed (1.4m)
+
 ```
 
 In this example, the broken input values are clearly indicated in the output with the text ```(the broken input value used)```. Examples include:
 
-- A broken email address: ```user@@example.com```
-- A broken date: ```2/30/19.89```
+- A broken email address: ```contact@@example.co@@@@mplllllllllllllllllllllll```
+- A broken date: ```12/25#2023```
 
 #### Using the ```--broken-input-values-percentage``` flag
 
