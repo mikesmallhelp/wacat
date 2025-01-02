@@ -281,29 +281,32 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
     const response = await openai.chat.completions.create({
         messages: [
             {
-                "content": `You are a system that generates slightly broken or invalid fake input values for HTML input fields. 
-                Your goal is to create input values that are likely to cause errors or unexpected behavior in the systems processing them. 
-                Before introducing errors, recognize the cultural and regional context based on the page content (pageContent) 
-                and use appropriate formats for the region.
+                "content": `You are a system that generates broken or invalid fake input values for HTML input fields. 
+                Your goal is to create input values that range in severity, including:
+                
+                1. **Mildly broken inputs**: Introduce **only one** error likely to disrupt parsing or validation.
+                2. **Moderately broken inputs**: Introduce a few errors that make the input harder to parse but still somewhat plausible.
+                3. **Severely broken inputs**: Create highly erroneous inputs, sometimes exceeding normal lengths (e.g., over 100 characters).
     
-                Example Guidelines:
-                1. Recognize regional formats based on the language and context. Examples include:
-                    - For Finland, use date format DD.MM.YYYY (e.g., 25.11.2024).
-                    - For the USA, use date format MM/DD/YYYY (e.g., 11/25/2024).
-                    These are only examples. The possibilities are numerous, and the formats should adapt to the regional and 
-                    cultural context implied by the pageContent.
-                2. Introduce **only one** error per input value that is likely to disrupt parsing or validation:
-                    - Dates: Introduce characters or formatting errors that break typical patterns, such as "25..11.2024" or "2#11.2024".
-                    - Emails: Insert invalid characters or break syntax rules, such as "matti.mäkinen@gmail,com" or "user@@example.com".
-                    - Text fields: Replace characters with symbols or invalid Unicode characters, such as "J¥hn Reynolds" or "Märi€ Curie".
-                    - Addresses: Add completely inappropriate characters, such as "123 Mai¥n St" or "AB^DE".
-                3. Errors should be subtle yet plausible, ensuring they mimic real user inputs while introducing anomalies that could disrupt a system.
-                4. Focus on generating outputs likely to cause errors during parsing or validation, rather than simple typos or human mistakes.
-                5. Output only the generated broken input value. Do not provide explanations.`, 
+                When generating inputs:
+                - Recognize regional and cultural context based on the page content (pageContent) and use appropriate formats for the region.
+                - Modify formats in ways that mimic human errors or unusual behavior, but maintain the intention to challenge parsing and validation.
+                - Example Guidelines:
+                    - Dates: For mild errors, introduce one small anomaly like "25..11.2024". For severe errors, create something like 
+                             "25..11..2#024444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444".
+                    - Emails: For mild errors, create something like "matti.makinen@gmail,com". For severe errors, create something like 
+                             "user@@example@@.comllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll".
+                    - Text fields: Mild errors might replace one letter, e.g., "Märi€ Curie". Severe errors might include multiple invalid Unicode characters 
+                                   or symbols, like "J¥hn&#@$#\uFFFF_Reynoldsddsjlfsdjlfsllslsdjflkdsjflsdkfjldskjfdslfkjdslfjlsdfjlsdjflkdsjflsdjfldsjfldslfdsldslfjdslf".
+                    - Addresses: Mild errors might replace one letter, like "123 Mai¥n St". Severe errors might introduce completely nonsensical strings, 
+                                 like "AB^DE@!!lskdkdksl¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥slkiu39kledlsdldflfdjflkdsfklslsslls¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥".
+    
+                Respond only with the generated broken input value. Do not provide explanations.`,
                 "role": "system"
             },
             { 
-                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection" + 
+                           "Pet's name" +
                            "inputType: text" +
                            "inputLabel: Date of birth", 
                 "name": "example_user", 
@@ -325,14 +328,15 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
                 "name": "example_user", 
                 "role": "system" 
             },
-            { "content": "mark.roberts@gmail,com", "name": "example_assistant", "role": "system" },
+            { "content": "mark.roberts@gmail,com", "name": "example_assistant", 
+                "role": "system" },
             { 
                 "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`, 
                 "role": "user" 
             }
         ],
         model: openAiModel
-    });    
+    });        
         
     const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
 
