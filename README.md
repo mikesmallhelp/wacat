@@ -45,7 +45,7 @@ If you encounter a bug or need a specific feature, please create a new issue.
 
 ## Current Version
 
-The current version of wacat is 1.3.0. Please refer to the end of this page for the change history.
+The current version of wacat is 1.4.0. Please refer to the end of this page for the change history.
 
 ## Warnings
 Please ensure you only test your own web application or have explicit permission to test someone else’s application. Testing the vulnerabilities of an application without authorization could be illegal.
@@ -1163,13 +1163,19 @@ Consider adding unit tests to improve code reliability.
 
 ## Change History
 
+### 1.4.0 (January 4, 2024)
+
+- Enhanced input field content generation with support for invalid or broken data
+  - Leverages the OpenAI API for content creation when an API key is available; otherwise, defaults to wacat's independent generation mechanism
+- Improved AI-driven content generation to incorporate autocomplete and placeholder attributes of input elements
+
 ### 1.3.0 (December 3, 2024)
 
 - Added optional AI support to generate input field content
 
 ### 1.2.0 (November 3, 2024)
 
-- Added optional AI support
+- Added optional AI-powered support for detecting errors in page content
 
 ### 1.1.0 (April 16, 2024)
 
