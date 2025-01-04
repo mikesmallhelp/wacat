@@ -147,7 +147,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
                              incorrect, invalid, or otherwise unacceptable input data (e.g., "Validation error: Address is missing", 
                              "Validation error: Credit card number wrong format", "Validation error: Input exceeds maximum length"), 
                              are not considered errors and should return 'false'. If the content contains an error message indicating a technical issue, 
-                             respond with 'true'. Otherwise, respond with 'false'.`, 
+                             respond with 'true'. Otherwise, respond with 'false'.`,
                 "role": "system"
             },
             { "content": "Registration page Error 404 Page not found. The page you are looking for might have been removed or is temporarily unavailable.", "name": "example_user", "role": "system" },
@@ -165,7 +165,7 @@ export const aiDetectsError = async (pageContent: string, debug: boolean): Promi
             { "content": `${pageContent}`, "role": "user" },
         ],
         model: openAiModel
-    });        
+    });
 
     const openAiResponse = response.choices[0]?.message?.content?.trim().toLowerCase();
 
@@ -180,8 +180,8 @@ export const addSpacesToCamelCaseText = (text: string): string => text.replaceAl
 
 export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
 
-export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean): 
-                      Promise<string> => {
+export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean):
+    Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
@@ -213,36 +213,36 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                 3. If inputType or inputLabel is missing, infer the most appropriate data type and content from the context of the pageContent.
                 4. Prioritize realism and consistency with the page's context and intended audience.
                 
-                Output only the generated fake input value.`, 
+                Output only the generated fake input value.`,
                 "role": "system"
             },
-            { 
+            {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
-                           "inputType: text" +
-                           "inputLabel: Date of birth", 
-                "name": "example_user", 
-                "role": "system" 
+                    "inputType: text" +
+                    "inputLabel: Date of birth",
+                "name": "example_user",
+                "role": "system"
             },
             { "content": "25/12/2000", "name": "example_assistant", "role": "system" },
-            { 
+            {
                 "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
-                           "inputType: text" +
-                           "inputLabel: Syntymäaika", 
-                "name": "example_user", 
-                "role": "system" 
+                    "inputType: text" +
+                    "inputLabel: Syntymäaika",
+                "name": "example_user",
+                "role": "system"
             },
             { "content": "05.11.2020", "name": "example_assistant", "role": "system" },
-            { 
+            {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
-                           "inputType: email" +
-                           "inputLabel: no label", 
-                "name": "example_user", 
-                "role": "system" 
+                    "inputType: email" +
+                    "inputLabel: no label",
+                "name": "example_user",
+                "role": "system"
             },
             { "content": "mike.harrison@gmail.com", "name": "example_assistant", "role": "system" },
-            { 
-                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`, 
-                "role": "user" 
+            {
+                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`,
+                "role": "user"
             }
         ],
         model: openAiModel
@@ -259,8 +259,8 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
     return generatedInputValue;
 };
 
-export const generateBrokenInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean): 
-                      Promise<string> => {
+export const generateBrokenInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean):
+    Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
@@ -281,63 +281,85 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
     const response = await openai.chat.completions.create({
         messages: [
             {
-                "content": `You are a system that generates broken or invalid fake input values for HTML input fields. 
+                "content": `You are a system that generates broken or invalid fake input values for HTML input fields based on the given 
+                page content (pageContent), input element type (inputType), and label (inputLabel). 
                 Your goal is to create input values that range in severity, including:
                 
-                1. **Mildly broken inputs**: Introduce **only one** error likely to disrupt parsing or validation.
+                1. **Mildly broken inputs**: Introduce **only one** error likely to disrupt parsing or validation. 
+                   One third of the generated inputs should be these. 
                 2. **Moderately broken inputs**: Introduce a few errors that make the input harder to parse but still somewhat plausible.
+                   One third of the generated inputs should be these.
                 3. **Severely broken inputs**: Create highly erroneous inputs, sometimes exceeding normal lengths (e.g., over 100 characters).
+                   One third of the generated inputs should be these.
     
                 When generating inputs:
                 - Recognize regional and cultural context based on the page content (pageContent) and use appropriate formats for the region.
                 - Modify formats in ways that mimic human errors or unusual behavior, but maintain the intention to challenge parsing and validation.
                 - Example Guidelines:
-                    - Dates: For mild errors, introduce one small anomaly like "25..11.2024". For severe errors, create something like 
-                             "25..11..2#024444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444".
-                    - Emails: For mild errors, create something like "matti.makinen@gmail,com". For severe errors, create something like 
-                             "user@@example@@.comllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll".
-                    - Text fields: Mild errors might replace one letter, e.g., "Märi€ Curie". Severe errors might include multiple invalid Unicode characters 
+                    - Dates: For mild errors, introduce one small anomaly like "25..11.2024". For moderate errors, an example is 12.25..2024.2024. For severe errors, 
+                              create something like 
+                             "25..11..2#02sdkldfjlsjfldsflsdjfldsjfldsjflkdsjfldsjfldjfdslfjdlfjlsfjldsfjlsdjfldsjfldskjfdlsjfldsjflfjldsjl".
+                    - Emails: For mild errors, create something like "matti.makinen@gmail,com". For moderate errors, an example is john@johnsson@gmail@com@com. 
+                              For severe errors, create something like 
+                             "user@@example@@.comlksdkjflsdfdlsfldsfkjdslkflöksfkldsfldsjfldskfjlsdfjldsfjlkdsjfdslkfjdsflddsjlkfjdls".
+                    - Text fields: Mild errors might replace one letter, e.g., "Märi€ Curie". For moderate errors, an example is Mari€ €Johs€€¥€€€€. Severe errors might 
+                               include multiple invalid Unicode characters 
                                    or symbols, like "J¥hn&#@$#\uFFFF_Reynoldsddsjlfsdjlfsllslsdjflkdsjflsdkfjldskjfdslfkjdslfjlsdfjlsdjflkdsjflsdjfldsjfldslfdsldslfjdslf".
-                    - Addresses: Mild errors might replace one letter, like "123 Mai¥n St". Severe errors might introduce completely nonsensical strings, 
+                    - Addresses: Mild errors might replace one letter, like "123 Mai¥n St". For moderate errors, an example is St$$$ree Street 754. 
+                                 Severe errors might introduce completely nonsensical strings, 
                                  like "AB^DE@!!lskdkdksl¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥slkiu39kledlsdldflfdjflkdsfklslsslls¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥".
     
                 Respond only with the generated broken input value. Do not provide explanations.`,
                 "role": "system"
             },
-            { 
-                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection" + 
-                           "Pet's name" +
-                           "inputType: text" +
-                           "inputLabel: Date of birth", 
-                "name": "example_user", 
-                "role": "system" 
+            {
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection" +
+                    "Pet's name" +
+                    "inputType: text" +
+                    "inputLabel: Date of birth",
+                "name": "example_user",
+                "role": "system"
             },
             { "content": "2#11.2024", "name": "example_assistant", "role": "system" },
-            { 
+            {
                 "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
-                           "inputType: text" +
-                           "inputLabel: Syntymäaika", 
-                "name": "example_user", 
-                "role": "system" 
+                    "inputType: text" +
+                    "inputLabel: Syntymäaika",
+                "name": "example_user",
+                "role": "system"
             },
-            { "content": "25.11.2.24", "name": "example_assistant", "role": "system" },
-            { 
+            { "content": "25.11.2.24.20.25", "name": "example_assistant", "role": "system" },
+            {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
-                           "inputType: email" +
-                           "inputLabel: no label", 
-                "name": "example_user", 
-                "role": "system" 
+                    "inputType: email" +
+                    "inputLabel: no label",
+                "name": "example_user",
+                "role": "system"
             },
-            { "content": "mark.roberts@gmail,com", "name": "example_assistant", 
-                "role": "system" },
-            { 
-                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`, 
-                "role": "user" 
+            {
+                "content": "mark.roberts@gmail,com", "name": "example_assistant",
+                "role": "system"
+            },
+            {
+                "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
+                    "inputType: email" +
+                    "inputLabel: no label",
+                "name": "example_user",
+                "role": "system"
+            },
+            {
+                "content": "ma&rk.ro&#berts@gmail,com¥dskljfklsfjlsdfjlds¥ddjklfjdslfdjlkls7575jdfjksd¥ds&klfjldklfjdslfdklfjdslfdklfjdslfdklfjdslfdklfjdslfd", 
+                "name": "example_assistant",
+                "role": "system"
+            },
+            {
+                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`,
+                "role": "user"
             }
         ],
         model: openAiModel
-    });        
-        
+    });
+
     const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
 
     if (debug) {
@@ -353,6 +375,6 @@ export const probabilityCheck = (probability: number): boolean => {
     if (probability < 0 || probability > 100) {
         throw new Error("Probability must be between 0 and 100.");
     }
-    
+
     return Math.random() * 100 < probability;
 };
