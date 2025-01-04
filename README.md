@@ -16,8 +16,10 @@ Additionally, wacat:
 
 - Detects error messages on web pages using AI
   - This is an optional feature and requires an OpenAI API key
-- Generates AI-driven content for input fields based on their type and label
+- Generates AI-driven content for input fields
   - This is an optional feature and requires an OpenAI API key
+- Can generate invalid or broken content for input fields
+  - Uses the OpenAI API if an API key is available; otherwise, wacat generates content independently
 - Detects HTTP errors (e.g., HTTP 500 errors) between the browser and server
 - Detects errors in the browser's console log
 - Detects user-defined error messages on web pages
@@ -306,30 +308,32 @@ wacat test https://mikesmallhelp-test-application-simple.vercel.app/
 The output might look like this:
 
 ```
-Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+Testing in url: http://localhost:3000. Please wait...
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:48:1 › test an application
-In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+[chromium] › test.spec.ts:50:1 › test an application
+In the page: http://localhost:3000/
 Check with the AI that the page doesn't contain errors.
-In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+In the page: http://localhost:3000/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-Filling the #1 input field with the AI, type: text, label: Email, the generated value: lucas.dubois@example.com
-Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 03/03/1990
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: julia.smith@hotmail.com
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4532 9876 5432 1234
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/07/1985
 Selecting the #1 checkbox
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-  1 passed (1.3m)
+  1 passed (1.7m)
 ```
 
 In the lines:
 
 ```
-Filling the #1 input field with the AI, type: text, label: Email, the generated value: lucas.dubois@example.com
-Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 03/03/1990
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: julia.smith@hotmail.com
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4532 9876 5432 1234
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/07/1985
 ```
 
 you can see that the AI automatically generated the content for the input fields based on their type and label.
@@ -351,65 +355,68 @@ wacat test --broken-input-values https://mikesmallhelp-test-application-simple.v
 The output might look like this:
 
 ```
-Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+Testing in url: http://localhost:3000. Please wait...
 
 
 Running 1 test using 1 worker
 [chromium] › test.spec.ts:50:1 › test an application
-In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+In the page: http://localhost:3000/
 Check with the AI that the page doesn't contain errors.
-In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+In the page: http://localhost:3000/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-Filling the #1 input field with the AI, type: text, label: Email, the generated value: contact@@example.co@@@@mplllllllllllllllllllllll (the broken input value used)
-Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 12/25#2023 (the broken input value used)
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: test@example,com (the broken input value used)
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 5221-4823-76$$--02345-8823####slkfjddl (the broken input value used)
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 01/.01.199ama9🔥💥🥴¾⅓⅔🗺️👂🎉😤🚀🛸🌌 (the broken input value used)
 Selecting the #1 checkbox
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-  1 passed (1.4m)
+  1 passed (1.8m)
 
 ```
 
 In this example, the broken input values are clearly indicated in the output with the text ```(the broken input value used)```. Examples include:
 
-- A broken email address: ```contact@@example.co@@@@mplllllllllllllllllllllll```
-- A broken date: ```12/25#2023```
+- A broken email address: ```test@example,com```
+- A broken credit card's number: ```5221-4823-76$$--02345-8823####slkfjddl```
+- A broken date: ```01/.01.199ama9🔥💥🥴¾⅓⅔🗺️👂🎉😤🚀🛸🌌```
 
 #### Using the ```--broken-input-values-percentage``` flag
 
-If you want only a portion of the input values to be broken, you can use the ```--broken-input-values-percentage``` flag. This flag allows you to specify a percentage (0-100) of inputs to be intentionally broken or invalid. For instance, setting this flag to 50 means approximately 50% of inputs will be invalid.
+If you want only a portion of the input values to be broken, you can use the ```--broken-input-values-percentage``` flag. This flag allows you to specify a percentage (0-100) of inputs to be intentionally broken or invalid. For instance, setting this flag to 34 means approximately 34% of inputs will be invalid.
 
 For example:
 
 ```
-wacat test --broken-input-values --broken-input-values-percentage 50 https://mikesmallhelp-test-application-simple.vercel.app/
+wacat test --broken-input-values --broken-input-values-percentage 34 https://mikesmallhelp-test-application-simple.vercel.app/
 ```
 
 This command might produce the following output:
 
 ```
-Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+Testing in url: http://localhost:3000. Please wait...
 
 
 Running 1 test using 1 worker
 [chromium] › test.spec.ts:50:1 › test an application
-In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+In the page: http://localhost:3000/
 Check with the AI that the page doesn't contain errors.
-In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+In the page: http://localhost:3000/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-Filling the #1 input field with the AI, type: text, label: Email, the generated value: john.smith@example.com
-Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 11//23/1989 (the broken input value used)
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: test@example,com@@@jjd (the broken input value used)
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4539 4512 0390 4573
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/08/1985
 Selecting the #1 checkbox
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-  1 passed (1.4m)
+  1 passed (1.7m)
 
 ```
 
-In this case, only the value ```11//23/1989``` is broken, while the other input ```john.smith@example.com``` remains valid. This demonstrates how the ```--broken-input-values-percentage``` flag controls the proportion of invalid inputs.
+In this case, only the value ```test@example,com@@@jjd``` is broken, while the other inputs ```4539 4512 0390 4573``` and ```15/08/1985``` remains valid. This demonstrates how the ```--broken-input-values-percentage``` flag controls the proportion of invalid inputs.
 
 By fine-tuning this parameter, you can simulate real-world scenarios where some user inputs may be erroneous or malformed.
 
