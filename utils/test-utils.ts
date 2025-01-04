@@ -180,7 +180,8 @@ export const addSpacesToCamelCaseText = (text: string): string => text.replaceAl
 
 export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
 
-export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean):
+export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputAutocomplete: string, inputPlaceholder: string, 
+                                                 inputLabel: string, debug: boolean):
     Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -195,6 +196,8 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
         console.log('  ***********generateInputContentWithAi***********');
         console.log('  pageContent:' + pageContent);
         console.log('  inputType:' + inputType);
+        console.log('  inputAutocomplete:' + inputAutocomplete);
+        console.log('  inputPlaceholder:' + inputPlaceholder);
         console.log('  inputLabel:' + inputLabel);
         console.log('  *******************************');
     }
@@ -202,7 +205,9 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
     const response = await openai.chat.completions.create({
         messages: [
             {
-                "content": `You are a system that generates realistic and contextually appropriate fake input values for HTML input fields based on the given page content (pageContent), input element type (inputType), and label (inputLabel). 
+                "content": `You are a system that generates realistic and contextually appropriate fake input values for HTML input fields based on the 
+                            given page content (pageContent), input element type (inputType), input element autocomplete (inputAutocomplete), 
+                            input element placeholder (inputPlaceholder) and label (inputLabel). 
                 
                 Consider the following:
                 1. Generate inputs that match the cultural and linguistic context of the provided page content. For instance, if the page is in French, use French names, addresses, and date formats.
@@ -219,6 +224,8 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
             {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
                     "inputType: text" +
+                    "inputAutocomplete: no autocomplete" +
+                    "inputPlaceholder: no placeholder" +
                     "inputLabel: Date of birth",
                 "name": "example_user",
                 "role": "system"
@@ -226,22 +233,27 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
             { "content": "25/12/2000", "name": "example_assistant", "role": "system" },
             {
                 "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
-                    "inputType: text" +
-                    "inputLabel: Syntymäaika",
+                    "inputType: no type" +
+                    "inputAutocomplete: no autocomplete" +
+                    "inputPlaceholder: 01.01.1990" +
+                    "inputLabel: no label",
                 "name": "example_user",
                 "role": "system"
             },
             { "content": "05.11.2020", "name": "example_assistant", "role": "system" },
             {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
-                    "inputType: email" +
+                    "inputType: no type" +
+                    "inputAutocomplete: email" +
+                    "inputPlaceholder: no placeholder" +
                     "inputLabel: no label",
                 "name": "example_user",
                 "role": "system"
             },
             { "content": "mike.harrison@gmail.com", "name": "example_assistant", "role": "system" },
             {
-                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`,
+                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputAutocomplete: ${inputAutocomplete}, inputPlaceholder: ${inputPlaceholder},  
+                            inputLabel: ${inputLabel}`,
                 "role": "user"
             }
         ],
@@ -259,7 +271,8 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
     return generatedInputValue;
 };
 
-export const generateBrokenInputContentWithAi = async (pageContent: string, inputType: string, inputLabel: string, debug: boolean):
+export const generateBrokenInputContentWithAi = async (pageContent: string, inputType: string, inputAutocomplete: string, inputPlaceholder: string,
+                                               inputLabel: string, debug: boolean):
     Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -274,6 +287,8 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
         console.log('  ***********generateBrokenInputContentWithAi***********');
         console.log('  pageContent:' + pageContent);
         console.log('  inputType:' + inputType);
+        console.log('  inputAutocomplete:' + inputAutocomplete);
+        console.log('  inputPlaceholder:' + inputPlaceholder);
         console.log('  inputLabel:' + inputLabel);
         console.log('  *******************************');
     }
@@ -282,7 +297,8 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
         messages: [
             {
                 "content": `You are a system that generates broken or invalid fake input values for HTML input fields based on the given 
-                page content (pageContent), input element type (inputType), and label (inputLabel). 
+                page content (pageContent), input element type (inputType), input element autocomplete (inputAutocomplete), 
+                input element placeholder (inputPlaceholder) and label (inputLabel). 
                 Your goal is to create input values that range in severity, including:
                 
                 1. **Mildly broken inputs**: Introduce **only one** error likely to disrupt parsing or validation. 
@@ -316,6 +332,8 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection" +
                     "Pet's name" +
                     "inputType: text" +
+                    "inputAutocomplete: no autocomplete" +
+                    "inputPlaceholder: no placeholder" +
                     "inputLabel: Date of birth",
                 "name": "example_user",
                 "role": "system"
@@ -324,14 +342,18 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
             {
                 "content": "pageContent: Rekisteröintisivu Täytä tiedot tähän. Nimi Osoite Sähköposti Ajokortti Syntymäaika Ruokavalinta Lemmikkieläimen nimi" +
                     "inputType: text" +
-                    "inputLabel: Syntymäaika",
+                    "inputAutocomplete: no autocomplete" +
+                    "inputPlaceholder: 01.01.2025" +
+                    "inputLabel: no label",
                 "name": "example_user",
                 "role": "system"
             },
             { "content": "25.11.2.24.20.25", "name": "example_assistant", "role": "system" },
             {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
-                    "inputType: email" +
+                    "inputType: no type" +
+                    "inputAutocomplete: email" +
+                    "inputPlaceholder: no placeholder" +
                     "inputLabel: no label",
                 "name": "example_user",
                 "role": "system"
@@ -343,6 +365,8 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
             {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
                     "inputType: email" +
+                    "inputAutocomplete: no autocomplete" +
+                    "inputPlaceholder: john.doe@example.com" +
                     "inputLabel: no label",
                 "name": "example_user",
                 "role": "system"
@@ -353,7 +377,8 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
                 "role": "system"
             },
             {
-                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputLabel: ${inputLabel}`,
+                "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputAutocomplete: ${inputAutocomplete}, inputPlaceholder: ${inputPlaceholder},
+                            inputLabel: ${inputLabel}`,
                 "role": "user"
             }
         ],
