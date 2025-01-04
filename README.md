@@ -293,7 +293,7 @@ For more details, refer to https://help.openai.com/en/articles/4936856-what-are-
 
 ### Optional: AI-Generated Input Field Content
 
-AI-generated content for input fields on any page can be enabled through the OpenAI API by setting the ```AI_GENERATED_INPUT_TEXTS``` environment variable (refer to the details above).
+The AI can generate content for HTML input fields based on the ```type```, ```autocomplete```, or ```placeholder``` attributes of the input element. It can also use the field's label content to assist in generating the input. This feature can be enabled by setting the ```AI_GENERATED_INPUT_TEXTS``` environment variable (refer to the details above).
 
 Here’s an example of an application page:
 
