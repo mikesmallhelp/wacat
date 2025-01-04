@@ -308,21 +308,20 @@ wacat test https://mikesmallhelp-test-application-simple.vercel.app/
 The output might look like this:
 
 ```
-Testing in url: http://localhost:3000. Please wait...
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
 
 
 Running 1 test using 1 worker
 [chromium] › test.spec.ts:50:1 › test an application
-In the page: http://localhost:3000/
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
 Check with the AI that the page doesn't contain errors.
-In the page: http://localhost:3000/test-page
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
 Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: julia.smith@hotmail.com
 Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4532 9876 5432 1234
 Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/07/1985
-Selecting the #1 checkbox
 Push the button #1
 Check with the AI that the page doesn't contain errors.
   1 passed (1.7m)
@@ -355,21 +354,20 @@ wacat test --broken-input-values https://mikesmallhelp-test-application-simple.v
 The output might look like this:
 
 ```
-Testing in url: http://localhost:3000. Please wait...
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
 
 
 Running 1 test using 1 worker
 [chromium] › test.spec.ts:50:1 › test an application
-In the page: http://localhost:3000/
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
 Check with the AI that the page doesn't contain errors.
-In the page: http://localhost:3000/test-page
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
 Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: test@example,com (the broken input value used)
 Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 5221-4823-76$$--02345-8823####slkfjddl (the broken input value used)
 Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 01/.01.199ama9🔥💥🥴¾⅓⅔🗺️👂🎉😤🚀🛸🌌 (the broken input value used)
-Selecting the #1 checkbox
 Push the button #1
 Check with the AI that the page doesn't contain errors.
   1 passed (1.8m)
@@ -395,21 +393,20 @@ wacat test --broken-input-values --broken-input-values-percentage 34 https://mik
 This command might produce the following output:
 
 ```
-Testing in url: http://localhost:3000. Please wait...
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
 
 
 Running 1 test using 1 worker
 [chromium] › test.spec.ts:50:1 › test an application
-In the page: http://localhost:3000/
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
 Check with the AI that the page doesn't contain errors.
-In the page: http://localhost:3000/test-page
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
 Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: test@example,com@@@jjd (the broken input value used)
 Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4539 4512 0390 4573
 Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/08/1985
-Selecting the #1 checkbox
 Push the button #1
 Check with the AI that the page doesn't contain errors.
   1 passed (1.7m)
