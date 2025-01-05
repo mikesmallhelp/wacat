@@ -5,13 +5,22 @@ import { fetchData } from '../../util/util';
 const IndexComponent = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = React.useState('');
+  const [url, setUrl] = React.useState('');
   const [textEmail, setTextEmail] = React.useState('');
+  const [textCcNumber, setCcNumber] = React.useState('');
   const [textBirthDate, setTextBirthDate] = React.useState('');
   const [checkbox, setCheckbox] = useState(false);
-  let [buttonClickCount, setButtonClickCount] = useState(0);
+
+  const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUrl(event.target.value);
+  };
 
   const handleTextEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTextEmail(event.target.value);
+  };
+
+  const handleCcNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCcNumber(event.target.value);
   };
 
   const handleTextBirthDateChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,12 +32,19 @@ const IndexComponent = () => {
   };
 
   const handleButtonClick = async () => {
-    setButtonClickCount(buttonClickCount++);
     await fetchData('200', setLoading);
 
-    if (buttonClickCount === 1 && textEmail && textBirthDate && checkbox) {
+    if (url && textEmail && textCcNumber && textBirthDate && checkbox) {
       setMessage('Have a nice day!');
+    } else {
+      setMessage('');
     }
+
+    setUrl('');
+    setTextEmail('');
+    setCcNumber('');
+    setTextBirthDate('');
+    setCheckbox(false);
   }
 
   const PageContent = (
@@ -36,13 +52,23 @@ const IndexComponent = () => {
       <div>{message}</div>
 
       <div>
+        <label>Url</label>
+        <input type="url" onChange={handleUrlChange} />
+      </div>
+
+      <div>
         <label htmlFor="email">Email</label>
         <input type="text" id="email" onChange={handleTextEmailChange} />
       </div>
 
       <div>
-        <label htmlFor="birthDate">Date of birth</label>
-        <input type="text" id="birthDate" onChange={handleTextBirthDateChange} />
+        <label>Credit card's number</label>
+        <input type="text" autoComplete='cc-number' onChange={handleCcNumberChange} />
+      </div>
+
+      <div>
+        <label>Date of birth</label>
+        <input placeholder='01/01/1990' onChange={handleTextBirthDateChange} />
       </div>
 
       <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange} />

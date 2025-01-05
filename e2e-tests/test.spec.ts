@@ -47,7 +47,7 @@ if (!aiGeneratedInputTexts && (brokenInputValues || brokenInputValuesPercentage)
                      Please ensure that the OPENAI_API_KEY and OPENAI_API_MODEL environment variables are also configured.`);
 }
 
-if (!brokenInputValues && brokenInputValuesPercentage) {
+if (!brokenInputValues && process.env.BROKEN_INPUT_VALUES_PERCENTAGE) {
     throw new Error('You are using the broken-input-values-percentage flag. Please ensure that you also use the broken-input-values flag.');
 }
 
