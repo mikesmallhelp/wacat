@@ -17,9 +17,8 @@ Additionally, wacat:
 - Detects error messages on web pages using AI
   - This is an optional feature and requires an OpenAI API key
 - Generates AI-driven content for input fields
-  - This is an optional feature and requires an OpenAI API key
-- Can generate invalid or broken content for input fields
-  - Uses the OpenAI API if an API key is available; otherwise, wacat generates content independently
+  - Optional feature requiring an OpenAI API key
+  - Supports generating invalid or broken input content
 - Detects HTTP errors (e.g., HTTP 500 errors) between the browser and server
 - Detects errors in the browser's console log
 - Detects user-defined error messages on web pages
@@ -291,7 +290,7 @@ The base prompt contains approximately 1600 characters. For example, if you set 
 
 For more details, refer to https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them.
 
-### Optional: AI-Generated Input Field Content
+### Optional: AI-generated input field content
 
 The AI can generate content for HTML input fields based on the ```type```, ```autocomplete```, or ```placeholder``` attributes of the input element. It can also use the field's label content to assist in generating the input. This feature can be enabled by setting the ```AI_GENERATED_INPUT_TEXTS``` environment variable (refer to the details above).
 
@@ -337,9 +336,11 @@ Filling the #3 input field with the AI, type: no type, autocomplete: no autocomp
 
 you can see that the AI automatically generated the content for the input fields based on their type and label.
 
-### Invalid or broken input values
+### Optional: AI-generated invalid or broken input values
 
-wacat can generate input values that are broken in various ways and to varying degrees for testing purposes. The level of brokenness can range from inputs with only minor errors to deliberately highly broken inputs that may contain multiple inconsistencies or severe issues. If the ```AI_GENERATED_INPUT_TEXTS``` environment variable is set to true (refer to the details above), AI is used to generate input texts. Otherwise, wacat generates invalid or broken input values without relying on AI.
+wacat can generate input values that are broken in various ways and to varying degrees for testing purposes. The level of brokenness can range from 
+inputs with only minor errors to deliberately highly broken inputs that may contain multiple inconsistencies or severe issues. 
+If the ```AI_GENERATED_INPUT_TEXTS``` environment variable is set to true (refer to the details above), AI is used to generate input texts.
 
 Example of a simple application page:
 
@@ -1165,9 +1166,8 @@ Consider adding unit tests to improve code reliability.
 
 ### 1.4.0 (January 4, 2024)
 
-- Enhanced input field content generation with support for invalid or broken data
-  - Leverages the OpenAI API for content creation when an API key is available; otherwise, defaults to wacat's independent generation mechanism
-- Improved AI-driven content generation to incorporate autocomplete and placeholder attributes of input elements
+- Enhanced AI input field content generation with support for invalid or broken data. Also improved AI-driven content generation to incorporate 
+  autocomplete and placeholder attributes of input elements.
 
 ### 1.3.0 (December 3, 2024)
 
