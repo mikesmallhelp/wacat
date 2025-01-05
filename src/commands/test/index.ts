@@ -13,7 +13,8 @@ export default class TestCommand extends Command {
   ]
 
   static flags = {
-    'broken-input-values': Flags.boolean({description: 'Enable the use of invalid or broken input values'}),
+    'broken-input-values': Flags.boolean({description: `Enable the generation of invalid or broken input values. 
+                                                        This flag is effective only when the AI_GENERATED_INPUT_TEXTS environment variable is set.`}),
     'broken-input-values-percentage': Flags.integer({description: `Specify the percentage (0-100) of broken or invalid input values to use when the 
                                                                    --broken-input-values flag is enabled. For example, a value of 50 means that approximately 50% of 
                                                                    the inputs will be intentionally broken or invalid. The default value is 100%, meaning all 

@@ -41,6 +41,16 @@ if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
 }
 
+if (!aiGeneratedInputTexts && (brokenInputValues || brokenInputValuesPercentage)) {
+    throw new Error(`You are using either the broken-input-values or broken-input-values-percentage flag, but the AI_GENERATED_INPUT_TEXTS 
+                     environment variable is not set.
+                     Please ensure that the OPENAI_API_KEY and OPENAI_API_MODEL environment variables are also configured.`);
+}
+
+if (!brokenInputValues && brokenInputValuesPercentage) {
+    throw new Error('You are using the broken-input-values-percentage flag. Please ensure that you also use the broken-input-values flag.');
+}
+
 if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLinkUrls.length > 0) {
     for (const url of configuration.notVisitLinkUrls) {
         visitedUrlsOrNotVisitLinkUrls.push(url);

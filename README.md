@@ -1085,26 +1085,35 @@ wacat test --help
 Test any web application, for example: wacat test http://localhost:3000
 
 USAGE
-  $ wacat test URL [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>] [--debug] [--headless] [--ignore-ai-in-] [--input-texts <value>] [--only-links]
-    [--random-input-texts-charset <value>] [--random-input-texts-max-length <value>] [--random-input-texts-min-length <value>] [--timeout <value>] [--wait <value>]
+  $ wacat test URL [--broken-input-values] [--broken-input-values-percentage <value>] [--bypass-ai-errors] [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>]
+    [--debug] [--headless] [--ignore-ai-generated-input-texts-in-] [--ignore-ai-in-test] [--input-texts <value>] [--only-links] [--random-input-texts-charset <value>] [--random-input-texts-max-length
+    <value>] [--random-input-texts-min-length <value>] [--timeout <value>] [--wait <value>]
 
 ARGUMENTS
   URL  Application url to test, for example: http://localhost:3000
 
 FLAGS
-  --bypass-browser-console-errors          Bypass the browser console's error messages
-  --bypass-http-errors                     Bypass the HTTP errors
-  --conf=<value>                           Path to the configuration file
-  --debug                                  Enable debug mode
-  --headless                               Headless mode
-  --ignore-ai-in-test                      In the automatic tests ignore OpenAI API key
-  --input-texts=<value>                    Path to the input texts file
-  --only-links                             Test only links
-  --random-input-texts-charset=<value>     Random input texts character set
-  --random-input-texts-max-length=<value>  Random input texts max length
-  --random-input-texts-min-length=<value>  Random input texts min length
-  --timeout=<value>                        A whole test run timeout in seconds
-  --wait=<value>                           A wait in milliseconds to wait a page load
+  --broken-input-values                      Enable the generation of invalid or broken input values.
+                                             This flag is effective only when the AI_GENERATED_INPUT_TEXTS environment variable is set.
+  --broken-input-values-percentage=<value>   Specify the percentage (0-100) of broken or invalid input values to use when the
+                                             --broken-input-values flag is enabled. For example, a value of 50 means that approximately 50% of
+                                             the inputs will be intentionally broken or invalid. The default value is 100%, meaning all
+                                             inputs will be broken or invalid unless a specific percentage is provided.
+  --bypass-ai-errors                         Bypass the AI errors
+  --bypass-browser-console-errors            Bypass the browser console's errors
+  --bypass-http-errors                       Bypass the HTTP errors
+  --conf=<value>                             Path to the configuration file
+  --debug                                    Enable debug mode
+  --headless                                 Headless mode
+  --ignore-ai-generated-input-texts-in-test  In the automatic tests don't generate input texts with the AI
+  --ignore-ai-in-test                        In the automatic tests ignore OpenAI API key
+  --input-texts=<value>                      Path to the input texts file
+  --only-links                               Test only links
+  --random-input-texts-charset=<value>       Random input texts character set
+  --random-input-texts-max-length=<value>    Random input texts max length
+  --random-input-texts-min-length=<value>    Random input texts min length
+  --timeout=<value>                          A whole test run timeout in seconds
+  --wait=<value>                             A wait in milliseconds to wait a page load
 
 DESCRIPTION
   Test any web application, for example: wacat test http://localhost:3000
@@ -1164,7 +1173,7 @@ Consider adding unit tests to improve code reliability.
 
 ## Change History
 
-### 1.4.0 (January 4, 2024)
+### 1.4.0 (January 5, 2025)
 
 - Enhanced AI input field content generation with support for invalid or broken data. Also improved AI-driven content generation to incorporate 
   autocomplete and placeholder attributes of input elements.
