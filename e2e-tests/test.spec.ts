@@ -6,8 +6,8 @@ dotenvConfig();
 import { fail } from 'node:assert';
 
 import {
-    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
-    generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame,
+    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateBrokenInputContentWithAi, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
+    generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame, probabilityCheck,
     readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
 
@@ -34,9 +34,21 @@ const bypassAiErrors = Boolean(process.env.BYPASS_AI_ERRORS);
 const maxPageContentChars = process.env.MAX_PAGE_CONTENT_CHARS ? Number(process.env.MAX_PAGE_CONTENT_CHARS) : 3000;
 const aiGeneratedInputTexts = process.env.AI_GENERATED_INPUT_TEXTS === 'true';
 const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERATED_INPUT_TEXTS_IN_TEST);
+const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
+const brokenInputValuesPercentage = process.env.BROKEN_INPUT_VALUES_PERCENTAGE ? Number(process.env.BROKEN_INPUT_VALUES_PERCENTAGE) : 100;
 
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
+}
+
+if (!aiGeneratedInputTexts && (brokenInputValues || brokenInputValuesPercentage)) {
+    throw new Error(`You are using either the broken-input-values or broken-input-values-percentage flag, but the AI_GENERATED_INPUT_TEXTS 
+                     environment variable is not set.
+                     Please ensure that the OPENAI_API_KEY and OPENAI_API_MODEL environment variables are also configured.`);
+}
+
+if (!brokenInputValues && process.env.BROKEN_INPUT_VALUES_PERCENTAGE) {
+    throw new Error('You are using the broken-input-values-percentage flag. Please ensure that you also use the broken-input-values flag.');
 }
 
 if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLinkUrls.length > 0) {
@@ -329,6 +341,8 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
         const input = inputs.nth(i);
 
         const type = await input.evaluate(el => el.getAttribute('type'));
+        const autocomplete = await input.evaluate(el => el.getAttribute('autocomplete'));
+        const placeholder = await input.evaluate(el => el.getAttribute('placeholder'));
 
         const labelText = await input.evaluate((el) => {
             const {id} = el;
@@ -349,9 +363,21 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
 
         if (await input.isVisible()) {
             const typeParameter = type || 'no type';
+            const autocompleteParameter = autocomplete || 'no autocomplete';
+            const placeholderParameter = placeholder || 'no placeholder';
             const labelParameter = labelText || 'no label';
-            const generatedValue = await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, labelParameter, debug);
-            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", label: " + labelParameter + ", the generated value: " + generatedValue);
+            const isBrokenInputValue = brokenInputValues && probabilityCheck(brokenInputValuesPercentage);
+
+            const generatedValue = isBrokenInputValue ? 
+                                                await generateBrokenInputContentWithAi(await getPageTextContents({page}), typeParameter, 
+                                                                                  autocompleteParameter, placeholderParameter, labelParameter, debug) :
+                                                await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, 
+                                                                                  autocompleteParameter, placeholderParameter, labelParameter, debug);
+
+            const brokenInputValueText = isBrokenInputValue ? ' (the broken input value used)' : '';
+            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", autocomplete: " + autocompleteParameter + 
+                        ", placeholder: " + placeholderParameter + ", label: " + labelParameter + ", the generated value: " 
+                                                        + generatedValue + brokenInputValueText);
             await input.fill(generatedValue);
         }
     }

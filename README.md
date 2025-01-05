@@ -16,8 +16,9 @@ Additionally, wacat:
 
 - Detects error messages on web pages using AI
   - This is an optional feature and requires an OpenAI API key
-- Generates AI-driven content for input fields based on their type and label
-  - This is an optional feature and requires an OpenAI API key
+- Generates AI-driven content for input fields
+  - Optional feature requiring an OpenAI API key
+  - Supports generating invalid or broken input content
 - Detects HTTP errors (e.g., HTTP 500 errors) between the browser and server
 - Detects errors in the browser's console log
 - Detects user-defined error messages on web pages
@@ -43,7 +44,7 @@ If you encounter a bug or need a specific feature, please create a new issue.
 
 ## Current Version
 
-The current version of wacat is 1.3.0. Please refer to the end of this page for the change history.
+The current version of wacat is 1.4.0. Please refer to the end of this page for the change history.
 
 ## Warnings
 Please ensure you only test your own web application or have explicit permission to test someone else’s application. Testing the vulnerabilities of an application without authorization could be illegal.
@@ -289,8 +290,9 @@ The base prompt contains approximately 1600 characters. For example, if you set 
 
 For more details, refer to https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them.
 
-### Optional: AI-Generated Input Field Content
-AI-generated content for input fields on any page can be enabled through the OpenAI API by setting the ```AI_GENERATED_INPUT_TEXTS``` environment variable (refer to the details above).
+### Optional: AI-generated input field content
+
+The AI can generate content for HTML input fields based on the ```type```, ```autocomplete```, or ```placeholder``` attributes of the input element. It can also use the field's label content to assist in generating the input. This feature can be enabled by setting the ```AI_GENERATED_INPUT_TEXTS``` environment variable (refer to the details above).
 
 Here’s an example of an application page:
 
@@ -299,7 +301,7 @@ Here’s an example of an application page:
 If you run the following command:
 
 ```
-wacat test --wait 2000 https://mikesmallhelp-test-application-simple.vercel.app/
+wacat test https://mikesmallhelp-test-application-simple.vercel.app/
 ```
 
 The output might look like this:
@@ -309,29 +311,112 @@ Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Pleas
 
 
 Running 1 test using 1 worker
-[chromium] › test.spec.ts:48:1 › test an application
+[chromium] › test.spec.ts:50:1 › test an application
 In the page: https://mikesmallhelp-test-application-simple.vercel.app/
 Check with the AI that the page doesn't contain errors.
 In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
 Check with the AI that the page doesn't contain errors.
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-Filling the #1 input field with the AI, type: text, label: Email, the generated value: lucas.dubois@example.com
-Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 03/03/1990
-Selecting the #1 checkbox
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: julia.smith@hotmail.com
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4532 9876 5432 1234
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/07/1985
 Push the button #1
 Check with the AI that the page doesn't contain errors.
-  1 passed (1.3m)
+  1 passed (1.7m)
 ```
 
 In the lines:
 
 ```
-Filling the #1 input field with the AI, type: text, label: Email, the generated value: lucas.dubois@example.com
-Filling the #2 input field with the AI, type: text, label: Date of birth, the generated value: 03/03/1990
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: julia.smith@hotmail.com
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4532 9876 5432 1234
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/07/1985
 ```
 
 you can see that the AI automatically generated the content for the input fields based on their type and label.
+
+### Optional: AI-generated invalid or broken input values
+
+wacat can generate input values that are broken in various ways and to varying degrees for testing purposes. The level of brokenness can range from 
+inputs with only minor errors to deliberately highly broken inputs that may contain multiple inconsistencies or severe issues. 
+If the ```AI_GENERATED_INPUT_TEXTS``` environment variable is set to true (refer to the details above), AI is used to generate input texts.
+
+Example of a simple application page:
+
+![](doc/simple-page.png)
+
+The following commands are identical in syntax, regardless of whether AI is used. For example, if AI is enabled and the following command is executed:
+
+```
+wacat test --broken-input-values https://mikesmallhelp-test-application-simple.vercel.app/
+```
+
+The output might look like this:
+
+```
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:50:1 › test an application
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+Check with the AI that the page doesn't contain errors.
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+Check with the AI that the page doesn't contain errors.
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: test@example,com (the broken input value used)
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 5221-4823-76$$--02345-8823####slkfjddl (the broken input value used)
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 01/.01.199ama9🔥💥🥴¾⅓⅔🗺️👂🎉😤🚀🛸🌌 (the broken input value used)
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+  1 passed (1.8m)
+
+```
+
+In this example, the broken input values are clearly indicated in the output with the text ```(the broken input value used)```. Examples include:
+
+- A broken email address: ```test@example,com```
+- A broken credit card's number: ```5221-4823-76$$--02345-8823####slkfjddl```
+- A broken date: ```01/.01.199ama9🔥💥🥴¾⅓⅔🗺️👂🎉😤🚀🛸🌌```
+
+#### Using the ```--broken-input-values-percentage``` flag
+
+If you want only a portion of the input values to be broken, you can use the ```--broken-input-values-percentage``` flag. This flag allows you to specify a percentage (0-100) of inputs to be intentionally broken or invalid. For instance, setting this flag to 34 means approximately 34% of inputs will be invalid.
+
+For example:
+
+```
+wacat test --broken-input-values --broken-input-values-percentage 34 https://mikesmallhelp-test-application-simple.vercel.app/
+```
+
+This command might produce the following output:
+
+```
+Testing in url: https://mikesmallhelp-test-application-simple.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:50:1 › test an application
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/
+Check with the AI that the page doesn't contain errors.
+In the page: https://mikesmallhelp-test-application-simple.vercel.app/test-page
+Check with the AI that the page doesn't contain errors.
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+Filling the #1 input field with the AI, type: text, autocomplete: no autocomplete, placeholder: no placeholder, label: Email, the generated value: test@example,com@@@jjd (the broken input value used)
+Filling the #2 input field with the AI, type: text, autocomplete: cc-number, placeholder: no placeholder, label: no label, the generated value: 4539 4512 0390 4573
+Filling the #3 input field with the AI, type: no type, autocomplete: no autocomplete, placeholder: 01/01/1990, label: no label, the generated value: 15/08/1985
+Push the button #1
+Check with the AI that the page doesn't contain errors.
+  1 passed (1.7m)
+
+```
+
+In this case, only the value ```test@example,com@@@jjd``` is broken, while the other inputs ```4539 4512 0390 4573``` and ```15/08/1985``` remains valid. This demonstrates how the ```--broken-input-values-percentage``` flag controls the proportion of invalid inputs.
+
+By fine-tuning this parameter, you can simulate real-world scenarios where some user inputs may be erroneous or malformed.
 
 ### Detect HTTP errors
 
@@ -1000,26 +1085,35 @@ wacat test --help
 Test any web application, for example: wacat test http://localhost:3000
 
 USAGE
-  $ wacat test URL [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>] [--debug] [--headless] [--ignore-ai-in-] [--input-texts <value>] [--only-links]
-    [--random-input-texts-charset <value>] [--random-input-texts-max-length <value>] [--random-input-texts-min-length <value>] [--timeout <value>] [--wait <value>]
+  $ wacat test URL [--broken-input-values] [--broken-input-values-percentage <value>] [--bypass-ai-errors] [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>]
+    [--debug] [--headless] [--ignore-ai-generated-input-texts-in-] [--ignore-ai-in-test] [--input-texts <value>] [--only-links] [--random-input-texts-charset <value>] [--random-input-texts-max-length
+    <value>] [--random-input-texts-min-length <value>] [--timeout <value>] [--wait <value>]
 
 ARGUMENTS
   URL  Application url to test, for example: http://localhost:3000
 
 FLAGS
-  --bypass-browser-console-errors          Bypass the browser console's error messages
-  --bypass-http-errors                     Bypass the HTTP errors
-  --conf=<value>                           Path to the configuration file
-  --debug                                  Enable debug mode
-  --headless                               Headless mode
-  --ignore-ai-in-test                      In the automatic tests ignore OpenAI API key
-  --input-texts=<value>                    Path to the input texts file
-  --only-links                             Test only links
-  --random-input-texts-charset=<value>     Random input texts character set
-  --random-input-texts-max-length=<value>  Random input texts max length
-  --random-input-texts-min-length=<value>  Random input texts min length
-  --timeout=<value>                        A whole test run timeout in seconds
-  --wait=<value>                           A wait in milliseconds to wait a page load
+  --broken-input-values                      Enable the generation of invalid or broken input values.
+                                             This flag is effective only when the AI_GENERATED_INPUT_TEXTS environment variable is set.
+  --broken-input-values-percentage=<value>   Specify the percentage (0-100) of broken or invalid input values to use when the
+                                             --broken-input-values flag is enabled. For example, a value of 50 means that approximately 50% of
+                                             the inputs will be intentionally broken or invalid. The default value is 100%, meaning all
+                                             inputs will be broken or invalid unless a specific percentage is provided.
+  --bypass-ai-errors                         Bypass the AI errors
+  --bypass-browser-console-errors            Bypass the browser console's errors
+  --bypass-http-errors                       Bypass the HTTP errors
+  --conf=<value>                             Path to the configuration file
+  --debug                                    Enable debug mode
+  --headless                                 Headless mode
+  --ignore-ai-generated-input-texts-in-test  In the automatic tests don't generate input texts with the AI
+  --ignore-ai-in-test                        In the automatic tests ignore OpenAI API key
+  --input-texts=<value>                      Path to the input texts file
+  --only-links                               Test only links
+  --random-input-texts-charset=<value>       Random input texts character set
+  --random-input-texts-max-length=<value>    Random input texts max length
+  --random-input-texts-min-length=<value>    Random input texts min length
+  --timeout=<value>                          A whole test run timeout in seconds
+  --wait=<value>                             A wait in milliseconds to wait a page load
 
 DESCRIPTION
   Test any web application, for example: wacat test http://localhost:3000
@@ -1079,13 +1173,18 @@ Consider adding unit tests to improve code reliability.
 
 ## Change History
 
+### 1.4.0 (January 5, 2025)
+
+- Enhanced AI input field content generation with support for invalid or broken data. Also improved AI-driven content generation to incorporate 
+  autocomplete and placeholder attributes of input elements.
+
 ### 1.3.0 (December 3, 2024)
 
 - Added optional AI support to generate input field content
 
 ### 1.2.0 (November 3, 2024)
 
-- Added optional AI support
+- Added optional AI-powered support for detecting errors in page content
 
 ### 1.1.0 (April 16, 2024)
 
