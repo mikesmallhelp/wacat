@@ -1,6 +1,6 @@
 ![](doc/wacat-logo.png)
 
-# wacat - Challenge Your Web App with Cat Chaos and AI-Powered Error Detection!
+# wacat - Challenge Your Web App with Cat Chaos and AI-Driven Testing!
 
 Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile, your cat walks over your keyboard and causes some chaos. 
 
