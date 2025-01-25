@@ -38,7 +38,7 @@ const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
 const brokenInputValuesPercentage = process.env.BROKEN_INPUT_VALUES_PERCENTAGE ? Number(process.env.BROKEN_INPUT_VALUES_PERCENTAGE) : 100;
 
 if (configuration?.headers?.length) {
-    const headersObject = configuration?.headers?.reduce((acc, header) => {
+    const headersObject = configuration.headers.reduce((acc, header) => {
         acc[header.name] = header.value;
         return acc;
       }, {} as Record<string, string>) || {};
