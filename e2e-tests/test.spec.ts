@@ -6,7 +6,7 @@ dotenvConfig();
 import { fail } from 'node:assert';
 
 import {
-    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateBrokenInputContentWithAi, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, 
+    Configuration, addSpacesToCamelCaseText, aiDetectsError, generateBrokenInputContentWithAi, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail,
     generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame, probabilityCheck,
     readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
@@ -37,17 +37,6 @@ const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERAT
 const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
 const brokenInputValuesPercentage = process.env.BROKEN_INPUT_VALUES_PERCENTAGE ? Number(process.env.BROKEN_INPUT_VALUES_PERCENTAGE) : 100;
 
-if (configuration?.headers?.length) {
-    const headersObject = configuration.headers.reduce((acc, header) => {
-        acc[header.name] = header.value;
-        return acc;
-      }, {} as Record<string, string>) || {};
-
-    test.use({
-        extraHTTPHeaders: headersObject
-      });
-}
-
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
 }
@@ -66,6 +55,18 @@ if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLin
     for (const url of configuration.notVisitLinkUrls) {
         visitedUrlsOrNotVisitLinkUrls.push(url);
     }
+}
+
+if (configuration?.headers?.length) {
+    const headersObject: Record<string, string> = {};
+
+    for (const header of configuration.headers) {
+        headersObject[header.name] = header.value;
+    }
+
+    test.use({
+        extraHTTPHeaders: headersObject
+    });
 }
 
 test('test an application', async ({ page }) => {
@@ -166,7 +167,7 @@ const handlePage = async ({ page }: { page: Page }) => {
 const getPageTextContents = async ({ page }: { page: Page }): Promise<string> => {
     const rawContent = await page.locator('body').innerText(); // eslint-disable-line unicorn/prefer-dom-node-text-content
     const rawContentWithoutLineBreaks = rawContent.replaceAll(/[\n\r]+/g, ' ');
-    return addSpacesToCamelCaseText(rawContentWithoutLineBreaks);  
+    return addSpacesToCamelCaseText(rawContentWithoutLineBreaks);
 }
 
 const checkPageForErrors = async ({ page }: { page: Page }) => {
@@ -174,7 +175,7 @@ const checkPageForErrors = async ({ page }: { page: Page }) => {
         console.log('  checkPageForErrors');
     }
 
-    const content = await getPageTextContents({page});
+    const content = await getPageTextContents({ page });
 
     if (debug) {
         console.log('  ***********content***********');
@@ -306,9 +307,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
     if (openAiApiKeyGiven && aiGeneratedInputTexts && !ignoreAiInTest && !ignoreAiGeneratedInputTextsInTests) {
-        await fillInputsWithAi({page});
+        await fillInputsWithAi({ page });
     } else if (process.env.INPUT_TEXTS_FILE_PATH || process.env.RANDOM_INPUT_TEXTS_CHARSET || process.env.RANDOM_INPUT_TEXTS_MIN_LENGTH
-                                          || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
+        || process.env.RANDOM_INPUT_TEXTS_MAX_LENGTH
     ) {
         await fillTextInputs({
             doDerivation: false, inputText, inputType: 'text',
@@ -356,7 +357,7 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
         const placeholder = await input.evaluate(el => el.getAttribute('placeholder'));
 
         const labelText = await input.evaluate((el) => {
-            const {id} = el;
+            const { id } = el;
             if (id) {
                 const label = document.querySelector(`label[for="${id}"]`);
                 if (label) {
@@ -379,16 +380,16 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
             const labelParameter = labelText || 'no label';
             const isBrokenInputValue = brokenInputValues && probabilityCheck(brokenInputValuesPercentage);
 
-            const generatedValue = isBrokenInputValue ? 
-                                                await generateBrokenInputContentWithAi(await getPageTextContents({page}), typeParameter, 
-                                                                                  autocompleteParameter, placeholderParameter, labelParameter, debug) :
-                                                await generateInputContentWithAi(await getPageTextContents({page}), typeParameter, 
-                                                                                  autocompleteParameter, placeholderParameter, labelParameter, debug);
+            const generatedValue = isBrokenInputValue ?
+                await generateBrokenInputContentWithAi(await getPageTextContents({ page }), typeParameter,
+                    autocompleteParameter, placeholderParameter, labelParameter, debug) :
+                await generateInputContentWithAi(await getPageTextContents({ page }), typeParameter,
+                    autocompleteParameter, placeholderParameter, labelParameter, debug);
 
             const brokenInputValueText = isBrokenInputValue ? ' (the broken input value used)' : '';
-            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", autocomplete: " + autocompleteParameter + 
-                        ", placeholder: " + placeholderParameter + ", label: " + labelParameter + ", the generated value: " 
-                                                        + generatedValue + brokenInputValueText);
+            console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", autocomplete: " + autocompleteParameter +
+                ", placeholder: " + placeholderParameter + ", label: " + labelParameter + ", the generated value: "
+                + generatedValue + brokenInputValueText);
             await input.fill(generatedValue);
         }
     }
