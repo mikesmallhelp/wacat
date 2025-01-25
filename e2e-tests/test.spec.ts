@@ -37,6 +37,15 @@ const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERAT
 const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
 const brokenInputValuesPercentage = process.env.BROKEN_INPUT_VALUES_PERCENTAGE ? Number(process.env.BROKEN_INPUT_VALUES_PERCENTAGE) : 100;
 
+const headersObject = configuration?.headers?.reduce((acc, header) => {
+    acc[header.name] = header.value;
+    return acc;
+  }, {} as Record<string, string>) || {};
+
+test.use({
+    extraHTTPHeaders: headersObject
+  });
+
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
 }
