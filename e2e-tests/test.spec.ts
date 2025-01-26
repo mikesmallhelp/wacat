@@ -41,7 +41,7 @@ if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
 }
 
-if (!aiGeneratedInputTexts && (brokenInputValues || brokenInputValuesPercentage)) {
+if (!aiGeneratedInputTexts && (brokenInputValues || process.env.BROKEN_INPUT_VALUES_PERCENTAGE)) {
     throw new Error(`You are using either the broken-input-values or broken-input-values-percentage flag, but the AI_GENERATED_INPUT_TEXTS 
                      environment variable is not set.
                      Please ensure that the OPENAI_API_KEY and OPENAI_API_MODEL environment variables are also configured.`);
@@ -230,7 +230,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     let movedToDifferentPage = false;
-    let firstButtonClickIsDone = false;
+    let firstButtonIsHandled = false;
     let inputTextsIndex = 0;
 
     while (inputTextsIndex < inputTexts.length) {
@@ -239,7 +239,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
 
         while (buttonIndexesInRandomOrder.length > 0) {
-            if (firstButtonClickIsDone) {
+            if (firstButtonIsHandled) {
                 if (debug) {
                     console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
                 }
@@ -260,10 +260,16 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
             }
 
-            if (await button.isVisible() && await button.isEnabled()) {
-                console.log('Push the button #' + (buttonIndex + 1));
-                await button.click();
-                firstButtonClickIsDone = true;
+            const buttonText = (await button.textContent())?.trim() || '';
+            if (await button.isVisible() && await button.isEnabled()) {      
+                if (!configuration?.doNotPushButtonLabels?.includes(buttonText)) {
+                    console.log('Push the button #' + (buttonIndex + 1));
+                    await button.click();
+                } else {
+                    console.log("Don't push button #" + (buttonIndex + 1) + ", because it's included in the doNotPushButtonLabels " + 
+                                "configuration values.");
+                }
+                firstButtonIsHandled = true;
             }
 
             await waitForTimeout({ page });
