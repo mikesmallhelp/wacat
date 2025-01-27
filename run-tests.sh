@@ -99,7 +99,7 @@ echo
 (cd test-app/test-app && npm run dev &)
 sleep 10
 
-run_playwright_tests "index-simple.tsx" "--wait 3000 --conf example-files/configuration-do-not-push-buttons.json" "1 passed" "Filling the #1 text input field a value" "Filling the #1 url input field a value" "Push the button #1"
+run_playwright_tests "index-simple.tsx" "--wait 3000 --conf example-files/configuration-do-not-push-buttons.json --ignore-ai-in-test" "1 passed" "Filling the #1 text input field a value" "Filling the #1 url input field a value" "Push the button #1"
 run_playwright_tests "index-simple.tsx" "--wait 20000 --timeout 500 --broken-input-values --broken-input-values-percentage 100 --conf example-files/configuration-error-texts-have-nice-day.json" "1 failed" "(the broken input value used)" "Check that the page doesn't contain the Have a nice day! text"
 run_playwright_tests "index-simple.tsx" "--wait 20000 --timeout 500 --conf example-files/configuration-error-texts-have-nice-day.json" "1 failed" "Filling the #1 input field with the AI" "Check that the page doesn't contain the Have a nice day! text"
 run_playwright_tests "index-working-page3.tsx" "--wait 20000 --timeout 500 --ignore-ai-generated-input-texts-in-test" "1 passed" "Check with the AI that the page doesn't contain errors." "In the page: http://localhost:3000/working-page"
