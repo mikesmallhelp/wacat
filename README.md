@@ -30,6 +30,9 @@ Additionally, wacat:
 - Supports some authentication scenarios
   - Authentication configurations are provided in a JSON file
 - Allows configuration of pages that should not be visited
+- Allows configuration of buttons that should not be pushed
+- Supports adding headers to tests
+  - Can be used for example for the authentication in the manual tests
 - Supports a headless mode
 - Allows configuration of page download wait times and overall test timeout values
 - Supports running in CI pipelines
@@ -44,7 +47,7 @@ If you encounter a bug or need a specific feature, please create a new issue.
 
 ## Current Version
 
-The current version of wacat is 1.4.0. Please refer to the end of this page for the change history.
+The current version of wacat is 1.5.0. Please refer to the end of this page for the change history.
 
 ## Warnings
 Please ensure you only test your own web application or have explicit permission to test someone else’s application. Testing the vulnerabilities of an application without authorization could be illegal.
@@ -1033,6 +1036,93 @@ In the page: https://mikesmallhelp-test-application-more-complicated-authenticat
 
 This confirms that wacat successfully excluded the specified page from the test.
 
+### Configure the buttons which are not pushed
+
+In the above was configured with ```notVisitLinkUrls``` JSON attribute the URLs that wacat should avoid. It's also possible to configure the buttons, which wacat don't push at all with the configuration like this:
+
+```
+{
+    "doNotPushButtonLabels": ["Logout", "Go to GitHub"]
+}
+```
+
+Here we configurate that the wacat don't push the buttons labeled "Logout" or "Go to GitHub". See below the example of using ```doNotPushButtonLabels``` JSON attribute.
+
+### Add headers to test and do authentication etc.
+
+If the current wacat authentication modes are not working, in the manual tests it might also be possible to pass authentication cookies etc. headers to wacat. Below is one example, but remember that authencation headers differ between applications and using this feature of the wacat might require detailed investigation. Remember also that adding of the headers could also be used for some other purposes than for the authentication.
+
+We have this simple application https://mikesmallhelp-test-application-nextjs-auth.vercel.app/, which has a login page and a main page. If the user is going directly to the main page, he is directed to the login page. The credentials are example@example.com/password.
+
+#### Taking authentication cookies
+
+When you are in the main page, open the developer console (ctrl + shift + i) and go to the Network tab. Refresh page once and right click the page's network call. Then select "Copy" and then "Copy as cURL". If you paste the result to some file, it might look like this:
+
+```
+curl 'https://mikesmallhelp-test-application-nextjs-auth.vercel.app/' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'accept-language: fi-FI,fi;q=0.9,en-US;q=0.8,en;q=0.7' \
+  -H 'cache-control: max-age=0' \
+  -H 'cookie: __Host-next-auth.csrf-token=c5cdb7ffda044e90a1a0c75abe0f81dc3c0a04551ab310d79bc85ae3e3602616%7C7f12c58c94ee1a8c8b28b9c0e1c413b56f03e5797e7ed02563b7aba491f512b7; __Secure-next-auth.callback-url=https%3A%2F%2Fmikesmallhelp-test-application-nextjs-auth.vercel.app%2Flogin%3FcallbackUrl%3Dhttps%253A%252F%252Fmikesmallhelp-test-application-nextjs-auth.vercel.app%252F; __Secure-next-auth.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..2bHRJrhxsKYaNZSh.0WhBsCMdsHn0WHgRKuJxq8cqvAV8rJQXStCGt_w2xV1yHvmAxJUQScIfweovsrgCO_J-EsGVifCvtaSVqMUhCAfkly0oL4TP12P8ZyfuhnCy0QZpjGOyAz-aWfDBknZocDPkjlRD0i01uix6xYCtS3cvs-yWWtGJgT7beJWk5qGHRIWJ9quQNTEjykYSuA.oKeZedaSh2KJz4_CUc7WpA' \
+  -H 'priority: u=0, i' \
+  -H 'referer: https://vercel.com/' \
+  -H 'sec-ch-ua: "Not A(Brand";v="8", "Chromium";v="132"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'sec-fetch-user: ?1' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36'
+```
+You can use the authentication cookies by copying cookie part from the above cURL command and adding them to the wacat configuration file:
+
+```
+{
+    "headers": [{"name": "cookie", "value": "__Host-next-auth.csrf-token=c5cdb7ffda044e90a1a0c75abe0f81dc3c0a04551ab310d79bc85ae3e3602616%7C7f12c58c94ee1a8c8b28b9c0e1c413b56f03e5797e7ed02563b7aba491f512b7; __Secure-next-auth.callback-url=https%3A%2F%2Fmikesmallhelp-test-application-nextjs-auth.vercel.app%2Flogin%3FcallbackUrl%3Dhttps%253A%252F%252Fmikesmallhelp-test-application-nextjs-auth.vercel.app%252F; __Secure-next-auth.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..2bHRJrhxsKYaNZSh.0WhBsCMdsHn0WHgRKuJxq8cqvAV8rJQXStCGt_w2xV1yHvmAxJUQScIfweovsrgCO_J-EsGVifCvtaSVqMUhCAfkly0oL4TP12P8ZyfuhnCy0QZpjGOyAz-aWfDBknZocDPkjlRD0i01uix6xYCtS3cvs-yWWtGJgT7beJWk5qGHRIWJ9quQNTEjykYSuA.oKeZedaSh2KJz4_CUc7WpA"}],
+    "doNotPushButtonLabels": ["Logout"]
+}
+```
+
+The configuration file contains headers json variable, which contains ```cookie``` header and it's value is taken from the cURL. The configuration file contains also 
+
+```
+"doNotPushButtonLabels": ["Logout"]
+```
+
+which configures that the "Logout" button is not pushed in the test.
+
+#### Running
+
+The example run commands are following.
+
+##### Windows
+
+```
+wacat test --wait 2000 --conf example-files\configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
+```
+
+##### Linux and Mac
+
+```
+wacat test --wait 2000 --conf example-files/configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
+```
+
+#### Example output
+
+```
+Testing in url: https://mikesmallhelp-test-application-nextjs-auth.vercel.app/. Please wait...
+
+
+Running 1 test using 1 worker
+[chromium] › test.spec.ts:72:1 › test an application
+In the page: https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
+  1 passed (10.7s)
+```
+
+In the example output we can see that the wacat don't go to the login page so it can use the cookie from the authentication file.
+
 ### Run in headless mode
 
 To run wacat in headless mode (without displaying the browser), use the --headless flag.
@@ -1172,6 +1262,8 @@ If adding a new feature, ensure a test case is included. Check the run-tests.sh 
 Consider adding unit tests to improve code reliability.
 
 ## Change History
+
+### 1.5.0 (January 27, 2025)
 
 ### 1.4.0 (January 5, 2025)
 
