@@ -30,9 +30,8 @@ Additionally, wacat:
 - Supports some authentication scenarios
   - Authentication configurations are provided in a JSON file
 - Allows configuration of pages that should not be visited
-- Allows configuration of buttons that should not be pushed
-- Supports adding headers to tests
-  - Can be used for example for the authentication in the manual tests
+- Allows configuration of buttons to avoid pushing
+- Adding headers for authentication and other purposes
 - Supports a headless mode
 - Allows configuration of page download wait times and overall test timeout values
 - Supports running in CI pipelines
@@ -1036,9 +1035,9 @@ In the page: https://mikesmallhelp-test-application-more-complicated-authenticat
 
 This confirms that wacat successfully excluded the specified page from the test.
 
-### Configure the buttons which are not pushed
+### Configure buttons to avoid pushing
 
-In the above was configured with ```notVisitLinkUrls``` JSON attribute the URLs that wacat should avoid. It's also possible to configure the buttons, which wacat don't push at all with the configuration like this:
+The ```notVisitLinkUrls``` JSON attribute is used to specify the URLs that wacat should avoid visiting (see above). Similarly, you can configure buttons that wacat should not push by using the following configuration:
 
 ```
 {
@@ -1046,17 +1045,35 @@ In the above was configured with ```notVisitLinkUrls``` JSON attribute the URLs 
 }
 ```
 
-Here we configurate that the wacat don't push the buttons labeled "Logout" or "Go to GitHub". See below the example of using ```doNotPushButtonLabels``` JSON attribute.
+In this example, wacat is configured to avoid pushing buttons labeled "Logout" or "Go to GitHub." Below is an example demonstrating the use of the ```doNotPushButtonLabels``` JSON attribute.
 
-### Add headers to test and do authentication etc.
+### Adding headers for authentication and other purposes
 
-If the current wacat authentication modes are not working, in the manual tests it might also be possible to pass authentication cookies etc. headers to wacat. Below is one example, but remember that authencation headers differ between applications and using this feature of the wacat might require detailed investigation. Remember also that adding of the headers could also be used for some other purposes than for the authentication.
+If the current wacat authentication methods are not sufficient, you can manually pass authentication cookies or other headers to wacat for testing. Below is an example. Note that authentication headers vary between applications, so using this feature might require detailed investigation. Additionally, headers can be used for purposes beyond authentication.
 
-We have this simple application https://mikesmallhelp-test-application-nextjs-auth.vercel.app/, which has a login page and a main page. If the user is going directly to the main page, he is directed to the login page. The credentials are example@example.com/password.
+We’ll use this simple application as an example: https://mikesmallhelp-test-application-nextjs-auth.vercel.app/. The app has a login page and a main page. If a user attempts to access the main page directly, they are redirected to the login page. The credentials are:
 
-#### Taking authentication cookies
+```
+Username: example@example.com
+Password: password
+```
 
-When you are in the main page, open the developer console (ctrl + shift + i) and go to the Network tab. Refresh page once and right click the page's network call. Then select "Copy" and then "Copy as cURL". If you paste the result to some file, it might look like this:
+![](doc/authentication-header-example-login.png)
+
+![](doc/authentication-header-example-main-page.png)
+
+#### Extracting Authentication Cookies
+
+To extract authentication cookies:
+
+1. Log in to the application and navigate to the main page.
+2. Open the developer console (press Ctrl + Shift + I on most major browsers).
+3. Go to the Network tab and refresh the page.
+4. Right-click on the page’s network call and select Copy > Copy as cURL.
+
+![](doc/authentication-header-example-taking-curl.png)
+
+If you paste the copied cURL command into a file, it will look similar to this:
 
 ```
 curl 'https://mikesmallhelp-test-application-nextjs-auth.vercel.app/' \
@@ -1076,7 +1093,11 @@ curl 'https://mikesmallhelp-test-application-nextjs-auth.vercel.app/' \
   -H 'upgrade-insecure-requests: 1' \
   -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36'
 ```
-You can use the authentication cookies by copying cookie part from the above cURL command and adding them to the wacat configuration file:
+Copy the value of the cookie header and add it to the wacat configuration file.
+
+#### Example configuration file
+
+Below is an example configuration file that includes the cookie header. It also configures wacat to avoid pressing the "Logout" button during the test.
 
 ```
 {
@@ -1085,25 +1106,17 @@ You can use the authentication cookies by copying cookie part from the above cUR
 }
 ```
 
-The configuration file contains headers json variable, which contains ```cookie``` header and it's value is taken from the cURL. The configuration file contains also 
+#### Running the test
 
-```
-"doNotPushButtonLabels": ["Logout"]
-```
+Here are the commands to run the test:
 
-which configures that the "Logout" button is not pushed in the test.
-
-#### Running
-
-The example run commands are following.
-
-##### Windows
+##### On Windows:
 
 ```
 wacat test --wait 2000 --conf example-files\configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
 ```
 
-##### Linux and Mac
+##### On Linux and Mac:
 
 ```
 wacat test --wait 2000 --conf example-files/configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
@@ -1121,7 +1134,7 @@ In the page: https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
   1 passed (10.7s)
 ```
 
-In the example output we can see that the wacat don't go to the login page so it can use the cookie from the authentication file.
+In this example, wacat bypasses the login page by using the cookie from the configuration file, directly accessing the main page.
 
 ### Run in headless mode
 
@@ -1265,6 +1278,8 @@ Consider adding unit tests to improve code reliability.
 ## Change History
 
 ### 1.5.0 (January 27, 2025)
+
+- Adding headers for authentication and other purposes
 
 ### 1.4.0 (January 5, 2025)
 
