@@ -260,15 +260,19 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
             }
 
-            const buttonText = (await button.textContent())?.trim() || '';
+            let buttonText = await button.textContent();
+            buttonText = (buttonText || '').trim();
             if (await button.isVisible() && await button.isEnabled()) {      
-                if (!configuration?.doNotPushButtonLabels?.includes(buttonText)) {
+                if (configuration?.doNotPushButtonLabels?.includes(buttonText)) {
+                    if (debug) {
+                        console.log("Don't push button #" + (buttonIndex + 1) + ", because it's included in the doNotPushButtonLabels " + 
+                        "configuration values.");
+                    }
+                } else {
                     console.log('Push the button #' + (buttonIndex + 1));
                     await button.click();
-                } else {
-                    console.log("Don't push button #" + (buttonIndex + 1) + ", because it's included in the doNotPushButtonLabels " + 
-                                "configuration values.");
                 }
+
                 firstButtonIsHandled = true;
             }
 
