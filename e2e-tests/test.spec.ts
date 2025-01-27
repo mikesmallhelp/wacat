@@ -263,9 +263,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             let buttonText = await button.textContent();
             buttonText = (buttonText || '').trim();
             if (await button.isVisible() && await button.isEnabled()) {      
-                if (configuration?.doNotPushButtonLabels?.includes(buttonText)) {
+                if (configuration?.doNotPushButtons?.includes(buttonText)) {
                     if (debug) {
-                        console.log("Don't push button #" + (buttonIndex + 1) + ", because it's included in the doNotPushButtonLabels " + 
+                        console.log("Don't push button #" + (buttonIndex + 1) + ", because it's included in the doNotPushButtons " + 
                         "configuration values.");
                     }
                 } else {

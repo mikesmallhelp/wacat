@@ -76,7 +76,7 @@ export type Configuration = {
     errorTextsInPages?: string[];
     authentication?: AuthenticationConfiguration;
     notVisitLinkUrls?: string[];
-    doNotPushButtonLabels?: string[];
+    doNotPushButtons?: string[];
     headers?: HeaderConfiguration[];
 } | null;
 

@@ -1041,11 +1041,11 @@ The ```notVisitLinkUrls``` JSON attribute is used to specify the URLs that wacat
 
 ```
 {
-    "doNotPushButtonLabels": ["Logout", "Go to GitHub"]
+    "doNotPushButtons": ["Logout", "Go to GitHub"]
 }
 ```
 
-In this example, wacat is configured to avoid pushing buttons labeled "Logout" or "Go to GitHub." Below is an example demonstrating the use of the ```doNotPushButtonLabels``` JSON attribute.
+In this example, wacat is configured to avoid pushing buttons labeled "Logout" or "Go to GitHub." Below is an example demonstrating the use of the ```doNotPushButtons``` JSON attribute.
 
 ### Adding headers for authentication and other purposes
 
@@ -1102,7 +1102,7 @@ Below is an example configuration file that includes the cookie header. It also 
 ```
 {
     "headers": [{"name": "cookie", "value": "__Host-next-auth.csrf-token=c5cdb7ffda044e90a1a0c75abe0f81dc3c0a04551ab310d79bc85ae3e3602616%7C7f12c58c94ee1a8c8b28b9c0e1c413b56f03e5797e7ed02563b7aba491f512b7; __Secure-next-auth.callback-url=https%3A%2F%2Fmikesmallhelp-test-application-nextjs-auth.vercel.app%2Flogin%3FcallbackUrl%3Dhttps%253A%252F%252Fmikesmallhelp-test-application-nextjs-auth.vercel.app%252F; __Secure-next-auth.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..2bHRJrhxsKYaNZSh.0WhBsCMdsHn0WHgRKuJxq8cqvAV8rJQXStCGt_w2xV1yHvmAxJUQScIfweovsrgCO_J-EsGVifCvtaSVqMUhCAfkly0oL4TP12P8ZyfuhnCy0QZpjGOyAz-aWfDBknZocDPkjlRD0i01uix6xYCtS3cvs-yWWtGJgT7beJWk5qGHRIWJ9quQNTEjykYSuA.oKeZedaSh2KJz4_CUc7WpA"}],
-    "doNotPushButtonLabels": ["Logout"]
+    "doNotPushButtons": ["Logout"]
 }
 ```
 
@@ -1113,13 +1113,13 @@ Here are the commands to run the test:
 ##### On Windows:
 
 ```
-wacat test --wait 2000 --conf example-files\configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
+wacat test --conf example-files\configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
 ```
 
 ##### On Linux and Mac:
 
 ```
-wacat test --wait 2000 --conf example-files/configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
+wacat test --conf example-files/configuration-cookie-header.json https://mikesmallhelp-test-application-nextjs-auth.vercel.app/
 ```
 
 #### Example output
