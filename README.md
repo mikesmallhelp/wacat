@@ -1172,7 +1172,8 @@ To view all available flags, run the following command:
 wacat test --help
 ```
 ```
-Test any web application, for example: wacat test http://localhost:3000
+wacat test --help
+Test any web application. Version 1.5.0.
 
 USAGE
   $ wacat test URL [--broken-input-values] [--broken-input-values-percentage <value>] [--bypass-ai-errors] [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>]
@@ -1206,7 +1207,7 @@ FLAGS
   --wait=<value>                             A wait in milliseconds to wait a page load
 
 DESCRIPTION
-  Test any web application, for example: wacat test http://localhost:3000
+  Test any web application. Version 1.5.0.
 
 EXAMPLES
   $ wacat test http://localhost:3000
