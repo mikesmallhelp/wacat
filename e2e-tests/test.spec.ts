@@ -595,6 +595,10 @@ const visitLinks = async ({ page }: { page: Page }) => {
                 console.log('  visitLinks, for, link: ' + link);
             }
 
+            // this is needed, because sometimes applications forwards URLs to the different URLs and 
+            // visitedUrlsOrNotVisitLinkUrls.push(page.url()) 
+            // call in the handlePage function is not enough
+            visitedUrlsOrNotVisitLinkUrls.push(link);
             await page.goto(link);
             await waitForTimeout({ page });
             await handlePage({ page });

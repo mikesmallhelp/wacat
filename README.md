@@ -46,7 +46,7 @@ If you encounter a bug or need a specific feature, please create a new issue.
 
 ## Current Version
 
-The current version of wacat is 1.5.0. Please refer to the end of this page for the change history.
+The current version of wacat is 1.5.1. Please refer to the end of this page for the change history.
 
 ## Warnings
 Please ensure you only test your own web application or have explicit permission to test someone else’s application. Testing the vulnerabilities of an application without authorization could be illegal.
@@ -1185,8 +1185,7 @@ To view all available flags, run the following command:
 wacat test --help
 ```
 ```
-wacat test --help
-Test any web application. Version 1.5.0.
+Test any web application with wacat. The current version is 1.5.1.
 
 USAGE
   $ wacat test URL [--broken-input-values] [--broken-input-values-percentage <value>] [--bypass-ai-errors] [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>]
@@ -1220,7 +1219,7 @@ FLAGS
   --wait=<value>                             A wait in milliseconds to wait a page load
 
 DESCRIPTION
-  Test any web application. Version 1.5.0.
+  Test any web application with wacat. The current version is 1.5.1.
 
 EXAMPLES
   $ wacat test http://localhost:3000
@@ -1270,12 +1269,12 @@ Review the output to ensure everything is working correctly.
 
 Contributions are warmly welcomed! Check the issues page for tasks. If you encounter a bug or need a specific feature, please create a new issue.
 
-### Guidelines for Contributions:
+### Guidelines for contributions:
 
 If adding a new feature, ensure a test case is included. Check the run-tests.sh file for integration test examples.
 Consider adding unit tests to improve code reliability.
 
-## Change History
+## Change history of main releases
 
 ### 1.5.0 (January 28, 2025)
 
