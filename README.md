@@ -98,7 +98,7 @@ You can optionally use the following environment variable:
 AI_GENERATED_INPUT_TEXTS=true
 ```
 
-When set to true, the OpenAI API will generate values for all input fields on each page. By default, this value is set to false. Please note that enabling this option can result in significant API usage. Therefore, it is recommended to have at least a Tier 1 usage plan, as it allows for a higher number of requests per minute compared to the Free tier.
+When set to true, the OpenAI API will generate values for all input fields on each page. By default, this value is set to false. Please note that enabling this option can result in significant API usage. Therefore, it is recommended to have at least a Tier 1 usage plan, as it allows for a higher number of requests per minute compared to the Free tier. Using the Free tier plan is possible, but it may be very slow if there are numerous OpenAI API calls.
 
 ### Updating wacat
 
