@@ -1277,7 +1277,7 @@ Consider adding unit tests to improve code reliability.
 
 ## Change History
 
-### 1.5.0 (January 27, 2025)
+### 1.5.0 (January 28, 2025)
 
 - Adding headers for authentication and other purposes
 
