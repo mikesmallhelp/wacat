@@ -67,10 +67,17 @@ export type AuthenticationConfiguration = {
     loginButtonLabel: string
 } | null;
 
+type HeaderConfiguration = {
+    name: string;
+    value: string;
+}
+
 export type Configuration = {
     errorTextsInPages?: string[];
     authentication?: AuthenticationConfiguration;
     notVisitLinkUrls?: string[];
+    doNotPushButtons?: string[];
+    headers?: HeaderConfiguration[];
 } | null;
 
 export const readConfiguration = async ({ path }: { path: string }): Promise<Configuration> => {
