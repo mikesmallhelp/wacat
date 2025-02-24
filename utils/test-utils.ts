@@ -187,8 +187,8 @@ export const addSpacesToCamelCaseText = (text: string): string => text.replaceAl
 
 export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
 
-export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputAutocomplete: string, inputPlaceholder: string, 
-                                                 inputLabel: string, debug: boolean):
+export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputAutocomplete: string, inputPlaceholder: string,
+    inputLabel: string, debug: boolean):
     Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -279,7 +279,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
 };
 
 export const generateBrokenInputContentWithAi = async (pageContent: string, inputType: string, inputAutocomplete: string, inputPlaceholder: string,
-                                               inputLabel: string, debug: boolean):
+    inputLabel: string, debug: boolean):
     Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -379,7 +379,7 @@ export const generateBrokenInputContentWithAi = async (pageContent: string, inpu
                 "role": "system"
             },
             {
-                "content": "ma&rk.ro&#berts@gmail,com¥dskljfklsfjlsdfjlds¥ddjklfjdslfdjlkls7575jdfjksd¥ds&klfjldklfjdslfdklfjdslfdklfjdslfdklfjdslfdklfjdslfd", 
+                "content": "ma&rk.ro&#berts@gmail,com¥dskljfklsfjlsdfjlds¥ddjklfjdslfdjlkls7575jdfjksd¥ds&klfjldklfjdslfdklfjdslfdklfjdslfdklfjdslfdklfjdslfd",
                 "name": "example_assistant",
                 "role": "system"
             },
@@ -409,4 +409,11 @@ export const probabilityCheck = (probability: number): boolean => {
     }
 
     return Math.random() * 100 < probability;
+};
+
+export const getStringUntilQuestionMark = (str: string): string => {
+    const questionMarkIndex = str.indexOf('?');
+    return questionMarkIndex === -1
+        ? str
+        : str.slice(0, Math.max(0, questionMarkIndex + 1));
 };
