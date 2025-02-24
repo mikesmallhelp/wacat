@@ -37,6 +37,13 @@ const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERAT
 const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
 const brokenInputValuesPercentage = process.env.BROKEN_INPUT_VALUES_PERCENTAGE ? Number(process.env.BROKEN_INPUT_VALUES_PERCENTAGE) : 100;
 
+const addUrlToVisitedUrlsOrNotVisitLinkUrls = (url: string) => {
+    visitedUrlsOrNotVisitLinkUrls.push(getStringUntilQuestionMark(url));
+}
+
+const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean => 
+    visitedUrlsOrNotVisitLinkUrls.includes(getStringUntilQuestionMark(url))
+
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
 }
@@ -612,10 +619,4 @@ const waitForTimeout = async ({ page }: { page: Page }) => {
     await page.waitForTimeout(wait);
 }
 
-const addUrlToVisitedUrlsOrNotVisitLinkUrls = (url: string) => {
-    visitedUrlsOrNotVisitLinkUrls.push(getStringUntilQuestionMark(url));
-}
-
-const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean => 
-    visitedUrlsOrNotVisitLinkUrls.includes(getStringUntilQuestionMark(url))
 
