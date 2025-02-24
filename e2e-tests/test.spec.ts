@@ -616,7 +616,5 @@ const addUrlToVisitedUrlsOrNotVisitLinkUrls = (url: string) => {
     visitedUrlsOrNotVisitLinkUrls.push(getStringUntilQuestionMark(url));
 }
 
-const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean => {
-    return visitedUrlsOrNotVisitLinkUrls.includes(url);
-}
+const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean => visitedUrlsOrNotVisitLinkUrls.includes(url)
 

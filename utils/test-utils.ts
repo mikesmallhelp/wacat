@@ -415,5 +415,5 @@ export const getStringUntilQuestionMark = (str: string): string => {
     const questionMarkIndex = str.indexOf('?');
     return questionMarkIndex === -1
         ? str
-        : str.substring(0, questionMarkIndex + 1);
+        : str.slice(0, Math.max(0, questionMarkIndex + 1));
 };
