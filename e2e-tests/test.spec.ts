@@ -7,7 +7,7 @@ import { fail } from 'node:assert';
 
 import {
     Configuration, addSpacesToCamelCaseText, aiDetectsError, generateBrokenInputContentWithAi, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail,
-    generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame, probabilityCheck,
+    generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, getStringUntilQuestionMark, hostIsSame, probabilityCheck,
     readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
 
@@ -53,7 +53,7 @@ if (!brokenInputValues && process.env.BROKEN_INPUT_VALUES_PERCENTAGE) {
 
 if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLinkUrls.length > 0) {
     for (const url of configuration.notVisitLinkUrls) {
-        visitedUrlsOrNotVisitLinkUrls.push(url);
+        addUrlToVisitedUrlsOrNotVisitLinkUrls(url);
     }
 }
 
@@ -149,7 +149,7 @@ const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());
 
     await waitForTimeout({ page });
-    visitedUrlsOrNotVisitLinkUrls.push(page.url());
+    addUrlToVisitedUrlsOrNotVisitLinkUrls(page.url());
 
     await checkPageForErrors({ page });
 
@@ -310,7 +310,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         }
     }
 
-    if (movedToDifferentPage && !visitedUrlsOrNotVisitLinkUrls.includes(page.url())) {
+    if (movedToDifferentPage && !visitedUrlsOrNotVisitLinkUrlsIncludesUrl(page.url())) {
         await handlePage({ page });
     }
 }
@@ -590,15 +590,13 @@ const visitLinks = async ({ page }: { page: Page }) => {
             console.log('  visitLinks, for, link: ' + link);
         }
 
-        if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
+        if (!visitedUrlsOrNotVisitLinkUrlsIncludesUrl(link) && hostIsSame({ rootUrl, url: link })) {
             if (debug) {
                 console.log('  visitLinks, for, link: ' + link);
             }
 
-            // this is needed, because sometimes applications forwards URLs to the different URLs and 
-            // visitedUrlsOrNotVisitLinkUrls.push(page.url()) 
-            // call in the handlePage function is not enough
-            visitedUrlsOrNotVisitLinkUrls.push(link);
+            // this is needed, because sometimes applications forwards URLs to the different URLs
+            addUrlToVisitedUrlsOrNotVisitLinkUrls(link);
             await page.goto(link);
             await waitForTimeout({ page });
             await handlePage({ page });
@@ -614,4 +612,11 @@ const waitForTimeout = async ({ page }: { page: Page }) => {
     await page.waitForTimeout(wait);
 }
 
+const addUrlToVisitedUrlsOrNotVisitLinkUrls = (url: string) => {
+    visitedUrlsOrNotVisitLinkUrls.push(getStringUntilQuestionMark(url));
+}
+
+const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean => {
+    return visitedUrlsOrNotVisitLinkUrls.includes(url);
+}
 
