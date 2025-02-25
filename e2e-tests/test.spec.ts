@@ -41,7 +41,7 @@ const addUrlToVisitedUrlsOrNotVisitLinkUrls = (url: string) => {
     visitedUrlsOrNotVisitLinkUrls.push(getStringUntilQuestionMark(url));
 }
 
-const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean => 
+const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean =>
     visitedUrlsOrNotVisitLinkUrls.includes(getStringUntilQuestionMark(url))
 
 if (!rootUrl) {
@@ -224,8 +224,11 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     const currentUrl = page.url();
-    const buttonsLocator =
-        page.locator('button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])');
+    const buttonsLocator = page.locator(
+        'button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])'
+    ).filter({
+        hasNotText: new RegExp(`^(${configuration?.doNotPushButtons?.join('|')})$`)
+    });
     const buttonsCount = await buttonsLocator.count();
 
     if (buttonsCount === 0) {
@@ -267,19 +270,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
             }
 
-            let buttonText = await button.textContent();
-            buttonText = (buttonText || '').trim();
-            if (await button.isVisible() && await button.isEnabled()) {      
-                if (configuration?.doNotPushButtons?.includes(buttonText)) {
-                    if (debug) {
-                        console.log("Don't push button #" + (buttonIndex + 1) + ", because it's included in the doNotPushButtons " + 
-                        "configuration values.");
-                    }
-                } else {
-                    console.log('Push the button #' + (buttonIndex + 1));
-                    await button.click();
-                }
-
+            if (await button.isVisible() && await button.isEnabled()) {
+                console.log('Push the button #' + (buttonIndex + 1));
+                await button.click();
                 firstButtonIsHandled = true;
             }
 
