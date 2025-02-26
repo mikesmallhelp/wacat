@@ -7,7 +7,7 @@ import { fail } from 'node:assert';
 
 import {
     Configuration, addSpacesToCamelCaseText, aiDetectsError, generateBrokenInputContentWithAi, generateInputContentWithAi, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail,
-    generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, hostIsSame, probabilityCheck,
+    generateRandomIndex, generateRandomInteger, generateRandomString, generateRandomUrl, getStringUntilQuestionMark, hostIsSame, probabilityCheck,
     readConfiguration, readFileContent, shuffleArray, truncateString
 } from '../utils/test-utils';
 
@@ -37,6 +37,13 @@ const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERAT
 const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
 const brokenInputValuesPercentage = process.env.BROKEN_INPUT_VALUES_PERCENTAGE ? Number(process.env.BROKEN_INPUT_VALUES_PERCENTAGE) : 100;
 
+const addUrlToVisitedUrlsOrNotVisitLinkUrls = (url: string) => {
+    visitedUrlsOrNotVisitLinkUrls.push(getStringUntilQuestionMark(url));
+}
+
+const visitedUrlsOrNotVisitLinkUrlsIncludesUrl = (url: string): boolean =>
+    visitedUrlsOrNotVisitLinkUrls.includes(getStringUntilQuestionMark(url))
+
 if (!rootUrl) {
     throw new Error('ROOT_URL environment variable is not set');
 }
@@ -53,7 +60,7 @@ if (!brokenInputValues && process.env.BROKEN_INPUT_VALUES_PERCENTAGE) {
 
 if (configuration && configuration.notVisitLinkUrls && configuration.notVisitLinkUrls.length > 0) {
     for (const url of configuration.notVisitLinkUrls) {
-        visitedUrlsOrNotVisitLinkUrls.push(url);
+        addUrlToVisitedUrlsOrNotVisitLinkUrls(url);
     }
 }
 
@@ -149,7 +156,7 @@ const handlePage = async ({ page }: { page: Page }) => {
     console.log('In the page: ' + page.url());
 
     await waitForTimeout({ page });
-    visitedUrlsOrNotVisitLinkUrls.push(page.url());
+    addUrlToVisitedUrlsOrNotVisitLinkUrls(page.url());
 
     await checkPageForErrors({ page });
 
@@ -217,8 +224,11 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     const currentUrl = page.url();
-    const buttonsLocator =
-        page.locator('button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])');
+    const buttonsLocator = page.locator(
+        'button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])'
+    ).filter({
+        hasNotText: new RegExp(`^(${configuration?.doNotPushButtons?.join('|')})$`)
+    });
     const buttonsCount = await buttonsLocator.count();
 
     if (buttonsCount === 0) {
@@ -260,19 +270,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
                 console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
             }
 
-            let buttonText = await button.textContent();
-            buttonText = (buttonText || '').trim();
-            if (await button.isVisible() && await button.isEnabled()) {      
-                if (configuration?.doNotPushButtons?.includes(buttonText)) {
-                    if (debug) {
-                        console.log("Don't push button #" + (buttonIndex + 1) + ", because it's included in the doNotPushButtons " + 
-                        "configuration values.");
-                    }
-                } else {
-                    console.log('Push the button #' + (buttonIndex + 1));
-                    await button.click();
-                }
-
+            if (await button.isVisible() && await button.isEnabled()) {
+                console.log('Push the button #' + (buttonIndex + 1));
+                await button.click();
                 firstButtonIsHandled = true;
             }
 
@@ -310,7 +310,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         }
     }
 
-    if (movedToDifferentPage && !visitedUrlsOrNotVisitLinkUrls.includes(page.url())) {
+    if (movedToDifferentPage && !visitedUrlsOrNotVisitLinkUrlsIncludesUrl(page.url())) {
         await handlePage({ page });
     }
 }
@@ -590,15 +590,13 @@ const visitLinks = async ({ page }: { page: Page }) => {
             console.log('  visitLinks, for, link: ' + link);
         }
 
-        if (!visitedUrlsOrNotVisitLinkUrls.includes(link) && hostIsSame({ rootUrl, url: link })) {
+        if (!visitedUrlsOrNotVisitLinkUrlsIncludesUrl(link) && hostIsSame({ rootUrl, url: link })) {
             if (debug) {
                 console.log('  visitLinks, for, link: ' + link);
             }
 
-            // this is needed, because sometimes applications forwards URLs to the different URLs and 
-            // visitedUrlsOrNotVisitLinkUrls.push(page.url()) 
-            // call in the handlePage function is not enough
-            visitedUrlsOrNotVisitLinkUrls.push(link);
+            // this is needed, because sometimes applications forwards URLs to the different URLs
+            addUrlToVisitedUrlsOrNotVisitLinkUrls(link);
             await page.goto(link);
             await waitForTimeout({ page });
             await handlePage({ page });

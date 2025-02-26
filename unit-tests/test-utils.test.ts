@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import {
     addSpacesToCamelCaseText, generateNumberArrayFrom0ToMax, generateRandomDate, generateRandomEmail, generateRandomIndex,
-    generateRandomInteger, generateRandomString, generateRandomUrl, getHost, hostIsSame, probabilityCheck, shuffleArray, truncateString
+    generateRandomInteger, generateRandomString, generateRandomUrl, getHost, getStringUntilQuestionMark, hostIsSame, probabilityCheck, shuffleArray, truncateString
 } from '../utils/test-utils.js';
 
 describe('getHost', () => {
@@ -294,5 +294,19 @@ describe('probabilityCheck', () => {
 
     it('should throw an error for probability greater than 100', () => {
         expect(() => probabilityCheck(101)).to.throw("Probability must be between 0 and 100.");
+    });
+});
+
+describe('getStringUntilQuestionMark', () => {
+    it('should return the substring up to the first "?" (including "?")', () => {
+        const input = 'https://example.com/test?page=1&query=abc';
+        const result = getStringUntilQuestionMark(input);
+        expect(result).to.equal('https://example.com/test?');
+    });
+
+    it('should return the original string if there is no "?"', () => {
+        const input = 'https://example.com/test';
+        const result = getStringUntilQuestionMark(input);
+        expect(result).to.equal('https://example.com/test');
     });
 });
