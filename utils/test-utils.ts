@@ -220,6 +220,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                 1. Generate inputs that match the cultural and linguistic context of the provided page content. For instance, if the page is in French, use French names, addresses, and date formats.
                 2. Match the format and data type of the input field. For example:
                     - For "date" fields, follow regional date formats like DD/MM/YYYY or MM/DD/YYYY.
+                      -Exception: If the type attribute of an input element is set to date, always use the ISO standard format YYYY-MM-DD 
                     - For "email" fields, generate realistic email addresses with common domain names.
                     - For "text" fields with labels like "Name", generate realistic names for the region implied by the content.
                 3. If inputType or inputLabel is missing, infer the most appropriate data type and content from the context of the pageContent.
