@@ -71,7 +71,7 @@
     "posttest": "npm run lint",
     "version": "oclif readme && git add README.md"
   },
-  "version": "1.5.2",
+  "version": "1.5.3",
   "bugs": "https://github.com/mikesmallhelp/wacat/issues",
   "keywords": [
     "oclif"
