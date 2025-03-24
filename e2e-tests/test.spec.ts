@@ -252,10 +252,10 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
 
         while (buttonIndexesInRandomOrder.length > 0) {
-            if (firstButtonIsHandled || inputTexts.length == 1) {
+            if (firstButtonIsHandled || inputTexts.length === 1) {
                 inputTextsIndex++;
             }
-            
+
             if (firstButtonIsHandled) {
                 if (debug) {
                     console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
