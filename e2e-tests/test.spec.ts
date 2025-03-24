@@ -224,6 +224,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 
     const currentUrl = page.url();
+    // handle situation, where a button or buttons are enabled after values are filled
+    await fillDifferentTypesInputs({ inputText: inputTexts[0], page });
+
     const buttonsLocator = page.locator(
         'button:not([disabled]), input[type="submit"]:not([disabled]), input[type="button"]:not([disabled])'
     ).filter({
@@ -241,7 +244,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
     let movedToDifferentPage = false;
     let firstButtonIsHandled = false;
-    let inputTextsIndex = 0;
+    let inputTextsIndex = inputTexts.length > 1 ? 1 : 0;
 
     while (inputTextsIndex < inputTexts.length) {
         const inputText = inputTexts[inputTextsIndex];
@@ -249,13 +252,16 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
         const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
 
         while (buttonIndexesInRandomOrder.length > 0) {
+            if (firstButtonIsHandled || inputTexts.length == 1) {
+                inputTextsIndex++;
+            }
+            
             if (firstButtonIsHandled) {
                 if (debug) {
                     console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
                 }
 
                 await fillDifferentTypesInputs({ inputText, page });
-                inputTextsIndex++;
             }
 
             if (debug) {
