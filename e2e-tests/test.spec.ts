@@ -406,6 +406,7 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
             if (previouslyGeneratedAiValues.length === 50) {
                 previouslyGeneratedAiValues.shift();
             }
+
             previouslyGeneratedAiValues.push(generatedValue);
 
             const brokenInputValueText = isBrokenInputValue ? ' (the broken input value used)' : '';
