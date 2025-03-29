@@ -6,7 +6,7 @@ export default class TestCommand extends Command {
     url: Args.string({description: 'Application url to test, for example: http://localhost:3000', required: true}),
   }
 
-  static description = 'Test any web application with wacat. The current version is 1.5.3.'
+  static description = 'Test any web application with wacat. The current version is 1.5.4.'
 
   static examples = [
     `$ wacat test http://localhost:3000`,

@@ -231,9 +231,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                 4. Prioritize realism and consistency with the page's context and intended audience.
                 5. The variable lastAiGeneratedValues contains previously generated values. Make use of them as needed in appropriate situations. 
                    For example if lastAiGeneratedValues contains entries "James" and "Harrison" and current field is "email" field,
-                   the generated email could be james.harrison@example.com.
-                6. Generate all names so that they begin with an uppercase letter. For example, people’s names, street names, etc. For example
-                   "James", "Harrison", "1234 Maple Street". 
+                   the generated email could be james.harrison@example.com. 
                 
                 Output only the generated fake input value.`,
                 "role": "system"
@@ -280,7 +278,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
         model: openAiModel
     });
 
-    const generatedInputValue = response.choices[0]?.message?.content?.trim().toLowerCase() || '';
+    const generatedInputValue = response.choices[0]?.message?.content?.trim() || '';
 
     if (debug) {
         console.log('  ***********generateInputContentWithAi***********');
