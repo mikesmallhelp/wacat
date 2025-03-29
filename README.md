@@ -1,4 +1,6 @@
-![](doc/wacat-logo.png)
+![Imagine, you leave your computer for a while and go to pick up a cup of coffee. Meanwhile, your cat walks over your keyboard and causes some chaos.](doc/wacat-logo.png)
+
+![wacat video demonstrating AI capabilities](doc/wacat-video.gif)
 
 # wacat - Challenge Your Web App with Cat Chaos and AI-Driven Testing!
 
@@ -46,7 +48,7 @@ If you encounter a bug or need a specific feature, please create a new issue.
 
 ## Current Version
 
-The current version of wacat is 1.5.3. Please refer to the end of this page for the change history.
+The current version of wacat is 1.5.4. Please refer to the end of this page for the change history.
 
 ## Warnings
 Please ensure you only test your own web application or have explicit permission to test someone else’s application. Testing the vulnerabilities of an application without authorization could be illegal.
@@ -1185,7 +1187,7 @@ To view all available flags, run the following command:
 wacat test --help
 ```
 ```
-Test any web application with wacat. The current version is 1.5.3.
+Test any web application with wacat. The current version is 1.5.4.
 
 USAGE
   $ wacat test URL [--broken-input-values] [--broken-input-values-percentage <value>] [--bypass-ai-errors] [--bypass-browser-console-errors] [--bypass-http-errors] [--conf <value>]
@@ -1219,7 +1221,7 @@ FLAGS
   --wait=<value>                             A wait in milliseconds to wait a page load
 
 DESCRIPTION
-  Test any web application with wacat. The current version is 1.5.3.
+  Test any web application with wacat. The current version is 1.5.4.
 
 EXAMPLES
   $ wacat test http://localhost:3000
