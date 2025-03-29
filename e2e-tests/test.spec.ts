@@ -36,7 +36,7 @@ const aiGeneratedInputTexts = process.env.AI_GENERATED_INPUT_TEXTS === 'true';
 const ignoreAiGeneratedInputTextsInTests = Boolean(process.env.IGNORE_AI_GENERATED_INPUT_TEXTS_IN_TEST);
 const brokenInputValues = Boolean(process.env.BROKEN_INPUT_VALUES);
 const brokenInputValuesPercentage = process.env.BROKEN_INPUT_VALUES_PERCENTAGE ? Number(process.env.BROKEN_INPUT_VALUES_PERCENTAGE) : 100;
-const lastAiGeneratedValues: string[] = [];
+const previouslyGeneratedAiValues: string[] = [];
 
 const addUrlToVisitedUrlsOrNotVisitLinkUrls = (url: string) => {
     visitedUrlsOrNotVisitLinkUrls.push(getStringUntilQuestionMark(url));
@@ -401,12 +401,12 @@ const fillInputsWithAi = async ({ page }: { page: Page }) => {
                 await generateBrokenInputContentWithAi(await getPageTextContents({ page }), typeParameter,
                     autocompleteParameter, placeholderParameter, labelParameter, debug) :
                 await generateInputContentWithAi(await getPageTextContents({ page }), typeParameter,
-                    autocompleteParameter, placeholderParameter, labelParameter, lastAiGeneratedValues, debug);
+                    autocompleteParameter, placeholderParameter, labelParameter, previouslyGeneratedAiValues, debug);
 
-            if (lastAiGeneratedValues.length === 50) {
-                lastAiGeneratedValues.shift();
+            if (previouslyGeneratedAiValues.length === 50) {
+                previouslyGeneratedAiValues.shift();
             }
-            lastAiGeneratedValues.push(generatedValue);
+            previouslyGeneratedAiValues.push(generatedValue);
 
             const brokenInputValueText = isBrokenInputValue ? ' (the broken input value used)' : '';
             console.log('Filling the #' + (i + 1) + " input field with the AI, type: " + typeParameter + ", autocomplete: " + autocompleteParameter +

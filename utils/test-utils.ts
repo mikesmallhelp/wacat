@@ -188,7 +188,7 @@ export const addSpacesToCamelCaseText = (text: string): string => text.replaceAl
 export const truncateString = (str: string, maxLength: number): string => str.length > maxLength ? str.slice(0, maxLength) : str;
 
 export const generateInputContentWithAi = async (pageContent: string, inputType: string, inputAutocomplete: string, inputPlaceholder: string,
-    inputLabel: string, lastAiGeneratedValues: string[], debug: boolean):
+    inputLabel: string, previouslyGeneratedAiValues: string[], debug: boolean):
     Promise<string> => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -206,11 +206,11 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
         console.log('  inputAutocomplete:' + inputAutocomplete);
         console.log('  inputPlaceholder:' + inputPlaceholder);
         console.log('  inputLabel:' + inputLabel);
-        console.log('  lastAiGeneratedValues' + JSON.stringify(lastAiGeneratedValues));
+        console.log('  previouslyGeneratedAiValues' + JSON.stringify(previouslyGeneratedAiValues));
         console.log('  *******************************');
     }
 
-    const lastAiGeneratedValuesAsString = JSON.stringify(lastAiGeneratedValues);
+    const previouslyGeneratedAiValuesAsString = JSON.stringify(previouslyGeneratedAiValues);
 
     const response = await openai.chat.completions.create({
         messages: [
@@ -218,7 +218,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                 "content": `You are a system that generates realistic and contextually appropriate fake input values for HTML input fields based on the 
                             given page content (pageContent), input element type (inputType), input element autocomplete (inputAutocomplete), 
                             input element placeholder (inputPlaceholder) and label (inputLabel). 
-                            You get also last previously generated values (lastAiGeneratedValues). 
+                            You get also previously generated values (previouslyGeneratedAiValues). 
                 
                 Consider the following:
                 1. Generate inputs that match the cultural and linguistic context of the provided page content. For instance, if the page is in French, use French names, addresses, and date formats.
@@ -227,10 +227,11 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                       -Exception: If the type attribute of an input element is set to date, always use the ISO standard format YYYY-MM-DD 
                     - For "email" fields, generate realistic email addresses with common domain names.
                     - For "text" fields with labels like "Name", generate realistic names for the region implied by the content.
-                3. If inputType or inputLabel is missing, infer the most appropriate data type and content from the context of the pageContent.
+                3. If inputType, inputAutocomplete, inputPlaceholder and inputLabel are missing, infer the most appropriate data type and content 
+                   from the context of the pageContent.
                 4. Prioritize realism and consistency with the page's context and intended audience.
-                5. The variable lastAiGeneratedValues contains previously generated values. Make use of them as needed in appropriate situations. 
-                   For example if lastAiGeneratedValues contains entries "James" and "Harrison" and current field is "email" field,
+                5. The variable previouslyGeneratedAiValues contains previously generated values. Make use of them as needed in appropriate situations. 
+                   For example if previouslyGeneratedAiValues contains entries "James" and "Harrison" and current field is "email" field,
                    the generated email could be james.harrison@example.com. 
                 
                 Output only the generated fake input value.`,
@@ -242,7 +243,7 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                     "inputAutocomplete: no autocomplete" +
                     "inputPlaceholder: no placeholder" +
                     "inputLabel: Date of birth" +
-                    "lastAiGeneratedValues ['James','Harrison']", 
+                    "previouslyGeneratedAiValues ['James','Harrison']", 
                 "name": "example_user",
                 "role": "system"
             },
@@ -253,25 +254,25 @@ export const generateInputContentWithAi = async (pageContent: string, inputType:
                     "inputAutocomplete: no autocomplete" +
                     "inputPlaceholder: 01.01.1990" +
                     "inputLabel: no label" +
-                    "lastAiGeneratedValues ['Keijo','Kolmonen']",
+                    "previouslyGeneratedAiValues ['Keijo','Kolmonen']",
                 "name": "example_user",
                 "role": "system"
             },
-            { "content": "05.11.2020", "name": "example_assistant", "role": "system" },
+            { "content": "05.11.1995", "name": "example_assistant", "role": "system" },
             {
                 "content": "pageContent: Registration page Please fill your information here. Name Address Email Driving license Date of birth Food selection Pet's name" +
                     "inputType: no type" +
                     "inputAutocomplete: email" +
                     "inputPlaceholder: no placeholder" +
                     "inputLabel: no label" +
-                    "lastAiGeneratedValues ['James','Harrison']",
+                    "previouslyGeneratedAiValues ['James','Harrison']",
                 "name": "example_user",
                 "role": "system"
             },
             { "content": "james.harrison@gmail.com", "name": "example_assistant", "role": "system" },
             {
                 "content": `pageContent: ${pageContent}, inputType: ${inputType}, inputAutocomplete: ${inputAutocomplete}, inputPlaceholder: ${inputPlaceholder},  
-                            inputLabel: ${inputLabel}, lastAiGeneratedValues: ${lastAiGeneratedValuesAsString}`, 
+                            inputLabel: ${inputLabel}, previouslyGeneratedAiValues: ${previouslyGeneratedAiValuesAsString}`, 
                 "role": "user"
             }
         ],
