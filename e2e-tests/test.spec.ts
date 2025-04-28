@@ -251,7 +251,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     while (inputTextsIndex < inputTexts.length) {
         const inputText = inputTexts[inputTextsIndex];
 
-        returnValues = await handleInputsAndButtons(page, buttonsCount, inputText, buttonsLocator, currentUrl, inputTextsIndex, firstButtonIsHandled);
+        returnValues = await handleInputsAndButtons(page, buttonsCount, inputText, buttonsLocator, currentUrl, firstButtonIsHandled);
 
         if (returnValues.movedToDifferentHost) {
             return;
@@ -266,7 +266,9 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
             break;
         }
 
-        inputTextsIndex = returnValues.inputTextsIndex;
+        if (firstButtonIsHandled && returnValues.firstButtonIsHandled) {
+            inputTextsIndex++;
+        }
         firstButtonIsHandled = returnValues.firstButtonIsHandled;
     }
 
@@ -276,17 +278,13 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 }
 
 const handleInputsAndButtons = async (page: Page, buttonsCount: number, inputText: string, buttonsLocator: Locator,
-                             currentUrl: string, inputTextsIndex: number, firstButtonIsHandled: boolean) => {
+                             currentUrl: string, firstButtonIsHandled: boolean) => {
     const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
     const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
     let movedToDifferentHost = false;
     let movedToDifferentPage = false;
 
     while (buttonIndexesInRandomOrder.length > 0) {
-        if (firstButtonIsHandled || inputTexts.length === 1) {
-            inputTextsIndex++;
-        }
-
         if (firstButtonIsHandled) {
             if (debug) {
                 console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
@@ -339,7 +337,7 @@ const handleInputsAndButtons = async (page: Page, buttonsCount: number, inputTex
         }
     }
 
-    return {movedToDifferentHost, movedToDifferentPage, page, inputTextsIndex, firstButtonIsHandled};
+    return {movedToDifferentHost, movedToDifferentPage, page, firstButtonIsHandled};
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
