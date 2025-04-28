@@ -246,68 +246,18 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     let movedToDifferentPage = false;
     let firstButtonIsHandled = false;
     let inputTextsIndex = inputTexts.length > 1 ? 1 : 0;
+    let returnValues: any;
 
     while (inputTextsIndex < inputTexts.length) {
         const inputText = inputTexts[inputTextsIndex];
-        const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
-        const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
 
-        while (buttonIndexesInRandomOrder.length > 0) {
-            if (firstButtonIsHandled || inputTexts.length === 1) {
-                inputTextsIndex++;
-            }
+        returnValues = await handleButtons(page, buttonsCount, inputText, buttonsLocator, currentUrl, inputTextsIndex, firstButtonIsHandled);
 
-            if (firstButtonIsHandled) {
-                if (debug) {
-                    console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
-                }
-
-                await fillDifferentTypesInputs({ inputText, page });
-            }
-
-            if (debug) {
-                console.log('buttonIndexesInRandomOrder before shift:' + buttonIndexesInRandomOrder);
-            }
-
-            const buttonIndex = buttonIndexesInRandomOrder.shift();
-            const button = buttonsLocator.nth(buttonIndex);
-
-            if (debug) {
-                console.log('buttonIndexesInRandomOrder after shift:' + buttonIndexesInRandomOrder);
-                console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
-            }
-
-            if (await button.isVisible() && await button.isEnabled()) {
-                console.log('Push the button #' + (buttonIndex + 1));
-                await button.click();
-                firstButtonIsHandled = true;
-            }
-
-            await waitForTimeout({ page });
-            await checkPageForErrors({ page });
-
-            if (currentUrl !== page.url()) {
-                if (!hostIsSame({ rootUrl, url: page.url() })) {
-                    if (debug) {
-                        console.log('  Went outside of the tested application to the page ' + page.url() +
-                            ', returning back to the test application');
-                    }
-
-                    return;
-                }
-
-                movedToDifferentPage = true;
-
-                if (debug) {
-                    console.log('currentUrl:', currentUrl);
-                    console.log('page.url():', page.url());
-                    console.log('  break the inner loop');
-                }
-
-                break;
-            }
+        if (returnValues.movedToDifferentHost) {
+            return;
         }
 
+        movedToDifferentPage = returnValues.movedToDifferentPage;
         if (movedToDifferentPage) {
             if (debug) {
                 console.log('  break the outer loop');
@@ -315,11 +265,81 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
 
             break;
         }
+
+        inputTextsIndex = returnValues.inputTextsIndex;
+        firstButtonIsHandled = returnValues.firstButtonIsHandled;
     }
 
     if (movedToDifferentPage && !visitedUrlsOrNotVisitLinkUrlsIncludesUrl(page.url())) {
-        await handlePage({ page });
+        await handlePage({ page: returnValues.page });
     }
+}
+
+const handleButtons = async (page: Page, buttonsCount: number, inputText: string, buttonsLocator: Locator,
+                             currentUrl: string, inputTextsIndex: number, firstButtonIsHandled: boolean) => {
+    const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
+    const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
+    let movedToDifferentHost = false;
+    let movedToDifferentPage = false;
+
+    while (buttonIndexesInRandomOrder.length > 0) {
+        if (firstButtonIsHandled || inputTexts.length === 1) {
+            inputTextsIndex++;
+        }
+
+        if (firstButtonIsHandled) {
+            if (debug) {
+                console.log('  fillDifferentTypesInputsAndClickButtons, inputText:' + inputText);
+            }
+
+            await fillDifferentTypesInputs({ inputText, page });
+        }
+
+        if (debug) {
+            console.log('buttonIndexesInRandomOrder before shift:' + buttonIndexesInRandomOrder);
+        }
+
+        const buttonIndex = buttonIndexesInRandomOrder.shift();
+        const button = buttonsLocator.nth(buttonIndex);
+
+        if (debug) {
+            console.log('buttonIndexesInRandomOrder after shift:' + buttonIndexesInRandomOrder);
+            console.log('  fillDifferentTypesInputsAndClickButtons, button i:' + buttonIndex);
+        }
+
+        if (await button.isVisible() && await button.isEnabled()) {
+            console.log('Push the button #' + (buttonIndex + 1));
+            await button.click();
+            firstButtonIsHandled = true;
+        }
+
+        await waitForTimeout({ page });
+        await checkPageForErrors({ page });
+
+        if (currentUrl !== page.url()) {
+            if (!hostIsSame({ rootUrl, url: page.url() })) {
+                if (debug) {
+                    console.log('  Went outside of the tested application to the page ' + page.url() +
+                        ', returning back to the test application');
+                }
+
+                movedToDifferentHost = true;
+                break;
+            }
+
+            movedToDifferentPage = true;
+
+            if (debug) {
+                console.log('currentUrl:', currentUrl);
+                console.log('page.url():', page.url());
+                console.log('  break the inner loop');
+            }
+
+            break;
+        }
+    }
+
+    return {movedToDifferentHost, movedToDifferentPage, page, inputTextsIndex, firstButtonIsHandled};
 }
 
 const fillDifferentTypesInputs = async ({ inputText, page }: { inputText: string, page: Page }) => {
