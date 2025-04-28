@@ -251,7 +251,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     while (inputTextsIndex < inputTexts.length) {
         const inputText = inputTexts[inputTextsIndex];
 
-        returnValues = await handleButtons(page, buttonsCount, inputText, buttonsLocator, currentUrl, inputTextsIndex, firstButtonIsHandled);
+        returnValues = await handleInputsAndButtons(page, buttonsCount, inputText, buttonsLocator, currentUrl, inputTextsIndex, firstButtonIsHandled);
 
         if (returnValues.movedToDifferentHost) {
             return;
@@ -275,7 +275,7 @@ const fillDifferentTypesInputsAndClickButtons = async ({ page }: { page: Page })
     }
 }
 
-const handleButtons = async (page: Page, buttonsCount: number, inputText: string, buttonsLocator: Locator,
+const handleInputsAndButtons = async (page: Page, buttonsCount: number, inputText: string, buttonsLocator: Locator,
                              currentUrl: string, inputTextsIndex: number, firstButtonIsHandled: boolean) => {
     const buttonIndexes = generateNumberArrayFrom0ToMax(buttonsCount - 1);
     const buttonIndexesInRandomOrder = shuffleArray(buttonIndexes);
